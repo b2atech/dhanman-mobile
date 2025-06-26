@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "665094408103",
+    "project_id": "dwarpal-5c7d6",
+    "storage_bucket": "dwarpal-5c7d6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665094408103:android:2fb79aab8487332c39d882",
+        "android_client_info": {
+          "package_name": "com.dhanman.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt2xO2UueL_T5f9PZJwcY8dVRISYVi4w4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665094408103:android:96c905c459cc04e239d882",
+        "android_client_info": {
+          "package_name": "com.dvarpal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt2xO2UueL_T5f9PZJwcY8dVRISYVi4w4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
