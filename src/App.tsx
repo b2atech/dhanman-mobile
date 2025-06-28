@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {AuthProvider} from './context/AuthContext';
-import {requestUserPermission, notificationListener} from './api/FCMService';
-import FCMModal from './components/FCMModal';
-import MainRoutes from './Routes/MainRoute';
+import React, { useEffect, useState } from "react";
+import { AuthProvider } from "./context/AuthContext";
+import { requestUserPermission, notificationListener } from "./api/FCMService";
+import FCMModal from "./components/FCMModal";
+import MainRoutes from "./Routes/MainRoute";
 
 interface NotificationData {
   title: string;
@@ -11,7 +11,7 @@ interface NotificationData {
 }
 
 const App: React.FC = () => {
-  const [fcmToken, setFcmToken] = useState<string>('');
+  const [fcmToken, setFcmToken] = useState<string>("");
   const [notificationData, setNotificationData] =
     useState<NotificationData | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
