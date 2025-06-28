@@ -1,15 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from "react";
 // import {app} from './firebaseConfig';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import RegisterScreen from '../screens/RegisterScreen';
-import LoginScreen from '../screens/LoginScreen';
-import {requestUserPermission, notificationListener} from '../api/FCMService';
-import {createStackNavigator} from '@react-navigation/stack';
-import {AuthContext, AuthProvider} from '../context/AuthContext';
-import HomeScreen from '../screens/UserHome/HomeScreen';
-import OnBoarding from '../screens/OnBoardingScreen';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import RegisterScreen from "../screens/RegisterScreen";
+import LoginScreen from "../screens/LoginScreen";
+import { requestUserPermission, notificationListener } from "../api/FCMService";
+import { createStackNavigator } from "@react-navigation/stack";
+import { AuthContext, AuthProvider } from "../context/AuthContext";
+import HomeScreen from "../screens/UserHome/HomeScreen";
+import OnBoarding from "../screens/OnBoardingScreen";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faHome,
   faUser,
@@ -17,45 +17,45 @@ import {
   faCog,
   faTicketAlt,
   faTruck,
-} from '@fortawesome/free-solid-svg-icons';
-import GateHomeScreen from '../screens/GateHome/GateHome';
-import GateServiceProviderScreen from '../screens/GateHome/ServiceProvider/GateServiceProvider';
-import GateDeliveryScreen from '../screens/GateHome/Delivery/GateDelivery';
-import GateVisitorsScreen from '../screens/GateHome/Visitor/GateVisitor';
-import DeliveryApprovalScreen from '../screens/GateHome/Delivery/DeliveryApproval';
-import CreateVisitors from '../screens/GateHome/Visitor/CreateVisitor';
-import CreateServiceProvider from '../screens/GateHome/ServiceProvider/CreateServiceProvider';
-import DeliveryWaitingScreen from '../screens/GateHome/Delivery/DeliveryWaiting';
+} from "@fortawesome/free-solid-svg-icons";
+import GateHomeScreen from "../screens/GateHome/GateHome";
+import GateServiceProviderScreen from "../screens/GateHome/ServiceProvider/GateServiceProvider";
+import GateDeliveryScreen from "../screens/GateHome/Delivery/GateDelivery";
+import GateVisitorsScreen from "../screens/GateHome/Visitor/GateVisitor";
+import DeliveryApprovalScreen from "../screens/GateHome/Delivery/DeliveryApproval";
+import CreateVisitors from "../screens/GateHome/Visitor/CreateVisitor";
+import CreateServiceProvider from "../screens/GateHome/ServiceProvider/CreateServiceProvider";
+import DeliveryWaitingScreen from "../screens/GateHome/Delivery/DeliveryWaiting";
 
-import {decode as atob, encode as btoa} from 'base-64';
-import Settings from '../screens/SettingScreen';
-import TicketScreen from '../screens/TicketScreen';
-import ViewAllScreen from '../screens/CommonFiles/ViewAllScreen';
-import CreateTicket from '../screens/UserHome/Ticket/CreateTicket';
-import TicketHomeScreen from '../screens/TicketDashboard/TicketHomeScreen';
-import {StyleSheet, Text, View} from 'react-native';
-import MyUnitScreen from '../screens/MyUnitScreen';
-import DailyHelpScreen from '../screens/UserHome/DailyHelpScreen';
-import GuestInvite from '../screens/UserHome/PreApproved/Guest/GuestInvite';
-import QuickInvite from '../screens/UserHome/PreApproved/Guest/QuickInvite';
-import DefaulterScreen from '../screens/UserHome/Defaulter/DefaulterScreen';
-import FCMModal from '../components/FCMModal';
-import FrequentInvite from '../screens/UserHome/PreApproved/Guest/FrequentInvite';
-import PrivateInvite from '../screens/UserHome/PreApproved/Guest/PrivateInvite';
-import VisitorDetailScreen from '../screens/UserHome/visitorDetailScreen';
-import VisitorsList from '../screens/UserHome/visitorsList';
-import InviteLink from '../screens/UserHome/PreApproved/Guest/InviteLink';
-import PaymentScreen from '../screens/CommonFiles/PaymentScreen';
-import PaymentDetailScreen from '../screens/CommonFiles/PaymentDetailScreen';
-import CabEntry from '../screens/UserHome/PreApproved/Cab/CabEntry';
-import CabSelection from '../screens/UserHome/PreApproved/Cab/CabSelection';
-import DeliveryPreEntry from '../screens/UserHome/PreApproved/Delivery/DeliveryPreEntry';
-import DeliveryType from '../screens/UserHome/PreApproved/Delivery/DeliveryType';
-import CreateGuest from '../screens/UserHome/PreApproved/Guest/CreateGuest';
-import UnitVisitorsScreen from '../screens/UserHome/unitVisitorsScreen';
-import {SaveFCMToken} from '../api/myHome/fcmService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import VisitorLog from '../screens/GateHome/Visitor/VisitorLog';
+import { decode as atob, encode as btoa } from "base-64";
+import Settings from "../screens/SettingScreen";
+import TicketScreen from "../screens/TicketScreen";
+import ViewAllScreen from "../screens/CommonFiles/ViewAllScreen";
+import CreateTicket from "../screens/UserHome/Ticket/CreateTicket";
+import TicketHomeScreen from "../screens/TicketDashboard/TicketHomeScreen";
+import { StyleSheet, Text, View } from "react-native";
+import MyUnitScreen from "../screens/MyUnitScreen";
+import DailyHelpScreen from "../screens/UserHome/DailyHelpScreen";
+import GuestInvite from "../screens/UserHome/PreApproved/Guest/GuestInvite";
+import QuickInvite from "../screens/UserHome/PreApproved/Guest/QuickInvite";
+import DefaulterScreen from "../screens/UserHome/Defaulter/DefaulterScreen";
+import FCMModal from "../components/FCMModal";
+import FrequentInvite from "../screens/UserHome/PreApproved/Guest/FrequentInvite";
+import PrivateInvite from "../screens/UserHome/PreApproved/Guest/PrivateInvite";
+import VisitorDetailScreen from "../screens/UserHome/visitorDetailScreen";
+import VisitorsList from "../screens/UserHome/visitorsList";
+import InviteLink from "../screens/UserHome/PreApproved/Guest/InviteLink";
+import PaymentScreen from "../screens/CommonFiles/PaymentScreen";
+import PaymentDetailScreen from "../screens/CommonFiles/PaymentDetailScreen";
+import CabEntry from "../screens/UserHome/PreApproved/Cab/CabEntry";
+import CabSelection from "../screens/UserHome/PreApproved/Cab/CabSelection";
+import DeliveryPreEntry from "../screens/UserHome/PreApproved/Delivery/DeliveryPreEntry";
+import DeliveryType from "../screens/UserHome/PreApproved/Delivery/DeliveryType";
+import CreateGuest from "../screens/UserHome/PreApproved/Guest/CreateGuest";
+import UnitVisitorsScreen from "../screens/UserHome/unitVisitorsScreen";
+import { SaveFCMToken } from "../api/myHome/fcmService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import VisitorLog from "../screens/GateHome/Visitor/VisitorLog";
 
 interface NotificationData {
   title: string;
@@ -77,38 +77,39 @@ declare const global: any;
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const TabNavigatorForUnit = ({fcmToken}: TabNavigatorProps) => {
+const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
           let iconName = faHome; // Default icon
 
-          if (route.name === 'Home') {
+          if (route.name === "Home") {
             iconName = faHome;
-          } else if (route.name === 'My Units') {
+          } else if (route.name === "My Units") {
             iconName = faUser;
-          } else if (route.name === 'On Boarding') {
+          } else if (route.name === "On Boarding") {
             iconName = faUsers;
-          } else if (route.name === 'Tickets') {
+          } else if (route.name === "Tickets") {
             iconName = faTicketAlt;
-          } else if (route.name === 'Settings') {
+          } else if (route.name === "Settings") {
             iconName = faCog;
           }
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#00BFFF',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "#00BFFF",
+        tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
           paddingBottom: 10,
           paddingTop: 10,
           height: 80,
         },
         headerShown: false,
-      })}>
+      })}
+    >
       <Tab.Screen name="UserHome">
-        {props => <HomeScreen {...props} fcmToken={fcmToken} />}
+        {(props) => <HomeScreen {...props} fcmToken={fcmToken} />}
       </Tab.Screen>
       <Tab.Screen name="My Units" component={MyUnitScreen} />
       <Tab.Screen name="On Boarding" component={OnBoarding} />
@@ -118,36 +119,37 @@ const TabNavigatorForUnit = ({fcmToken}: TabNavigatorProps) => {
   );
 };
 
-const TabNavigatorForGate = ({fcmToken}: TabNavigatorProps) => {
+const TabNavigatorForGate = ({ fcmToken }: TabNavigatorProps) => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
           let iconName = faHome; // Default icon
 
-          if (route.name === 'Home') {
+          if (route.name === "Home") {
             iconName = faHome;
-          } else if (route.name === 'Settings') {
+          } else if (route.name === "Settings") {
             iconName = faCog;
-          } else if (route.name === 'Delivery') {
+          } else if (route.name === "Delivery") {
             iconName = faTruck;
-          } else if (route.name === 'More') {
+          } else if (route.name === "More") {
             iconName = faCog;
           }
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#00BFFF',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "#00BFFF",
+        tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
           paddingBottom: 10,
           paddingTop: 10,
           height: 80,
         },
         headerShown: false,
-      })}>
+      })}
+    >
       <Tab.Screen name="GateHome">
-        {props => <GateHomeScreen {...props} fcmToken={fcmToken} />}
+        {(props) => <GateHomeScreen {...props} fcmToken={fcmToken} />}
       </Tab.Screen>
       <Tab.Screen name="Delivery" component={DeliveryWaitingScreen} />
       <Tab.Screen name="Settings" component={Settings} />
@@ -155,71 +157,74 @@ const TabNavigatorForGate = ({fcmToken}: TabNavigatorProps) => {
   );
 };
 
-const TabNavigatorForTicket = ({fcmToken}: TabNavigatorProps) => {
+const TabNavigatorForTicket = ({ fcmToken }: TabNavigatorProps) => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
           let iconName = faHome; // Default icon
 
-          if (route.name === 'Home') {
+          if (route.name === "Home") {
             iconName = faHome;
           }
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#00BFFF',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "#00BFFF",
+        tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
           paddingBottom: 10,
           paddingTop: 10,
           height: 80,
         },
         headerShown: false,
-      })}>
+      })}
+    >
       <Tab.Screen name="TicketHome">
-        {props => <TicketHomeScreen {...props} fcmToken={fcmToken || ''} />}
+        {(props) => <TicketHomeScreen {...props} fcmToken={fcmToken || ""} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
 };
 
 const ROLE_SCREENS = {
-  Plumber: TabNavigatorForTicket,
-  Security: TabNavigatorForGate,
-  Society: TabNavigatorForUnit,
+  Gate: TabNavigatorForGate,
+  unit: TabNavigatorForUnit,
 };
 
-const Home = ({fcmToken}: TabNavigatorProps) => {
+const Home = ({ fcmToken }: TabNavigatorProps) => {
   const authContext = useContext(AuthContext);
   const user = authContext?.user as User | undefined;
-  const roles = user?.dhanman_roles || [];
+  const userRole = user?.dhanman_roles?.[0] || "";
+  console.log("userRole:", userRole);
 
-  const SelectedScreen = TabNavigatorForUnit;
+  const SelectedScreen =
+    ROLE_SCREENS[userRole as keyof typeof ROLE_SCREENS] || TabNavigatorForUnit;
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SelectedScreen fcmToken={fcmToken} />
     </View>
   );
 };
 
-const RootNavigator = ({fcmToken}: TabNavigatorProps) => {
+const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
   const authContext = useContext(AuthContext);
   const user = authContext?.user as User | undefined;
 
   useEffect(() => {
     const checkAndSaveToken = async () => {
-      const savedToken = await AsyncStorage.getItem('fcmToken');
-      console.log('savedToken', savedToken);
+      const savedToken = await AsyncStorage.getItem("fcmToken");
+      console.log("savedToken", savedToken);
       if (savedToken !== fcmToken && fcmToken) {
-        await AsyncStorage.setItem('fcmToken', fcmToken);
+        await AsyncStorage.setItem("fcmToken", fcmToken);
         const residentId = user?.residentId || 0;
         if (residentId) {
           try {
             await SaveFCMToken(fcmToken);
-            console.log('✅ FCM Token saved to the database');
+            console.log("✅ FCM Token saved to the database");
           } catch (error) {
-            console.error('Error saving FCM token:', error);
+            console.error("Error saving FCM token:", error);
           }
         }
       }
@@ -235,155 +240,155 @@ const RootNavigator = ({fcmToken}: TabNavigatorProps) => {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen name="Home" options={{headerShown: false}}>
-          {props => <Home {...props} fcmToken={fcmToken} />}
+        <Stack.Screen name="Home" options={{ headerShown: false }}>
+          {(props) => <Home {...props} fcmToken={fcmToken} />}
         </Stack.Screen>
         <Stack.Screen
           name="VisitorDetailScreen"
           component={VisitorDetailScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Unit Visitors"
           component={UnitVisitorsScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="View All"
           component={ViewAllScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="GateServiceProvider"
           component={GateServiceProviderScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="GateDelivery"
           component={GateDeliveryScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="GateVisitors"
           component={GateVisitorsScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Visitors Log"
           component={VisitorLog}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Create Service Provider"
           component={CreateServiceProvider}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Create Visitors"
           component={CreateVisitors}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="DeliveryApproval"
           component={DeliveryApprovalScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="DeliveryWaiting"
           component={DeliveryWaitingScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="CreateTicket"
           component={CreateTicket}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="VisitorsList"
           component={VisitorsList}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Guest Invite"
           component={GuestInvite}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen name="Quick Invite" options={{headerShown: false}}>
-          {props => <QuickInvite {...props} type="guest" />}
+        <Stack.Screen name="Quick Invite" options={{ headerShown: false }}>
+          {(props) => <QuickInvite {...props} type="guest" />}
         </Stack.Screen>
         <Stack.Screen
           name="Frequent Invite"
           component={FrequentInvite}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Private Invite"
           component={PrivateInvite}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Invite Link"
           component={InviteLink}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="DailyHelpScreen"
           component={DailyHelpScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Defaulter Screen"
           component={DefaulterScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="PaymentScreen"
           component={PaymentScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="PaymentDetailScreen"
           component={PaymentDetailScreen}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Cab Entry"
           component={CabEntry}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Cab Selection"
           component={CabSelection}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Delivery Type"
           component={DeliveryType}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Delivery Entry"
           component={DeliveryPreEntry}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Create Guest"
           component={CreateGuest}
-          options={{headerShown: true}}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const MainRoutes: React.FC<TabNavigatorProps> = ({fcmToken}) => {
+const MainRoutes: React.FC<TabNavigatorProps> = ({ fcmToken }) => {
   //   const [fcmToken, setFcmToken] = useState<string>('');
   const [notificationData, setNotificationData] =
     useState<NotificationData | null>(null);
@@ -397,10 +402,10 @@ const MainRoutes: React.FC<TabNavigatorProps> = ({fcmToken}) => {
     });
   }, []);
 
-  if (typeof global.atob === 'undefined') {
+  if (typeof global.atob === "undefined") {
     global.atob = atob;
   }
-  if (typeof global.btoa === 'undefined') {
+  if (typeof global.btoa === "undefined") {
     global.btoa = btoa;
   }
 
@@ -425,20 +430,20 @@ const MainRoutes: React.FC<TabNavigatorProps> = ({fcmToken}) => {
 const styles = StyleSheet.create({
   accessDeniedContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F8F8F8',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F8F8F8",
   },
   accessDeniedText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: 'red',
+    fontWeight: "bold",
+    color: "red",
     marginBottom: 10,
   },
   descriptionText: {
     fontSize: 14,
-    textAlign: 'center',
-    color: '#666',
+    textAlign: "center",
+    color: "#666",
   },
 });
 
