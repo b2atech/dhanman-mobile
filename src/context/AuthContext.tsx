@@ -146,7 +146,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       const credentials = await auth0.auth.passwordRealm({
         username,
         password,
-        realm: "sms", // This must match your Auth0 DB connection name
+        realm: "dhanman-db", // This must match your Auth0 DB connection name
         scope:
           "openid profile email offline_access read:current_user update:current_user_metadata",
         audience: "dev-dhanman-api",
