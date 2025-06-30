@@ -12,7 +12,7 @@
   "react-native": {
     "project": {
       "android": {
-        "packageName": "com.dvarpal"
+        "packageName": "com.dvarpal.app"
       }
     }
   },
