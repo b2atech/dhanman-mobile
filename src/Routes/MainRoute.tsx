@@ -104,7 +104,7 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
           backgroundColor: "#ffffff",
           paddingBottom: 10,
           paddingTop: 10,
-          height: 80,
+          height: 60,
         },
         headerShown: false,
       })}

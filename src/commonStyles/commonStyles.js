@@ -112,7 +112,8 @@ const commonStyles = StyleSheet.create({
   shareButton: {
     padding: 2,
   },
-  addButton: { position: "absolute", top: 10, right: -7 },
+  addButton: {position: 'absolute', top: -1, right: -7},
+
   addCircle: {
     width: 22,
     height: 22,
