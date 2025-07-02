@@ -65,7 +65,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
             avatar: decodedToken?.picture,
             name: decodedToken?.name,
             tier: "Premium",
-            roles: decodedToken?.dhanman_roles,
+            roles: decodedToken?.dhanman_roles || [],
             organization: {
               id: decodedToken.dhanman_organization.id,
               name: decodedToken.dhanman_organization.name,

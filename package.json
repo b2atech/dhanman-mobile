@@ -12,7 +12,7 @@
   "react-native": {
     "project": {
       "android": {
-        "packageName": "com.dvarpal"
+        "packageName": "com.dvarpal.app"
       }
     }
   },
@@ -32,17 +32,19 @@
     "@react-native-firebase/app": "^22.2.1",
     "@react-native-firebase/firestore": "^22.2.1",
     "@react-native-firebase/messaging": "^22.2.1",
-    "@react-native-picker/picker": "^2.11.0",
+    "@react-native-picker/picker": "^2.11.1",
     "@react-native/metro-config": "0.73.2",
     "@react-navigation/bottom-tabs": "^6.6.0",
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/material-top-tabs": "^6.6.13",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.7.2",
     "base-64": "^1.0.0",
     "chance": "^1.1.12",
     "date-fns": "^4.1.0",
+    "deprecated-react-native-prop-types": "^5.0.0",
     "formik": "^2.4.6",
     "jwt-decode": "^4.0.0",
     "metro": "0.79.1",
@@ -70,6 +72,7 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.12.0",
+    "react-redux": "^9.2.0",
     "uuid": "^10.0.0",
     "victory-native": "^37.1.1",
     "yup": "^1.4.0"

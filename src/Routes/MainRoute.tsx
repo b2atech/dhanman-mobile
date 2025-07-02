@@ -33,7 +33,7 @@ import TicketScreen from "../screens/TicketScreen";
 import ViewAllScreen from "../screens/CommonFiles/ViewAllScreen";
 import CreateTicket from "../screens/UserHome/Ticket/CreateTicket";
 import TicketHomeScreen from "../screens/TicketDashboard/TicketHomeScreen";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import MyUnitScreen from "../screens/MyUnitScreen";
 import DailyHelpScreen from "../screens/UserHome/DailyHelpScreen";
 import GuestInvite from "../screens/UserHome/PreApproved/Guest/GuestInvite";
@@ -56,6 +56,7 @@ import UnitVisitorsScreen from "../screens/UserHome/unitVisitorsScreen";
 import { SaveFCMToken } from "../api/myHome/fcmService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import VisitorLog from "../screens/GateHome/Visitor/VisitorLog";
+import ProfileScreen from "../screens/UserHome/ProfileScreen";
 
 interface NotificationData {
   title: string;
@@ -77,7 +78,7 @@ declare const global: any;
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
+export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -119,7 +120,7 @@ const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
   );
 };
 
-const TabNavigatorForGate = ({ fcmToken }: TabNavigatorProps) => {
+export const TabNavigatorForGate = ({ fcmToken }: TabNavigatorProps) => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -162,7 +163,7 @@ const TabNavigatorForTicket = ({ fcmToken }: TabNavigatorProps) => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          let iconName = faHome; // Default icon
+          let iconName = faHome;
 
           if (route.name === "Home") {
             iconName = faHome;
@@ -190,16 +191,93 @@ const TabNavigatorForTicket = ({ fcmToken }: TabNavigatorProps) => {
 const ROLE_SCREENS = {
   Gate: TabNavigatorForGate,
   unit: TabNavigatorForUnit,
+  "System Admin": ({ fcmToken }: TabNavigatorProps) => {
+    const [selectedTab, setSelectedTab] = useState("unit");
+
+    useEffect(() => {
+      const loadSelectedTab = async () => {
+        const storedTab = await AsyncStorage.getItem("selectedTab");
+        if (storedTab) {
+          setSelectedTab(storedTab);
+        }
+      };
+      loadSelectedTab();
+    }, []);
+
+    return (
+      <View style={{ flex: 1 }}>
+        {selectedTab === "unit" ? (
+          <TabNavigatorForUnit fcmToken={fcmToken} />
+        ) : (
+          <TabNavigatorForGate fcmToken={fcmToken} />
+        )}
+      </View>
+    );
+  },
 };
 
 const Home = ({ fcmToken }: TabNavigatorProps) => {
   const authContext = useContext(AuthContext);
   const user = authContext?.user as User | undefined;
-  const userRole = user?.dhanman_roles?.[0] || "";
-  console.log("userRole:", userRole);
 
-  const SelectedScreen =
-    ROLE_SCREENS[userRole as keyof typeof ROLE_SCREENS] || TabNavigatorForUnit;
+  const userRoles = user?.dhanman_roles || [];
+  console.log("userRole:", userRoles);
+
+  const [selectedTab, setSelectedTab] = useState("unit");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadSelectedTab = async () => {
+      const storedTab = await AsyncStorage.getItem("selectedTab");
+      if (storedTab) {
+        setSelectedTab(storedTab);
+      } else if (userRoles.length > 0) {
+        setSelectedTab(userRoles[0]);
+      }
+      setLoading(false);
+    };
+    loadSelectedTab();
+  }, [userRoles]);
+
+  if (loading) return null;
+
+  const defaultRole = userRoles.length > 0 ? userRoles[0] : "unit";
+  console.log("defaultRole:", defaultRole);
+
+  // let SelectedScreen =
+  //   ROLE_SCREENS[defaultRole as keyof typeof ROLE_SCREENS] ||
+  //   TabNavigatorForUnit;
+
+  let SelectedScreen: React.ComponentType<TabNavigatorProps>;
+
+  if (selectedTab === "unit") {
+    SelectedScreen = TabNavigatorForUnit;
+  } else if (selectedTab === "Gate") {
+    SelectedScreen = TabNavigatorForGate;
+  } else if (selectedTab === "System Admin") {
+    // System Admin can switch between both tabs
+    SelectedScreen = (props) => {
+      const [adminTab, setAdminTab] = useState("unit");
+
+      useEffect(() => {
+        const loadAdminTab = async () => {
+          const storedTab = await AsyncStorage.getItem("selectedTab");
+          if (storedTab) {
+            setAdminTab(storedTab);
+          }
+        };
+        loadAdminTab();
+      }, []);
+
+      return (
+        <View style={{ flex: 1 }}>
+          <SelectedScreen fcmToken={fcmToken} />
+        </View>
+      );
+    };
+  } else {
+    SelectedScreen = TabNavigatorForUnit;
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -381,6 +459,11 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
         <Stack.Screen
           name="Create Guest"
           component={CreateGuest}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{ headerShown: true }}
         />
       </Stack.Navigator>

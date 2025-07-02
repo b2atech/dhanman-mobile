@@ -1,4 +1,4 @@
-package com.dvarpal
+package com.dvarpal.app
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -42,4 +42,4 @@ class MainApplication : Application(), ReactApplication {
     }
     ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
   }
-}
+} 
