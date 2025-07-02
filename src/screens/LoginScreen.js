@@ -8,10 +8,9 @@ import {
   Alert,
 } from "react-native";
 import { Input, Button } from "react-native-elements";
-import DPLogo from "../assets/dpLogo.png";
+import appIcon from "../assets/images/app_icon.png";
 import { auth0, AuthContext } from "../context/AuthContext";
 import PropTypes from "prop-types";
-import { Picker } from "@react-native-picker/picker";
 
 const LoginScreen = ({ navigation }) => {
   const { login, loginWithCredentials, isLoggedIn, setRole } =
@@ -109,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={DPLogo} style={styles.logo} />
+      <Image source={appIcon} style={styles.logo} />
       <Text style={styles.tagline}>Secure Living, Simplified Management!</Text>
 
       {!useOtpLogin ? (
@@ -139,12 +138,12 @@ const LoginScreen = ({ navigation }) => {
             disabled={!username || !password || loading}
             loading={loading}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.helpContainer}
             onPress={toggleLoginMethod}
           >
             <Text style={styles.helpText}>Log in with Phone Number</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </>
       ) : !isOtpSent ? (
         <>

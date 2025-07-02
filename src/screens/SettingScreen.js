@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -6,51 +6,70 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import {AuthContext} from '../context/AuthContext';
-import commonStyles from '../commonStyles/commonStyles';
-import PropTypes from 'prop-types';
+} from "react-native";
+import { AuthContext } from "../context/AuthContext";
+import commonStyles from "../commonStyles/commonStyles";
+import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Settings = ({navigation}) => {
-  const {logout} = useContext(AuthContext);
+const Settings = ({ navigation }) => {
+  const { logout, setUserRole } = useContext(AuthContext);
+  const [selectedRole, setSelectedRole] = useState("unit");
 
   const settingsOptions = [
-    {id: '1', name: 'Profile', onPress: () => navigation.navigate('Profile')},
+    { id: "1", name: "Profile", onPress: () => navigation.navigate("Profile") },
     {
-      id: '2',
-      name: 'Preferences',
-      onPress: () => navigation.navigate('Preferences'),
+      id: "2",
+      name: "Preferences",
+      onPress: () => navigation.navigate("Preferences"),
     },
-    {id: '3', name: 'Logout', onPress: () => handleLogout()},
+    { id: "3", name: "Logout", onPress: () => handleLogout() },
   ];
 
   const handleLogout = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      "Logout",
+      "Are you sure you want to logout?",
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
         {
-          text: 'Logout',
+          text: "Logout",
           onPress: async () => {
             await logout();
 
-            navigation.navigate('Login');
+            navigation.navigate("Login");
           },
         },
       ],
-      {cancelable: true},
+      { cancelable: true }
     );
   };
 
-  const renderItem = ({item}) => (
+  const handleRoleChange = async (role) => {
+    setSelectedRole(role);
+    await AsyncStorage.setItem("userRole", role);
+    setUserRole(role);
+  };
+
+  const renderItem = ({ item }) => (
     <TouchableOpacity onPress={item.onPress} style={styles.optionContainer}>
       <Text style={commonStyles.descriptionText}>{item.name}</Text>
     </TouchableOpacity>
   );
+
+  useEffect(() => {
+    const getStoredRole = async () => {
+      const storedRole = await AsyncStorage.getItem("userRole");
+      if (storedRole) {
+        setSelectedRole(storedRole);
+      }
+    };
+    getStoredRole();
+  }, []);
 
   return (
     <View style={commonStyles.container}>
@@ -58,7 +77,7 @@ const Settings = ({navigation}) => {
       <FlatList
         data={settingsOptions}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
       />
     </View>
@@ -78,7 +97,7 @@ const styles = StyleSheet.create({
   optionContainer: {
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
 });
 
