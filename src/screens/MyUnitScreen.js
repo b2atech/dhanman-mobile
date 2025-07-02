@@ -14,7 +14,7 @@ import commonStyles from '../commonStyles/commonStyles';
 import {useNavigation} from '@react-navigation/native';
 
 // Household items with hasData flag
-const householdItems = [
+const householdItems = [ 
   {
     id: '1',
     title: 'Family',
@@ -35,7 +35,7 @@ const householdItems = [
     title: 'Vehicles',
     icon: 'car',
     subtitle: 'KA01MG7444',
-    hasData: true,
+    hasData: true,  
   },
   {id: '5', title: 'Pets', icon: 'paw', subtitle: '+ Add', hasData: false},
 ];
@@ -88,7 +88,7 @@ const MyUnitScreen = () => {
               <View style={styles.householdTitle}>
                 <Icon
                   name="home"
-                  size={18}
+                  size={19}  
                   color="#3b5998"
                   style={styles.householdIcon}
                 />
@@ -107,7 +107,7 @@ const MyUnitScreen = () => {
         <Card
           containerStyle={[styles.card, !item.hasData && styles.dottedBorder]}>
           <View style={styles.cardContent}>
-            <Icon name={item.icon} size={24} color="black" />
+            <Icon name={item.icon} size={18} color="black" style={styles.IconStyle} />
             <View style={styles.textContainer}>
               <Text style={styles.cardTitle}>{item.title}</Text>
               <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
@@ -119,7 +119,7 @@ const MyUnitScreen = () => {
               style={commonStyles.addButton}
               onPress={() => handleNavigation(item)}>
               <View style={commonStyles.addCircle}>
-                <Icon name="plus" size={11} color="black" />
+                <Icon name="plus" size={12} color="black" />
               </View>
             </TouchableOpacity>
           )}
@@ -144,7 +144,7 @@ const MyUnitScreen = () => {
       ListFooterComponent={
         <Card containerStyle={styles.addressCard}>
           <View style={styles.addressContent}>
-            <Icon name="map-marker" size={24} color="#d32f2f" />
+            <Icon name="map-marker" size={24} color="#d32f2f" style = {styles.MapIconStyle} />
             <View style={styles.addressText}>
               <Text style={styles.addressTitle}>My Address</Text>
               <Text style={styles.addressDetail}>
@@ -152,7 +152,7 @@ const MyUnitScreen = () => {
               </Text>
             </View>
             <TouchableOpacity style={commonStyles.shareButton}>
-              <Icon name="share" size={22} color="#3b5998" />
+              <Icon name="share" size={22} color="#3b5998" style = {styles.MapIconStyle}/>
             </TouchableOpacity>
           </View>
         </Card>
@@ -187,13 +187,13 @@ const styles = StyleSheet.create({
   },
 
   householdTitle: {flexDirection: 'row', alignItems: 'center'},
-  householdIcon: {marginRight: 5},
+  householdIcon: {marginRight: 6},
   sectionTitle: {fontSize: 17, fontWeight: 'bold', color: '#333'},
   seeAll: {color: '#3b5998', fontSize: 14},
 
   row: {justifyContent: 'space-between'},
   card: {
-    width: '44%',
+    width: '41%',
     borderRadius: 10,
     padding: 25,
     elevation: 5,
@@ -201,10 +201,18 @@ const styles = StyleSheet.create({
   },
   dottedBorder: {borderStyle: 'dashed', borderWidth: 1.5, borderColor: '#999'},
   cardContent: {flexDirection: 'row', alignItems: 'center'},
-  textContainer: {marginLeft: 5},
-  cardTitle: {fontSize: 14, fontWeight: 'bold', color: '#333'},
+  textContainer: {marginLeft: 9},
+  cardTitle: {fontSize: 14, fontWeight: 'bold', color: '#333', marginTop: 0},
   cardSubtitle: {fontSize: 12, color: 'gray'},
 
+  
+   IconStyle:{           //Main Icon style
+    marginLeft: -12, 
+    marginBottom: 10
+  },
+  MapIconStyle: {        //Map Marker Icon style
+    marginBottom : 35
+  },
   addressCard: {
     marginHorizontal: 20,
     marginTop: 40,
