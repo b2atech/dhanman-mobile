@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Animated,
 } from "react-native";
 import { Input, Button } from "react-native-elements";
 import appIcon from "../assets/images/app_icon.png";
@@ -26,13 +27,47 @@ const LoginScreen = ({ navigation }) => {
   const [credentialsError, setCredentialsError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+  const logoScaleAnim = useRef(new Animated.Value(0.8)).current;
+
   const formattedPhoneNumber = `+91${phoneNumber}`;
 
   useEffect(() => {
     if (isLoggedIn) {
       navigation.navigate("Home");
+    } else {
+      // Start entrance animation
+      startEntranceAnimation();
     }
   }, [isLoggedIn, navigation]);
+
+  const startEntranceAnimation = () => {
+    // Reset animation values
+    fadeAnim.setValue(0);
+    slideAnim.setValue(50);
+    logoScaleAnim.setValue(0.8);
+
+    // Create entrance animation sequence
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(logoScaleAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
 
   const handlePhoneNumberChange = (text) => {
     const strippedText = text.replace(/\D/g, "");
@@ -107,9 +142,25 @@ const LoginScreen = ({ navigation }) => {
   if (isLoggedIn) return null;
 
   return (
-    <View style={styles.container}>
-      <Image source={appIcon} style={styles.logo} />
-      <Text style={styles.tagline}>Secure Living, Simplified Management!</Text>
+    <Animated.View 
+      style={[
+        styles.container,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        },
+      ]}
+    >
+      <Animated.Image 
+        source={appIcon} 
+        style={[
+          styles.logo,
+          {
+            transform: [{ scale: logoScaleAnim }],
+          },
+        ]} 
+      />
+      <Animated.Text style={styles.tagline}>Secure Living, Simplified Management!</Animated.Text>
 
       {!useOtpLogin ? (
         <>
@@ -204,7 +255,7 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </Animated.View>
   );
 };
 

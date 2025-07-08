@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import RegisterScreen from "../screens/RegisterScreen";
 import LoginScreen from "../screens/LoginScreen";
+import LaunchScreen from "../screens/LaunchScreen";
 import { requestUserPermission, notificationListener } from "../api/FCMService";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
@@ -317,7 +318,12 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Launch">
+        <Stack.Screen
+          name="Launch"
+          component={LaunchScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}
