@@ -50,7 +50,7 @@ const MyUnitScreen = () => {
         navigation.navigate('VisitorsList');
         break;
       case 'Family':
-        navigation.navigate('FamilyScreen');
+        navigation.navigate('Add Family Member');  
         break;
       case 'Vehicles':
         navigation.navigate('VehiclesScreen');
