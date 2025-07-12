@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const axiosPurchaseServices = axios.create({
   baseURL: "https://qa.purchase.dhanman.com/api/",
-  timeout: 10000, // 10 seconds timeout
+  timeout: 10000,
 });
 
 const getAccessToken = async () => {
@@ -93,7 +93,6 @@ export const fetcherPost = async (url, data = {}, config = {}) => {
         "Content-Type": "application/json",
       };
     }
-    // Fix: Pass data separately
     const res = await axiosPurchaseServices.post(url, data, config);
 
     return res.data;

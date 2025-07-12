@@ -6,9 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { Icon } from "react-native-elements";
-import CheckBox from "@react-native-community/checkbox";
 import PropTypes from "prop-types";
+import BillItem from "./BillItem";
 
 const BillSection = ({ bills, navigation }) => {
   const [expandedBillId, setExpandedBillId] = useState(null);
@@ -22,14 +21,6 @@ const BillSection = ({ bills, navigation }) => {
     setSelectedBills((prev) =>
       prev.includes(id) ? prev.filter((billId) => billId !== id) : [...prev, id]
     );
-  };
-
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
   };
 
   const handleSendForApproval = (billId) => {
@@ -57,118 +48,17 @@ const BillSection = ({ bills, navigation }) => {
           const isChecked = selectedBills.includes(bill.id);
 
           return (
-            <View key={bill.id} style={styles.billCard}>
-              <View style={styles.topRow}>
-                <View style={styles.checkboxContainer}>
-                  <CheckBox
-                    value={isChecked}
-                    onValueChange={() => toggleCheckbox(bill.id)}
-                    tintColors={{ true: "#3B6FD6", false: "#999" }}
-                  />
-                </View>
-                <View style={{ flex: 3 }}>
-                  <Text style={styles.billTitle}>{bill.billType}</Text>
-                </View>
-                <View style={{ flex: 1, alignItems: "flex-end" }}>
-                  <Text style={styles.billAmount}>₹ {bill.totalAmount}</Text>
-                </View>
-                <TouchableOpacity onPress={() => toggleExpand(bill.id)}>
-                  <Icon
-                    name={
-                      expandedBillId === bill.id ? "chevron-up" : "chevron-down"
-                    }
-                    type="feather"
-                    color="#3B6FD6"
-                    size={22}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              {isExpanded && (
-                <>
-                  <View style={styles.expandedContainer}>
-                    <View style={[styles.infoRow, { marginTop: 10 }]}>
-                      <View style={{ flex: 3 }}>
-                        <Text style={styles.infoLabel}>Date</Text>
-                        <Text style={styles.infoValue}>
-                          {formatDate(bill.billDate)}
-                        </Text>
-                      </View>
-                      <View style={{ flex: 3 }}>
-                        <Text style={styles.infoLabel}>Vendor</Text>
-                        <Text style={styles.infoValue}>{bill.vendorName}</Text>
-                      </View>
-                      <View style={{ flex: 2 }}>
-                        <Text style={styles.infoLabel}>Status</Text>
-                        <Text
-                          style={[
-                            styles.infoValue,
-                            {
-                              color:
-                                bill.billStatus?.toLowerCase() === "paid" ||
-                                bill.billStatus?.toLowerCase() === "approved"
-                                  ? "#28a745"
-                                  : "#dc3545",
-                              fontWeight: "bold",
-                            },
-                          ]}
-                        >
-                          {bill.billStatus}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <View style={[styles.infoRow, { marginTop: 10 }]}>
-                      <View style={{ flex: 3 }}>
-                        <Text style={styles.label}>Bill Voucher No</Text>
-                        <Text style={styles.value}>{bill.billVoucher}</Text>
-                      </View>
-                      <View style={{ flex: 1, alignItems: "flex-end" }}>
-                        <Text style={styles.label}>Due Date</Text>
-                        <Text style={styles.value}>
-                          {formatDate(bill.dueDate)}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View style={styles.buttonRow}>
-                    {isChecked && (
-                      <>
-                        {bill.billStatus === "Draft" && (
-                          <TouchableOpacity
-                            style={styles.actionButton}
-                            onPress={() => handleSendForApproval(bill.id)}
-                          >
-                            <Text style={styles.buttonText}>
-                              Send for Approval
-                            </Text>
-                          </TouchableOpacity>
-                        )}
-                        {bill.billStatus === "Pending Approval" && (
-                          <TouchableOpacity
-                            style={styles.actionButton}
-                            onPress={() => handleApprove(bill.id)}
-                          >
-                            <Text style={styles.buttonText}>Approve</Text>
-                          </TouchableOpacity>
-                        )}
-                        {bill.billStatus === "Approved" && (
-                          <TouchableOpacity
-                            style={styles.actionButton}
-                            onPress={() => handleSendForPayment(bill.id)}
-                          >
-                            <Text style={styles.buttonText}>
-                              Send for Payment
-                            </Text>
-                          </TouchableOpacity>
-                        )}
-                      </>
-                    )}
-                  </View>
-                </>
-              )}
-            </View>
+            <BillItem
+              key={bill.id}
+              bill={bill}
+              isExpanded={isExpanded}
+              isChecked={isChecked}
+              onToggleExpand={() => toggleExpand(bill.id)}
+              onToggleCheck={() => toggleCheckbox(bill.id)}
+              onSendForApproval={() => handleSendForApproval(bill.id)}
+              onApprove={() => handleApprove(bill.id)}
+              onSendForPayment={() => handleSendForPayment(bill.id)}
+            />
           );
         })}
       </ScrollView>
@@ -203,67 +93,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#333",
   },
-  billCard: {
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    elevation: 3,
-  },
-  topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  checkboxContainer: {
-    flex: 0.5,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: -10,
-  },
-  billTitle: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  billAmount: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#000",
-    marginRight: 10,
-  },
-  expandedContainer: {
-    marginTop: 10,
-  },
-  infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 4,
-  },
-  infoLabel: {
-    flex: 1,
-    fontWeight: "600",
-    fontSize: 13,
-    color: "#555",
-    marginRight: 10,
-  },
-  infoValue: {
-    flex: 1,
-    fontSize: 14,
-    color: "#000",
-    marginRight: 10,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: "bold",
-    color: "#555",
-    marginRight: 25,
-  },
-  value: {
-    fontSize: 14,
-    color: "#333",
-    marginRight: 10,
-  },
   viewAllContainer: {
     alignItems: "flex-end",
     marginTop: 5,
@@ -271,22 +100,5 @@ const styles = StyleSheet.create({
   viewAllText: {
     color: "#3B6FD6",
     fontWeight: "600",
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10,
-  },
-  actionButton: {
-    backgroundColor: "#3B6FD6",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 14,
   },
 });
