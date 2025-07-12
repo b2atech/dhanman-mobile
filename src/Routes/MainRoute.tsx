@@ -37,6 +37,7 @@ import TicketHomeScreen from "../screens/TicketDashboard/TicketHomeScreen";
 import { StyleSheet, View } from "react-native";
 import MyUnitScreen from "../screens/MyUnitScreen";
 import DailyHelpScreen from "../screens/UserHome/DailyHelpScreen";
+import AddFamilyMember from "../screens/UserHome/AddFamilyMember";           
 import GuestInvite from "../screens/UserHome/PreApproved/Guest/GuestInvite";
 import QuickInvite from "../screens/UserHome/PreApproved/Guest/QuickInvite";
 import DefaulterScreen from "../screens/UserHome/Defaulter/DefaulterScreen";
@@ -59,6 +60,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import VisitorLog from "../screens/GateHome/Visitor/VisitorLog";
 import ProfileScreen from "../screens/UserHome/ProfileScreen";
 import BillsList from "../screens/UserHome/Components/BillsList";
+
+
 
 interface NotificationData {
   title: string;
@@ -426,6 +429,11 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
         <Stack.Screen
           name="DailyHelpScreen"
           component={DailyHelpScreen}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Add Family Member"
+          component={AddFamilyMember}
           options={{ headerShown: true }}
         />
         <Stack.Screen
