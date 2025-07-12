@@ -23,7 +23,6 @@ import { getAllBills } from "../../api/purchase/bill";
 const HomeScreen = ({ navigation, fcmToken }) => {
   const { user } = useContext(AuthContext);
   const config = useConfig();
-  const billTypeId = 2;
   const units = user?.unitIds || [];
   const { hasPermission, loading } = useHasPermission(
     config?.organization?.id,
