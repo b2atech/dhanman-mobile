@@ -59,6 +59,7 @@ import { SaveFCMToken } from "../api/myHome/fcmService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import VisitorLog from "../screens/GateHome/Visitor/VisitorLog";
 import ProfileScreen from "../screens/UserHome/ProfileScreen";
+import BillsList from "../screens/UserHome/Components/BillsList";
 
 
 
@@ -478,6 +479,11 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Bills List"
+          component={BillsList}
           options={{ headerShown: true }}
         />
       </Stack.Navigator>

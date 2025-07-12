@@ -142,7 +142,7 @@ const LoginScreen = ({ navigation }) => {
   if (isLoggedIn) return null;
 
   return (
-    <Animated.View 
+    <Animated.View
       style={[
         styles.container,
         {
@@ -151,16 +151,18 @@ const LoginScreen = ({ navigation }) => {
         },
       ]}
     >
-      <Animated.Image 
-        source={appIcon} 
+      <Animated.Image
+        source={appIcon}
         style={[
           styles.logo,
           {
             transform: [{ scale: logoScaleAnim }],
           },
-        ]} 
+        ]}
       />
-      <Animated.Text style={styles.tagline}>Secure Living, Simplified Management!</Animated.Text>
+      <Animated.Text style={styles.tagline}>
+        Secure Living, Simplified Management!
+      </Animated.Text>
 
       {!useOtpLogin ? (
         <>

@@ -99,7 +99,10 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         if (token) {
           const decodedToken = jwtDecode<CustomJwtPayload>(token);
           const currentTime = Math.floor(Date.now() / 1000);
-
+          console.log(
+            "Checking Decode Token",
+            decodedToken.exp && decodedToken.exp > currentTime
+          );
           if (decodedToken.exp && decodedToken.exp > currentTime) {
             setUserState(decodedToken);
           } else {
@@ -129,12 +132,12 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         audience: "dev-dhanman-api",
       });
       console.log(credentials);
-      await AsyncStorage.setItem("userToken", credentials.idToken);
+      await AsyncStorage.setItem("userToken", credentials.accessToken);
       await AsyncStorage.setItem(
         "refreshToken",
         credentials.refreshToken ? credentials.refreshToken : ""
       );
-      const decodedToken = jwtDecode<CustomJwtPayload>(credentials.idToken);
+      const decodedToken = jwtDecode<CustomJwtPayload>(credentials.accessToken);
       setUserState(decodedToken);
     } catch (error) {
       throw new Error("Failed to log in. Please check the OTP and try again.");
@@ -153,14 +156,14 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       });
 
       // Store tokens securely
-      await AsyncStorage.setItem("userToken", credentials.idToken);
+      await AsyncStorage.setItem("userToken", credentials.accessToken);
       await AsyncStorage.setItem(
         "refreshToken",
         credentials.refreshToken ?? ""
       );
 
       // Decode and set user state
-      const decodedToken = jwtDecode<CustomJwtPayload>(credentials.idToken);
+      const decodedToken = jwtDecode<CustomJwtPayload>(credentials.accessToken);
       await setUserState(decodedToken);
     } catch (error: any) {
       console.error("Auth0 username login failed:", error);
