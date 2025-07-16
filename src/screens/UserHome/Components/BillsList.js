@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import BillItem from "./BillItem";
 
 const BillsList = ({ route }) => {
-  const { bills } = route.params;
+  const { bills, company, finYearId, billType = 2 } = route.params;
   const [expandedId, setExpandedId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -18,21 +18,6 @@ const BillsList = ({ route }) => {
     );
   };
 
-  const handleSendForApproval = (billId) => {
-    console.log(`Send for Approval clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
-  const handleApprove = (billId) => {
-    console.log(`Approve clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
-  const handleSendForPayment = (billId) => {
-    console.log(`Send for Payment clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
   const renderItem = ({ item }) => {
     const isExpanded = expandedId === item.id;
     const isChecked = selectedIds.includes(item.id);
@@ -40,13 +25,13 @@ const BillsList = ({ route }) => {
     return (
       <BillItem
         bill={item}
+        company={company}
+        finYearId={finYearId}
+        billType={billType}
         isExpanded={isExpanded}
         isChecked={isChecked}
         onToggleExpand={() => toggleExpand(item.id)}
         onToggleCheck={() => toggleSelection(item.id)}
-        onSendForApproval={() => handleSendForApproval(item.id)}
-        onApprove={() => handleApprove(item.id)}
-        onSendForPayment={() => handleSendForPayment(item.id)}
       />
     );
   };
@@ -64,7 +49,14 @@ const BillsList = ({ route }) => {
 };
 
 BillsList.propTypes = {
-  route: PropTypes.object.isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      bills: PropTypes.array.isRequired,
+      company: PropTypes.object.isRequired,
+      finYearId: PropTypes.number.isRequired,
+      billType: PropTypes.number.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default BillsList;
