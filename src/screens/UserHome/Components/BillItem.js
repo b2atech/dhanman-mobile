@@ -11,7 +11,9 @@ import Icon from "react-native-vector-icons/Feather";
 import PropTypes from "prop-types";
 import {
   updateBillSendForApproval,
-  updateBillApproveLevel1,
+  updateBillApprove,
+  updateBillCancel,
+  updateBillReject,
 } from "../../../api/purchase/bill";
 import commonStyles from "../../../commonStyles/commonStyles";
 
@@ -24,97 +26,132 @@ const BillItem = ({
   company,
   finYearId,
   billType,
+  onStatusChange,
 }) => {
   const [loading, setLoading] = useState(false);
   const [localStatus, setLocalStatus] = useState(bill.billStatus);
+  const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingReject, setLoadingReject] = useState(false);
+  const [loadingSend, setLoadingSend] = useState(false);
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+    return `${String(date.getDate()).padStart(2, "0")}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${date.getFullYear()}`;
   };
 
-  const handleSendForApproval = async () => {
-    setLoading(true);
+  // const handleApiCall = async (apiFunc, nextStatus, actionText) => {
+  //   setLoading(true);
+  //   try {
+  //     await apiFunc(
+  //       { billIds: [bill.id], companyId: company.id },
+  //       finYearId,
+  //       billType
+  //     );
+  //     setLocalStatus(nextStatus);
+  //     onStatusChange(bill.id, nextStatus);
+  //     Alert.alert("Success", `Bill marked as "${nextStatus}"`);
+  //   } catch (err) {
+  //     console.error(`${actionText} failed`, err);
+  //     Alert.alert("Error", `Failed to ${actionText.toLowerCase()}`);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handleStatusUpdate = async (apiFunc, newStatus, setLoadingFn) => {
+    setLoadingFn(true);
+
+    const payload = {
+      billIds: [bill.id],
+      companyId: company.id,
+    };
+
+    console.log("Sending payload to API:", {
+      ...payload,
+      finYearId,
+      billType,
+    });
+
     try {
-      await updateBillSendForApproval(
-        { billIds: [bill.id], companyId: company.id },
-        finYearId,
-        billType
-      );
-      setLocalStatus("Pending Approval");
+      await apiFunc(payload, finYearId, billType);
+      setLocalStatus(newStatus);
+      onStatusChange(bill.id, newStatus);
     } catch (err) {
-      console.error("Send for approval failed", err);
+      console.error(`${newStatus} failed`, err);
     } finally {
-      setLoading(false);
+      setLoadingFn(false);
     }
   };
 
-  const handleApprove = async () => {
-    setLoading(true);
-    try {
-      await updateBillApproveLevel1(
-        { billIds: [bill.id], companyId: company.id },
-        finYearId,
-        billType
-      );
-      setLocalStatus("Approved");
-    } catch (err) {
-      console.error("Approval failed", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleStatusUpdate = async (apiFunc, nextStatusText) => {
+  //   setLoading(true);
+  //   try {
+  //     const payload = { billIds: [bill.id], companyId: company.id };
+
+  //     console.log("🔁 Sending APPROVE request:", {
+  //       url: apiFunc.name,
+  //       payload,
+  //     });
+  //     await apiFunc(
+  //       { billIds: [bill.id], companyId: company.id },
+  //       finYearId,
+  //       billType
+  //     );
+  //     setLocalStatus(nextStatusText);
+  //     onStatusChange(bill.id, nextStatusText);
+  //     Alert.alert("Success", `Status updated to "${nextStatusText}"`);
+  //   } catch (err) {
+  //     console.error("API error", err);
+  //     Alert.alert("Error", "Failed to update bill status.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const renderActionButton = () => {
     if (!isChecked) return null;
 
-    if (localStatus === "Draft") {
-      return (
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={handleSendForApproval}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Send for Approval</Text>
-          )}
-        </TouchableOpacity>
+    const buttons = [];
+
+    if (localStatus.toLowerCase() === "pending approval") {
+      buttons.push(
+        <ActionButton
+          key="approve"
+          label="Approve"
+          onPress={() =>
+            handleStatusUpdate(updateBillApprove, "Approved", setLoadingApprove)
+          }
+          loading={loadingApprove}
+        />,
+        <ActionButton
+          key="reject"
+          label="Reject"
+          onPress={() =>
+            handleStatusUpdate(updateBillReject, "Rejected", setLoadingReject)
+          }
+          loading={loadingReject}
+        />
+      );
+    } else if (localStatus.toLowerCase() === "draft") {
+      buttons.push(
+        <ActionButton
+          key="send"
+          label="Send for Approval"
+          onPress={() =>
+            handleStatusUpdate(
+              updateBillSendForApproval,
+              "Pending Approval",
+              setLoadingSend
+            )
+          }
+          loading={loadingSend}
+        />
       );
     }
 
-    if (localStatus === "Pending Approval") {
-      return (
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={handleApprove}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Approve</Text>
-          )}
-        </TouchableOpacity>
-      );
-    }
-
-    if (localStatus === "Approved") {
-      return (
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => console.log("Go to Payment Screen")}
-        >
-          <Text style={styles.buttonText}>Pay Now</Text>
-        </TouchableOpacity>
-      );
-    }
-
-    return null;
+    return <View style={styles.buttonRow}>{buttons}</View>;
   };
 
   return (
@@ -136,7 +173,6 @@ const BillItem = ({
         <TouchableOpacity onPress={onToggleExpand}>
           <Icon
             name={isExpanded ? "chevron-up" : "chevron-down"}
-            type="feather"
             color="#3B6FD6"
             size={22}
           />
@@ -146,7 +182,7 @@ const BillItem = ({
       {isExpanded && (
         <>
           <View style={styles.expandedContainer}>
-            <View style={[styles.infoRow, { marginTop: 10 }]}>
+            <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Date</Text>
               <Text style={styles.infoLabel}>Vendor</Text>
               <Text style={[styles.infoLabel, { flex: 0.5 }]}>Status</Text>
@@ -160,11 +196,13 @@ const BillItem = ({
                 style={[
                   styles.infoValue,
                   {
-                    color: ["paid", "approved"].includes(
-                      localStatus.toLowerCase()
-                    )
+                    color: ["approved"].includes(localStatus.toLowerCase())
                       ? "#28a745"
-                      : "#dc3545",
+                      : ["rejected", "cancelled"].includes(
+                            localStatus.toLowerCase()
+                          )
+                        ? "#dc3545"
+                        : "#000",
                     fontWeight: "bold",
                     marginLeft: 35,
                   },
@@ -182,6 +220,20 @@ const BillItem = ({
   );
 };
 
+const ActionButton = ({ label, onPress, loading }) => (
+  <TouchableOpacity
+    style={styles.actionButton}
+    onPress={onPress}
+    disabled={loading}
+  >
+    {loading ? (
+      <ActivityIndicator color="#fff" />
+    ) : (
+      <Text style={styles.buttonText}>{label}</Text>
+    )}
+  </TouchableOpacity>
+);
+
 BillItem.propTypes = {
   bill: PropTypes.object.isRequired,
   isExpanded: PropTypes.bool.isRequired,
@@ -191,6 +243,7 @@ BillItem.propTypes = {
   company: PropTypes.object.isRequired,
   finYearId: PropTypes.number.isRequired,
   billType: PropTypes.number.isRequired,
+  onStatusChange: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -247,11 +300,12 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   buttonRow: {
-    ...commonStyles.flexDirectionRow,
     flexDirection: "row",
     justifyContent: "center",
+    gap: 25,
     marginTop: 10,
   },
+
   actionButton: {
     backgroundColor: "#3B6FD6",
     paddingVertical: 8,

@@ -86,15 +86,16 @@ export const fetcher = async (url, config = {}) => {
 export const fetcherPost = async (url, data = {}, config = {}) => {
   try {
     const token = await getAccessToken();
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      };
-    }
-    const res = await axiosPurchaseServices.post(url, data, config);
+    const organizationId = "37437e17-c0e2-4e97-8167-121b854fe90b";
 
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "x-organization-id": organizationId,
+    };
+
+    const res = await axiosPurchaseServices.post(url, data, config);
     return res.data;
   } catch (error) {
     console.error("Fetcher Post Error:", error);
@@ -105,13 +106,14 @@ export const fetcherPost = async (url, data = {}, config = {}) => {
 export const fetcherPut = async (url, data = {}, config = {}) => {
   try {
     const token = await getAccessToken();
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      };
-    }
+    const organizationId = "37437e17-c0e2-4e97-8167-121b854fe90b";
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "x-organization-id": organizationId,
+    };
+
     const res = await axiosPurchaseServices.put(url, data, config);
     return res.data;
   } catch (error) {

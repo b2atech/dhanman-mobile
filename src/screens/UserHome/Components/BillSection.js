@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,11 @@ import BillItem from "./BillItem";
 const BillSection = ({ bills, company, finYearId, billType, navigation }) => {
   const [expandedBillId, setExpandedBillId] = useState(null);
   const [selectedBills, setSelectedBills] = useState([]);
+  const [localBills, setLocalBills] = useState(bills);
+
+  useEffect(() => {
+    setLocalBills(bills);
+  }, [bills]);
 
   const toggleExpand = (id) => {
     setExpandedBillId((prevId) => (prevId === id ? null : id));
@@ -23,11 +28,18 @@ const BillSection = ({ bills, company, finYearId, billType, navigation }) => {
     );
   };
 
+  const handleStatusChange = (id, newStatus) => {
+    const updatedBills = localBills.map((bill) =>
+      bill.id === id ? { ...bill, billStatus: newStatus } : bill
+    );
+    setLocalBills(updatedBills);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Recent Bills</Text>
       <ScrollView style={{ maxHeight: 250 }}>
-        {bills.slice(0, 2).map((bill) => {
+        {localBills.slice(0, 2).map((bill) => {
           const isExpanded = expandedBillId === bill.id;
           const isChecked = selectedBills.includes(bill.id);
           return (
@@ -41,17 +53,18 @@ const BillSection = ({ bills, company, finYearId, billType, navigation }) => {
               isChecked={isChecked}
               onToggleExpand={() => toggleExpand(bill.id)}
               onToggleCheck={() => toggleCheckbox(bill.id)}
+              onStatusChange={handleStatusChange}
             />
           );
         })}
       </ScrollView>
 
-      {bills.length > 3 && (
+      {localBills.length > 3 && (
         <TouchableOpacity
           style={styles.viewAllContainer}
           onPress={() =>
             navigation.navigate("Bills List", {
-              bills,
+              bills: localBills,
               company,
               finYearId,
               billType,

@@ -102,6 +102,7 @@ const HomeScreen = ({ navigation, fcmToken }) => {
           config.company.id,
           2,
           config.finYear.id,
+          // finYearId,
           startDate,
           endDate
         );

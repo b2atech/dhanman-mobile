@@ -7,6 +7,7 @@ const BillsList = ({ route }) => {
   const { bills, company, finYearId, billType = 2 } = route.params;
   const [expandedId, setExpandedId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [localBills, setLocalBills] = useState(bills);
 
   const toggleExpand = (id) => {
     setExpandedId((prevId) => (prevId === id ? null : id));
@@ -16,6 +17,13 @@ const BillsList = ({ route }) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
+  };
+
+  const handleStatusChange = (id, newStatus) => {
+    const updated = localBills.map((bill) =>
+      bill.id === id ? { ...bill, billStatus: newStatus } : bill
+    );
+    setLocalBills(updated);
   };
 
   const renderItem = ({ item }) => {
@@ -32,6 +40,7 @@ const BillsList = ({ route }) => {
         isChecked={isChecked}
         onToggleExpand={() => toggleExpand(item.id)}
         onToggleCheck={() => toggleSelection(item.id)}
+        onStatusChange={handleStatusChange}
       />
     );
   };
@@ -39,7 +48,7 @@ const BillsList = ({ route }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={bills}
+        data={localBills}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
