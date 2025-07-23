@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 import {
   updateBillSendForApproval,
   updateBillApprove,
-  updateBillCancel,
   updateBillReject,
 } from "../../../api/purchase/bill";
 import commonStyles from "../../../commonStyles/commonStyles";
@@ -28,7 +27,6 @@ const BillItem = ({
   billType,
   onStatusChange,
 }) => {
-  const [loading, setLoading] = useState(false);
   const [localStatus, setLocalStatus] = useState(bill.billStatus);
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
@@ -40,25 +38,6 @@ const BillItem = ({
       date.getMonth() + 1
     ).padStart(2, "0")}-${date.getFullYear()}`;
   };
-
-  // const handleApiCall = async (apiFunc, nextStatus, actionText) => {
-  //   setLoading(true);
-  //   try {
-  //     await apiFunc(
-  //       { billIds: [bill.id], companyId: company.id },
-  //       finYearId,
-  //       billType
-  //     );
-  //     setLocalStatus(nextStatus);
-  //     onStatusChange(bill.id, nextStatus);
-  //     Alert.alert("Success", `Bill marked as "${nextStatus}"`);
-  //   } catch (err) {
-  //     console.error(`${actionText} failed`, err);
-  //     Alert.alert("Error", `Failed to ${actionText.toLowerCase()}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleStatusUpdate = async (apiFunc, newStatus, setLoadingFn) => {
     setLoadingFn(true);
@@ -84,31 +63,6 @@ const BillItem = ({
       setLoadingFn(false);
     }
   };
-
-  // const handleStatusUpdate = async (apiFunc, nextStatusText) => {
-  //   setLoading(true);
-  //   try {
-  //     const payload = { billIds: [bill.id], companyId: company.id };
-
-  //     console.log("🔁 Sending APPROVE request:", {
-  //       url: apiFunc.name,
-  //       payload,
-  //     });
-  //     await apiFunc(
-  //       { billIds: [bill.id], companyId: company.id },
-  //       finYearId,
-  //       billType
-  //     );
-  //     setLocalStatus(nextStatusText);
-  //     onStatusChange(bill.id, nextStatusText);
-  //     Alert.alert("Success", `Status updated to "${nextStatusText}"`);
-  //   } catch (err) {
-  //     console.error("API error", err);
-  //     Alert.alert("Error", "Failed to update bill status.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const renderActionButton = () => {
     if (!isChecked) return null;
@@ -154,6 +108,13 @@ const BillItem = ({
     return <View style={styles.buttonRow}>{buttons}</View>;
   };
 
+  const statusColor = (() => {
+    const status = localStatus?.toLowerCase();
+    if (["approved"].includes(status)) return "#28a745";
+    if (["rejected", "cancelled"].includes(status)) return "#dc3545";
+    return "#000";
+  })();
+
   return (
     <View style={styles.billCard}>
       <View style={styles.topRow}>
@@ -196,13 +157,7 @@ const BillItem = ({
                 style={[
                   styles.infoValue,
                   {
-                    color: ["approved"].includes(localStatus.toLowerCase())
-                      ? "#28a745"
-                      : ["rejected", "cancelled"].includes(
-                            localStatus.toLowerCase()
-                          )
-                        ? "#dc3545"
-                        : "#000",
+                    color: statusColor,
                     fontWeight: "bold",
                     marginLeft: 35,
                   },
@@ -233,6 +188,12 @@ const ActionButton = ({ label, onPress, loading }) => (
     )}
   </TouchableOpacity>
 );
+
+ActionButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+};
 
 BillItem.propTypes = {
   bill: PropTypes.object.isRequired,
