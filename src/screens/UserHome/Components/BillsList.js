@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import BillItem from "./BillItem";
 
 const BillsList = ({ route }) => {
-  const { bills } = route.params;
+  const { bills, company, finYearId, billType = 2 } = route.params;
   const [expandedId, setExpandedId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [localBills, setLocalBills] = useState(bills);
 
   const toggleExpand = (id) => {
     setExpandedId((prevId) => (prevId === id ? null : id));
@@ -18,19 +19,11 @@ const BillsList = ({ route }) => {
     );
   };
 
-  const handleSendForApproval = (billId) => {
-    console.log(`Send for Approval clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
-  const handleApprove = (billId) => {
-    console.log(`Approve clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
-  const handleSendForPayment = (billId) => {
-    console.log(`Send for Payment clicked for bill ${billId}`);
-    // API call or local update here
+  const handleStatusChange = (id, newStatus) => {
+    const updated = localBills.map((bill) =>
+      bill.id === id ? { ...bill, billStatus: newStatus } : bill
+    );
+    setLocalBills(updated);
   };
 
   const renderItem = ({ item }) => {
@@ -40,13 +33,14 @@ const BillsList = ({ route }) => {
     return (
       <BillItem
         bill={item}
+        company={company}
+        finYearId={finYearId}
+        billType={billType}
         isExpanded={isExpanded}
         isChecked={isChecked}
         onToggleExpand={() => toggleExpand(item.id)}
         onToggleCheck={() => toggleSelection(item.id)}
-        onSendForApproval={() => handleSendForApproval(item.id)}
-        onApprove={() => handleApprove(item.id)}
-        onSendForPayment={() => handleSendForPayment(item.id)}
+        onStatusChange={handleStatusChange}
       />
     );
   };
@@ -54,7 +48,7 @@ const BillsList = ({ route }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={bills}
+        data={localBills}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
@@ -64,7 +58,14 @@ const BillsList = ({ route }) => {
 };
 
 BillsList.propTypes = {
-  route: PropTypes.object.isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      bills: PropTypes.array.isRequired,
+      company: PropTypes.object.isRequired,
+      finYearId: PropTypes.number.isRequired,
+      billType: PropTypes.number.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default BillsList;

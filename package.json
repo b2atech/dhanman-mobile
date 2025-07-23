@@ -47,6 +47,7 @@
     "deprecated-react-native-prop-types": "^5.0.0",
     "formik": "^2.4.6",
     "jwt-decode": "^4.0.0",
+    "lodash": "^4.17.21",
     "metro": "0.79.1",
     "metro-config": "0.76.3",
     "moment": "^2.30.1",

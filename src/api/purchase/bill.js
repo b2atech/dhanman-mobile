@@ -1,9 +1,22 @@
-import { fetcher, fetcherPost } from "../../utils/axiosPurchase";
+import { fetcher, fetcherPost, fetcherPut } from "../../utils/axiosPurchase";
+import cloneDeep from "lodash/cloneDeep";
 
 export const endpoints = {
   getAllBillsByCompanyId:
     "v1/companies/{0}/bills/{1}/finYear/{2}?startDate={3}&endDate={4}",
+  sendForApproval: "v1/bill-statuses/sending-for-pending-approval",
+  cancelBill: "v1/bill-statuses/cancel",
+  approveBill: "v1/bill-statuses/approve",
+  rejectBill: "v1/bill-statuses/reject",
 };
+
+export function getFinancialYearDates(finYearId) {
+  const year = parseInt(finYearId);
+  return {
+    startDate: new Date(year, 3, 1),
+    endDate: new Date(year + 1, 2, 31),
+  };
+}
 
 export const getAllBills = async (
   companyId,
@@ -20,7 +33,6 @@ export const getAllBills = async (
       .replace("{3}", startDate)
       .replace("{4}", endDate);
     const response = await fetcher(url);
-    console.log("APIResponse", response);
     return response.items;
   } catch (error) {
     console.error("Error fetching bills", error);
@@ -28,29 +40,38 @@ export const getAllBills = async (
   }
 };
 
-export async function updateBillApprove(
-  approveInvoiceStatus,
+export async function updateBillSendForApproval(
+  sendForApprovalStatus,
   finYearId,
   billTypeId
 ) {
-  try {
-    const { startDate, endDate } = getFinancialYearDates(finYearId);
-    const companyId = approveInvoiceStatus.companyId;
+  const safeData = cloneDeep(sendForApprovalStatus);
 
-    await fetcherPost([endpoints.approveBill, { data: approveInvoiceStatus }]);
+  const response = await fetcherPost(endpoints.sendForApproval, safeData);
 
-    const url = endpoints.getAllBillsByCompanyId
-      .replace("{0}", companyId)
-      .replace("{1}", String(billTypeId))
-      .replace("{2}", String(finYearId))
-      .replace("{3}", formatDate(startDate))
-      .replace("{4}", formatDate(endDate));
+  return response;
+}
 
-    const response = await fetcher(url);
-    console.log("APIResponse", response);
-    return response.items;
-  } catch (error) {
-    console.error("Error approving or fetching bills", error);
-    throw error;
-  }
+export async function updateBillApprove(approveStatus, finYearId, billTypeId) {
+  const safeData = cloneDeep(approveStatus);
+
+  const response = await fetcherPost(endpoints.approveBill, safeData);
+
+  return response;
+}
+
+export async function updateBillCancel(cancelStatus, finYearId, billTypeId) {
+  const safeData = cloneDeep(cancelStatus);
+
+  const response = await fetcherPut(endpoints.cancelBill, safeData);
+
+  return response;
+}
+
+export async function updateBillReject(rejectStatus, finYearId, billTypeId) {
+  const safeData = cloneDeep(rejectStatus);
+
+  const response = await fetcherPut(endpoints.rejectBill, safeData);
+
+  return response;
 }

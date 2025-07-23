@@ -102,6 +102,7 @@ const HomeScreen = ({ navigation, fcmToken }) => {
           config.company.id,
           2,
           config.finYear.id,
+          // finYearId,
           startDate,
           endDate
         );
@@ -177,7 +178,13 @@ const HomeScreen = ({ navigation, fcmToken }) => {
           </View>
         </TouchableOpacity>
 
-        <BillSection bills={bills} navigation={navigation} />
+        <BillSection
+          bills={bills}
+          navigation={navigation}
+          billType={2}
+          company={config.company}
+          finYearId={config.finYear.id}
+        />
         {!loading && hasPermission && <FinanceHome />}
       </ScrollView>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,14 @@ import {
 import PropTypes from "prop-types";
 import BillItem from "./BillItem";
 
-const BillSection = ({ bills, navigation }) => {
+const BillSection = ({ bills, company, finYearId, billType, navigation }) => {
   const [expandedBillId, setExpandedBillId] = useState(null);
   const [selectedBills, setSelectedBills] = useState([]);
+  const [localBills, setLocalBills] = useState(bills);
+
+  useEffect(() => {
+    setLocalBills(bills);
+  }, [bills]);
 
   const toggleExpand = (id) => {
     setExpandedBillId((prevId) => (prevId === id ? null : id));
@@ -23,50 +28,48 @@ const BillSection = ({ bills, navigation }) => {
     );
   };
 
-  const handleSendForApproval = (billId) => {
-    console.log(`Send for Approval clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
-  const handleApprove = (billId) => {
-    console.log(`Approve clicked for bill ${billId}`);
-    // API call or local update here
-  };
-
-  const handleSendForPayment = (billId) => {
-    console.log(`Send for Payment clicked for bill ${billId}`);
-    // API call or local update here
+  const handleStatusChange = (id, newStatus) => {
+    const updatedBills = localBills.map((bill) =>
+      bill.id === id ? { ...bill, billStatus: newStatus } : bill
+    );
+    setLocalBills(updatedBills);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Recent Bills</Text>
-
       <ScrollView style={{ maxHeight: 250 }}>
-        {bills.slice(0, 2).map((bill) => {
+        {localBills.slice(0, 2).map((bill) => {
           const isExpanded = expandedBillId === bill.id;
           const isChecked = selectedBills.includes(bill.id);
-
           return (
             <BillItem
               key={bill.id}
               bill={bill}
+              company={company}
+              finYearId={finYearId}
+              billType={billType}
               isExpanded={isExpanded}
               isChecked={isChecked}
               onToggleExpand={() => toggleExpand(bill.id)}
               onToggleCheck={() => toggleCheckbox(bill.id)}
-              onSendForApproval={() => handleSendForApproval(bill.id)}
-              onApprove={() => handleApprove(bill.id)}
-              onSendForPayment={() => handleSendForPayment(bill.id)}
+              onStatusChange={handleStatusChange}
             />
           );
         })}
       </ScrollView>
 
-      {bills.length > 3 && (
+      {localBills.length > 3 && (
         <TouchableOpacity
           style={styles.viewAllContainer}
-          onPress={() => navigation.navigate("Bills List", { bills })}
+          onPress={() =>
+            navigation.navigate("Bills List", {
+              bills: localBills,
+              company,
+              finYearId,
+              billType,
+            })
+          }
         >
           <Text style={styles.viewAllText}>View All →</Text>
         </TouchableOpacity>
@@ -77,6 +80,9 @@ const BillSection = ({ bills, navigation }) => {
 
 BillSection.propTypes = {
   bills: PropTypes.array.isRequired,
+  company: PropTypes.object.isRequired,
+  finYearId: PropTypes.number.isRequired,
+  billType: PropTypes.number.isRequired,
   navigation: PropTypes.object.isRequired,
 };
 

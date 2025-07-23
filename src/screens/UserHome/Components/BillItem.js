@@ -1,8 +1,20 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import CheckBox from "@react-native-community/checkbox";
-import { Icon } from "react-native-elements";
+import Icon from "react-native-vector-icons/Feather";
 import PropTypes from "prop-types";
+import {
+  updateBillSendForApproval,
+  updateBillApprove,
+  updateBillReject,
+} from "../../../api/purchase/bill";
+import commonStyles from "../../../commonStyles/commonStyles";
 
 const BillItem = ({
   bill,
@@ -10,17 +22,98 @@ const BillItem = ({
   isChecked,
   onToggleExpand,
   onToggleCheck,
-  onSendForApproval,
-  onApprove,
-  onSendForPayment,
+  company,
+  finYearId,
+  billType,
+  onStatusChange,
 }) => {
+  const [localStatus, setLocalStatus] = useState(bill.billStatus);
+  const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingReject, setLoadingReject] = useState(false);
+  const [loadingSend, setLoadingSend] = useState(false);
+
   const formatDate = (isoString) => {
     const date = new Date(isoString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+    return `${String(date.getDate()).padStart(2, "0")}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${date.getFullYear()}`;
   };
+
+  const handleStatusUpdate = async (apiFunc, newStatus, setLoadingFn) => {
+    setLoadingFn(true);
+
+    const payload = {
+      billIds: [bill.id],
+      companyId: company.id,
+    };
+
+    console.log("Sending payload to API:", {
+      ...payload,
+      finYearId,
+      billType,
+    });
+
+    try {
+      await apiFunc(payload, finYearId, billType);
+      setLocalStatus(newStatus);
+      onStatusChange(bill.id, newStatus);
+    } catch (err) {
+      console.error(`${newStatus} failed`, err);
+    } finally {
+      setLoadingFn(false);
+    }
+  };
+
+  const renderActionButton = () => {
+    if (!isChecked) return null;
+
+    const buttons = [];
+
+    if (localStatus.toLowerCase() === "pending approval") {
+      buttons.push(
+        <ActionButton
+          key="approve"
+          label="Approve"
+          onPress={() =>
+            handleStatusUpdate(updateBillApprove, "Approved", setLoadingApprove)
+          }
+          loading={loadingApprove}
+        />,
+        <ActionButton
+          key="reject"
+          label="Reject"
+          onPress={() =>
+            handleStatusUpdate(updateBillReject, "Rejected", setLoadingReject)
+          }
+          loading={loadingReject}
+        />
+      );
+    } else if (localStatus.toLowerCase() === "draft") {
+      buttons.push(
+        <ActionButton
+          key="send"
+          label="Send for Approval"
+          onPress={() =>
+            handleStatusUpdate(
+              updateBillSendForApproval,
+              "Pending Approval",
+              setLoadingSend
+            )
+          }
+          loading={loadingSend}
+        />
+      );
+    }
+
+    return <View style={styles.buttonRow}>{buttons}</View>;
+  };
+
+  const statusColor = (() => {
+    const status = localStatus?.toLowerCase();
+    if (["approved"].includes(status)) return "#28a745";
+    if (["rejected", "cancelled"].includes(status)) return "#dc3545";
+    return "#000";
+  })();
 
   return (
     <View style={styles.billCard}>
@@ -41,7 +134,6 @@ const BillItem = ({
         <TouchableOpacity onPress={onToggleExpand}>
           <Icon
             name={isExpanded ? "chevron-up" : "chevron-down"}
-            type="feather"
             color="#3B6FD6"
             size={22}
           />
@@ -51,7 +143,7 @@ const BillItem = ({
       {isExpanded && (
         <>
           <View style={styles.expandedContainer}>
-            <View style={[styles.infoRow, { marginTop: 10 }]}>
+            <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Date</Text>
               <Text style={styles.infoLabel}>Vendor</Text>
               <Text style={[styles.infoLabel, { flex: 0.5 }]}>Status</Text>
@@ -65,66 +157,42 @@ const BillItem = ({
                 style={[
                   styles.infoValue,
                   {
-                    color: ["paid", "approved"].includes(
-                      bill.billStatus?.toLowerCase()
-                    )
-                      ? "#28a745"
-                      : "#dc3545",
+                    color: statusColor,
                     fontWeight: "bold",
                     marginLeft: 35,
                   },
                 ]}
               >
-                {bill.billStatus}
-              </Text>
-            </View>
-
-            <View style={[styles.infoRow, { marginTop: 10 }]}>
-              <Text style={styles.label}>Bill Voucher No</Text>
-              <Text style={[styles.label, { marginRight: 25 }]}>Due Date</Text>
-            </View>
-            <View style={styles.infoRow}>
-              <Text style={styles.value}>{bill.billVoucher}</Text>
-              <Text style={[styles.value, { marginRight: 20 }]}>
-                {formatDate(bill.dueDate)}
+                {localStatus}
               </Text>
             </View>
           </View>
 
-          <View style={styles.buttonRow}>
-            {isChecked && (
-              <>
-                {bill.billStatus === "Draft" && (
-                  <TouchableOpacity
-                    style={styles.actionButton}
-                    onPress={onSendForApproval}
-                  >
-                    <Text style={styles.buttonText}>Send for Approval</Text>
-                  </TouchableOpacity>
-                )}
-                {bill.billStatus === "Pending Approval" && (
-                  <TouchableOpacity
-                    style={styles.actionButton}
-                    onPress={onApprove}
-                  >
-                    <Text style={styles.buttonText}>Approve</Text>
-                  </TouchableOpacity>
-                )}
-                {bill.billStatus === "Approved" && (
-                  <TouchableOpacity
-                    style={styles.actionButton}
-                    onPress={onSendForPayment}
-                  >
-                    <Text style={styles.buttonText}>Send for Payment</Text>
-                  </TouchableOpacity>
-                )}
-              </>
-            )}
-          </View>
+          <View style={styles.buttonRow}>{renderActionButton()}</View>
         </>
       )}
     </View>
   );
+};
+
+const ActionButton = ({ label, onPress, loading }) => (
+  <TouchableOpacity
+    style={styles.actionButton}
+    onPress={onPress}
+    disabled={loading}
+  >
+    {loading ? (
+      <ActivityIndicator color="#fff" />
+    ) : (
+      <Text style={styles.buttonText}>{label}</Text>
+    )}
+  </TouchableOpacity>
+);
+
+ActionButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };
 
 BillItem.propTypes = {
@@ -133,13 +201,15 @@ BillItem.propTypes = {
   isChecked: PropTypes.bool.isRequired,
   onToggleExpand: PropTypes.func.isRequired,
   onToggleCheck: PropTypes.func.isRequired,
-  onSendForApproval: PropTypes.func.isRequired,
-  onApprove: PropTypes.func.isRequired,
-  onSendForPayment: PropTypes.func.isRequired,
+  company: PropTypes.object.isRequired,
+  finYearId: PropTypes.number.isRequired,
+  billType: PropTypes.number.isRequired,
+  onStatusChange: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
   billCard: {
+    ...commonStyles.shadow,
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
@@ -158,6 +228,7 @@ const styles = StyleSheet.create({
     marginLeft: -10,
   },
   billTitle: {
+    ...commonStyles.headerText,
     fontSize: 15,
     fontWeight: "bold",
     color: "#333",
@@ -172,6 +243,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   infoRow: {
+    ...commonStyles.flexDirectionRow,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 4,
@@ -188,20 +260,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#000",
   },
-  label: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#555",
-  },
-  value: {
-    fontSize: 14,
-    color: "#000",
-  },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "center",
+    gap: 25,
     marginTop: 10,
   },
+
   actionButton: {
     backgroundColor: "#3B6FD6",
     paddingVertical: 8,
@@ -210,6 +275,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
+    ...commonStyles.fontPoppins,
     color: "#fff",
     fontWeight: "600",
     fontSize: 14,
