@@ -4,10 +4,10 @@ import cloneDeep from "lodash/cloneDeep";
 export const endpoints = {
   getAllBillsByCompanyId:
     "v1/companies/{0}/bills/{1}/finYear/{2}?startDate={3}&endDate={4}",
-  sendForApproval: "v1/bill-statuses/sending-for-pending-approval",
-  cancelBill: "v1/bill-statuses/cancel",
-  approveBill: "v1/bill-statuses/approve",
-  rejectBill: "v1/bill-statuses/reject",
+  sendForApproval: "v1/bills/send-for-approval",
+  cancelBill: "v1/bills/cancel",
+  approveBill: "v1/bills/approve",
+  rejectBill: "v1/bills/reject",
 };
 
 export function getFinancialYearDates(finYearId) {
