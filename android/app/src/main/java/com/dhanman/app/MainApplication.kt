@@ -1,4 +1,4 @@
-package com.dvarpal.app
+package com.dhanman.app
 
 import android.app.Application
 import com.facebook.react.PackageList
