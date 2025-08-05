@@ -10,6 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
 import HomeScreen from "../screens/UserHome/HomeScreen";
 import ResidentHomeDashboard from "../screens/UserHome/ResidentHomeDashboard";
+import ResidentHomeDashboardDemo from "../screens/UserHome/ResidentHomeDashboardDemo";
 import OnBoarding from "../screens/OnBoardingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -97,6 +98,8 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
             iconName = faHome;
           } else if (route.name === "Resident Dashboard") {
             iconName = faHome;
+          } else if (route.name === "Dashboard Demo") {
+            iconName = faHome;
           } else if (route.name === "My Units") {
             iconName = faUser;
           } else if (route.name === "On Boarding") {
@@ -124,6 +127,9 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
       </Tab.Screen>
       <Tab.Screen name="Resident Dashboard">
         {(props) => <ResidentHomeDashboard {...props} fcmToken={fcmToken} />}
+      </Tab.Screen>
+      <Tab.Screen name="Dashboard Demo">
+        {(props) => <ResidentHomeDashboardDemo {...props} />}
       </Tab.Screen>
       <Tab.Screen name="My Units" component={MyUnitScreen} />
       <Tab.Screen name="On Boarding" component={OnBoarding} />
