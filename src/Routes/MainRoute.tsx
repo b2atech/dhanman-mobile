@@ -9,6 +9,7 @@ import { requestUserPermission, notificationListener } from "../api/FCMService";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
 import HomeScreen from "../screens/UserHome/HomeScreen";
+import ResidentHomeDashboard from "../screens/UserHome/ResidentHomeDashboard";
 import OnBoarding from "../screens/OnBoardingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -92,6 +93,10 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
 
           if (route.name === "Home") {
             iconName = faHome;
+          } else if (route.name === "UserHome") {
+            iconName = faHome;
+          } else if (route.name === "Resident Dashboard") {
+            iconName = faHome;
           } else if (route.name === "My Units") {
             iconName = faUser;
           } else if (route.name === "On Boarding") {
@@ -116,6 +121,9 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
     >
       <Tab.Screen name="UserHome">
         {(props) => <HomeScreen {...props} fcmToken={fcmToken} />}
+      </Tab.Screen>
+      <Tab.Screen name="Resident Dashboard">
+        {(props) => <ResidentHomeDashboard {...props} fcmToken={fcmToken} />}
       </Tab.Screen>
       <Tab.Screen name="My Units" component={MyUnitScreen} />
       <Tab.Screen name="On Boarding" component={OnBoarding} />
