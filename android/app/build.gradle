@@ -78,8 +78,8 @@ android {
         applicationId "com.dhanman.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         manifestPlaceholders = [
             auth0Domain: "dev-dhanman.us.auth0.com",
             auth0Scheme: "dhanman"  // Replace "dhanman" with your actual scheme
@@ -93,10 +93,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('dhanman')
-            storePassword 'dhanman@12345'
+            storeFile file('../dvarpal')
+            storePassword 'dvarpal@12345'
             keyAlias 'key0'
-            keyPassword 'dhanman@12345'
+            keyPassword 'dvarpal@12345'
         }
     }
     buildTypes {
