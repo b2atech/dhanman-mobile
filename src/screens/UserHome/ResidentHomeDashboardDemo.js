@@ -9,6 +9,8 @@ import { faBars, faBell, faUserCircle, faFileInvoice } from '@fortawesome/free-s
 import { LineChart } from 'react-native-gifted-charts';
 import PendingDuesCard from './PendingDuesCard';
 import IncomeExpenseLineGraph from './incomeExpenseGraph'; // Assuming this is a custom component for the line graph
+import TimelineVisitors from './TimelineVisitors';
+
 const { width: screenWidth } = Dimensions.get('window');
 const cardWidth = screenWidth - 36;
 const chartWidth = cardWidth - 24;
@@ -211,13 +213,15 @@ export default function ResidentDashboard() {
          <PendingDuesCard amount={3000} onPay={() => { /* handle pay */ }} />
 
 
-          {/* Visitors card, with lighter title */}
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Today's Visitors</Text>
-            <View style={styles.visitorAvatarsContainer}>
-              <VisitorsAvatars visitors={visitors} />
-            </View>
-          </View>
+         <TimelineVisitors
+  visitors={[
+    { id: '1', name: 'Amit', photo: 'https://randomuser.me/api/portraits/men/11.jpg', status: 'in', time: '10:30' },
+    { id: '2', name: 'Priya', photo: '', status: 'out', time: '09:40' },
+    { id: '3', name: 'David', photo: 'https://randomuser.me/api/portraits/men/33.jpg', status: 'in', time: '11:15' },
+    { id: '4', name: 'Sonia', photo: '', status: 'out', time: '08:55' },
+    { id: '5', name: 'Anil', photo: 'https://randomuser.me/api/portraits/men/34.jpg', status: 'in', time: '12:12' },
+  ]}
+/>
 
           <IncomeExpenseLineGraph
   incomeData={[120000, 87000, 140000]}
