@@ -1,5 +1,5 @@
 {
-  "name": "Dvarpal",
+  "name": "Dhanman",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,7 +12,7 @@
   "react-native": {
     "project": {
       "android": {
-        "packageName": "com.dvarpal.app"
+        "packageName": "com.dhanman.app"
       }
     }
   },

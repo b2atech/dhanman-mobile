@@ -73,16 +73,16 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-    namespace "com.dvarpal.app"
+    namespace "com.dhanman.app"
     defaultConfig {
-        applicationId "com.dvarpal.app"
+        applicationId "com.dhanman.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         manifestPlaceholders = [
             auth0Domain: "dev-dhanman.us.auth0.com",
-            auth0Scheme: "dvarpal"  // Replace "dvarpal" with your actual scheme
+            auth0Scheme: "dhanman"  // Replace "dhanman" with your actual scheme
         ]
     }
     signingConfigs {
@@ -93,7 +93,7 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('dvarpal')
+            storeFile file('../dvarpal')
             storePassword 'dvarpal@12345'
             keyAlias 'key0'
             keyPassword 'dvarpal@12345'
