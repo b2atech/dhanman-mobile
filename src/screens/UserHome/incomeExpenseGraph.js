@@ -1,21 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
+import { useTheme } from "../../context/ThemeContext";
 
 const { width: screenWidth } = Dimensions.get("window");
-const cardWidth = screenWidth - 36;
-const chartWidth = cardWidth;
-
-const chartHeight = 180;
-const xAxisLabelsHeight = 25;
-
-const colors = {
-  lavender: "#7B61FF",
-  lavenderLight: "#F3EEFC",
-  expense: "#F3A712",
-  income: "#7B61FF",
-  textSecondary: "#6D6D7A",
-};
 
 function abbreviateYAxis(num) {
   if (num >= 10000000) return (num / 10000000).toFixed(1).replace(/\.0$/, "") + "Cr";
@@ -29,47 +17,52 @@ export default function IncomeExpenseLineGraph({
   expenseData = [],
   xLabels = [],
 }) {
+  const { theme } = useTheme();
+  const { colors, components, spacing } = theme;
+  
   const maxYValue = Math.max(...incomeData, ...expenseData, 0) * 1.2;
 
   return (
-    <View style={styles.graphCard}>
+    <View style={[components.card, styles.graphCard]}>
+      <Text style={[components.sectionTitle, { color: colors.textTertiary }]}>
+        Income vs Expense
+      </Text>
       <View style={styles.graphLegendRow}>
-        <View style={[styles.legendDot, { backgroundColor: colors.income }]} />
-        <Text style={styles.legendLabel}>Income</Text>
-        <View style={[styles.legendDot, { backgroundColor: colors.expense }]} />
-        <Text style={styles.legendLabel}>Expense</Text>
+        <View style={[styles.legendDot, { backgroundColor: colors.primary }]} />
+        <Text style={[styles.legendLabel, { color: colors.textSecondary }]}>Income</Text>
+        <View style={[styles.legendDot, { backgroundColor: colors.secondary }]} />
+        <Text style={[styles.legendLabel, { color: colors.textSecondary }]}>Expense</Text>
       </View>
       <View style={styles.chartWrap}>
         <LineChart
-                      spacing={120}
-
+          spacing={120}
           data={incomeData.map((v, i) => ({
             value: v,
             label: xLabels[i],
             dataPointText: abbreviateYAxis(v),
-            color: colors.income,
+            color: colors.primary,
           }))}
           data2={expenseData.map((v, i) => ({
             value: v,
             label: xLabels[i],
             dataPointText: abbreviateYAxis(v),
-            color: colors.expense,
+            color: colors.secondary,
           }))}
           curved
           areaChart
-          startFillColor={colors.lavender}
-          endFillColor={colors.lavenderLight}
+          startFillColor={colors.primary}
+          endFillColor={colors.surface}
           startOpacity={0.13}
           endOpacity={0.02}
-          color={colors.income}
-          color2={colors.expense}
+          color={colors.primary}
+          color2={colors.secondary}
           thickness={2.2}
           thickness2={2.2}
           rulesColor="transparent"
           rulesThickness={0}
           xAxisLabelTextStyle={{
             color: colors.textSecondary,
-            fontWeight: "bold",
+            fontWeight: "500",
             fontSize: 13,
             marginTop: 4,
           }}
@@ -78,27 +71,26 @@ export default function IncomeExpenseLineGraph({
           yAxisColor="transparent"
           noOfSections={4}
           hideDataPoints={false}
-          dataPointsColor={colors.income}
-          dataPointsColor2={colors.expense}
+          dataPointsColor={colors.primary}
+          dataPointsColor2={colors.secondary}
           showPointerStrip={true}
-          pointerStripColor="#C6BAE6"
+          pointerStripColor={colors.borderSecondary}
           pointerConfig={{
             pointerStripHeight: 120,
-            pointerColor: colors.income,
+            pointerColor: colors.primary,
             pointerLabelWidth: 64,
             pointerStripUptoDataPoint: true,
             pointerLabelComponent: (point) => (
-              <View style={styles.pointerLabelBubble}>
+              <View style={[styles.pointerLabelBubble, { backgroundColor: colors.primary }]}>
                 <Text style={styles.pointerLabelText}>{abbreviateYAxis(point.value)}</Text>
               </View>
             ),
           }}
           xAxisLabelTexts={xLabels}
-          xAxisLabelsHeight={xAxisLabelsHeight}
+          xAxisLabelsHeight={25}
           hideRules={true}
           maxValue={maxYValue}
           minValue={0}
-          
           dataPointsShape="circle"
           dataPointsRadius={4}
           dataPointsWidth={4}
@@ -106,12 +98,11 @@ export default function IncomeExpenseLineGraph({
           showVerticalLines={false}
           pointerStripDashArray={[6, 4]}
           formatYLabel={abbreviateYAxis}
-       
-         customDataPoint={(point, idx) => (
-            <View style={[styles.graphDot, { backgroundColor: colors.income }]} />
+          customDataPoint={(point, idx) => (
+            <View style={[styles.graphDot, { backgroundColor: colors.primary }]} />
           )}
           customDataPoint2={(point, idx) => (
-            <View style={[styles.graphDot2, { backgroundColor: colors.expense }]} />
+            <View style={[styles.graphDot2, { backgroundColor: colors.secondary }]} />
           )}
         />
       </View>
@@ -121,37 +112,23 @@ export default function IncomeExpenseLineGraph({
 
 const styles = StyleSheet.create({
   graphCard: {
-    backgroundColor: "#fff",
-    borderRadius: 18,
     alignItems: "center",
-    paddingTop: 0,
-    paddingBottom: 0,
-    borderWidth: 1,
-    borderColor: "#F3EEFC",
-    shadowColor: "#A78BFA",
-    shadowRadius: 8,
-    shadowOpacity: 0.09,
-    elevation: 2,
-     width: cardWidth + 8,
-    alignSelf: "center",
-    marginBottom: 24,
-    minHeight: chartHeight + xAxisLabelsHeight + 20,
-    justifyContent: "center",
+    paddingTop: 8,
+    paddingBottom: 8,
   },
   chartWrap: {
-    width: chartWidth -8,
-    minHeight: chartHeight,
+    width: '100%',
+    minHeight: 180,
     alignSelf: "center",
     justifyContent: "center",
-    marginLeft: 0,
-    paddingBottom: 0,
+    paddingHorizontal: 8,
   },
   graphLegendRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    marginBottom: 4,
-    marginTop: 2,
+    marginBottom: 16,
+    marginTop: 8,
     alignSelf: "center",
   },
   legendDot: {
@@ -161,7 +138,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
   },
   legendLabel: {
-    color: colors.textSecondary,
     fontWeight: "500",
     fontSize: 13,
     marginRight: 12,
@@ -171,18 +147,15 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: colors.income,
     opacity: 0.7,
   },
   graphDot2: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: colors.expense,
     opacity: 0.7,
   },
   pointerLabelBubble: {
-    backgroundColor: colors.lavender,
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -193,7 +166,6 @@ const styles = StyleSheet.create({
   pointerLabelText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 150, 
-
+    fontSize: 15,
   },
 });

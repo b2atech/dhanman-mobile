@@ -3,6 +3,9 @@ module.exports = {
   extends: ['@react-native-community'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
+  rules: {
+    'prettier/prettier': 'off', // Disable prettier for now
+  },
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
