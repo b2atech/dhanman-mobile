@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
 import Auth0 from "react-native-auth0";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
 import authReducer from "../context/auth-reducer/auth";
 import { Auth0ContextType } from "../types/auth";
 import { LOGOUT, LOGIN } from "./auth-reducer/actions";
@@ -46,7 +47,36 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
     user: null,
   });
 
-  const setUserState = async (decodedToken: CustomJwtPayload) => {
+  // Secure token storage helper functions
+  const storeTokenSecurely = async (key: string, value: string) => {
+    try {
+      await SecureStore.setItemAsync(key, value);
+    } catch (error) {
+      console.error(`Error storing ${key} securely:`, error);
+      // Fallback to AsyncStorage if SecureStore fails
+      await AsyncStorage.setItem(key, value);
+    }
+  };
+
+  const getTokenSecurely = async (key: string) => {
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch (error) {
+      console.error(`Error getting ${key} securely:`, error);
+      // Fallback to AsyncStorage if SecureStore fails
+      return await AsyncStorage.getItem(key);
+    }
+  };
+
+  const removeTokenSecurely = async (key: string) => {
+    try {
+      await SecureStore.deleteItemAsync(key);
+    } catch (error) {
+      console.error(`Error removing ${key} securely:`, error);
+      // Fallback to AsyncStorage if SecureStore fails
+      await AsyncStorage.removeItem(key);
+    }
+  };
     console.log("decode : ", decodedToken);
     if (!decodedToken.dhanman_id || !decodedToken.dhanman_company.id) return;
     {
@@ -95,7 +125,18 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const token = await AsyncStorage.getItem("userToken");
+        // Check for tokens in SecureStore first, then fallback to AsyncStorage
+        let token = await getTokenSecurely("userToken");
+        if (!token) {
+          // Migration: Check old AsyncStorage location
+          token = await AsyncStorage.getItem("userToken");
+          if (token) {
+            // Migrate to SecureStore
+            await storeTokenSecurely("userToken", token);
+            await AsyncStorage.removeItem("userToken");
+          }
+        }
+
         if (token) {
           const decodedToken = jwtDecode<CustomJwtPayload>(token);
           const currentTime = Math.floor(Date.now() / 1000);
@@ -132,11 +173,15 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         audience: "dev-dhanman-api",
       });
       console.log(credentials);
-      await AsyncStorage.setItem("userToken", credentials.accessToken);
-      await AsyncStorage.setItem(
+      
+      // Store tokens securely
+      await storeTokenSecurely("userToken", credentials.accessToken);
+      await storeTokenSecurely("idToken", credentials.idToken || credentials.accessToken);
+      await storeTokenSecurely(
         "refreshToken",
         credentials.refreshToken ? credentials.refreshToken : ""
       );
+      
       const decodedToken = jwtDecode<CustomJwtPayload>(credentials.accessToken);
       setUserState(decodedToken);
     } catch (error) {
@@ -156,8 +201,9 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       });
 
       // Store tokens securely
-      await AsyncStorage.setItem("userToken", credentials.accessToken);
-      await AsyncStorage.setItem(
+      await storeTokenSecurely("userToken", credentials.accessToken);
+      await storeTokenSecurely("idToken", credentials.idToken || credentials.accessToken);
+      await storeTokenSecurely(
         "refreshToken",
         credentials.refreshToken ?? ""
       );
@@ -173,20 +219,22 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
 
   const refreshToken = async () => {
     try {
-      const refreshToken = await AsyncStorage.getItem("refreshToken");
+      const refreshToken = await getTokenSecurely("refreshToken");
       console.log("ref", refreshToken);
       if (!refreshToken) {
         throw new Error("No refresh token available");
       }
       const newCredentials = await auth0.auth.refreshToken({ refreshToken });
 
-      await AsyncStorage.setItem("userToken", newCredentials.idToken);
+      // Store new tokens securely
+      await storeTokenSecurely("userToken", newCredentials.accessToken || newCredentials.idToken);
+      await storeTokenSecurely("idToken", newCredentials.idToken || newCredentials.accessToken);
 
       if (newCredentials.refreshToken) {
-        await AsyncStorage.setItem("refreshToken", newCredentials.refreshToken);
+        await storeTokenSecurely("refreshToken", newCredentials.refreshToken);
       }
 
-      const decodedToken = jwtDecode<CustomJwtPayload>(newCredentials.idToken);
+      const decodedToken = jwtDecode<CustomJwtPayload>(newCredentials.idToken || newCredentials.accessToken);
       setUserState(decodedToken);
     } catch (error) {
       console.error("Failed to refresh token", error);
@@ -196,8 +244,15 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
 
   const logout = async () => {
     try {
+      // Remove tokens from SecureStore
+      await removeTokenSecurely("userToken");
+      await removeTokenSecurely("idToken");
+      await removeTokenSecurely("refreshToken");
+      
+      // Also clean up any old AsyncStorage tokens
       await AsyncStorage.removeItem("userToken");
       await AsyncStorage.removeItem("refreshToken");
+      
       dispatch({ type: "LOGOUT" });
     } catch (error) {
       console.error("Error logging out:", error);

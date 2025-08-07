@@ -2,30 +2,25 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
-
-const colors = {
-  lavender: '#A78BFA',
-  lavenderText: '#7B61FF',
-  lavenderLight: '#F3EEFC',
-  white: '#FFFFFF',
-  title: '#6D6D7A',
-  shadow: '#ECE5F6',
-};
+import { useTheme } from '../../context/ThemeContext';
 
 export default function PendingDuesCard({ amount = 3200, onPay }) {
+  const { theme } = useTheme();
+  const { colors, components, spacing } = theme;
+
   return (
-    <View style={styles.card}>
+    <View style={[components.card, styles.card]}>
       <View style={styles.leftBlock}>
-        <View style={styles.iconCircle}>
-          <FontAwesomeIcon icon={faFileInvoice} size={20} color={colors.lavender} />
+        <View style={[components.iconCircle, { borderColor: colors.primary }]}>
+          <FontAwesomeIcon icon={faFileInvoice} size={20} color={colors.primary} />
         </View>
-        <View style={{ marginLeft: 10 }}>
-          <Text style={styles.title}>Pending Dues</Text>
-          <Text style={styles.amount}>₹{amount.toLocaleString()}</Text>
+        <View style={{ marginLeft: spacing.md }}>
+          <Text style={[components.sectionTitle, { color: colors.textTertiary }]}>Pending Dues</Text>
+          <Text style={[styles.amount, { color: colors.primary }]}>₹{amount.toLocaleString()}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.payBtn} onPress={onPay}>
-        <Text style={styles.payBtnText}>Pay</Text>
+      <TouchableOpacity style={[styles.payBtn, { backgroundColor: colors.primary }]} onPress={onPay}>
+        <Text style={[styles.payBtnText, { color: colors.textInverse }]}>Pay</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,50 +28,21 @@ export default function PendingDuesCard({ amount = 3200, onPay }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.white,
-    borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 18,
-    paddingVertical: 14,
-    marginHorizontal: 8,
-    marginVertical: 8,
-    shadowColor: colors.shadow,
-    shadowOpacity: 0.09,
-    shadowRadius: 8,
-    elevation: 2,
-    borderWidth: 1,
-    borderColor: colors.lavenderLight,
     justifyContent: 'space-between',
   },
   leftBlock: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  iconCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    borderWidth: 1.5,
-    borderColor: colors.lavender,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-  },
-  title: {
-    color: colors.title,
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 0,
+    flex: 1,
   },
   amount: {
-    color: colors.lavenderText,
     fontSize: 25,
     fontWeight: 'bold',
-    marginTop: 0,
+    marginTop: 2,
   },
   payBtn: {
-    backgroundColor: colors.lavender,
     paddingHorizontal: 22,
     paddingVertical: 8,
     borderRadius: 18,
@@ -84,7 +50,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   payBtnText: {
-    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
