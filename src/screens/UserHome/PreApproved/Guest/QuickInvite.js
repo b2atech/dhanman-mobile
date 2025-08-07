@@ -30,11 +30,11 @@ const QuickInvite = ({type}) => {
   const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
 
   const handleStartDateChange = selectedDate => {
-    if (selectedDate) setDate(selectedDate);
+    if (selectedDate) {setDate(selectedDate);}
   };
 
   const handleEndDateChange = selectedDate => {
-    if (selectedDate) setEndDate(selectedDate);
+    if (selectedDate) {setEndDate(selectedDate);}
   };
 
   const handleSelection = option => {

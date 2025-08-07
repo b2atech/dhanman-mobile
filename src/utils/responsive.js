@@ -126,8 +126,8 @@ export const screenDimensions = {
 
 // Utility function to get responsive value based on device size
 export const getResponsiveValue = (small, medium, large) => {
-  if (isSmallDevice) return small;
-  if (isMediumDevice) return medium;
+  if (isSmallDevice) {return small;}
+  if (isMediumDevice) {return medium;}
   return large;
 };
 
@@ -204,4 +204,4 @@ export default {
   isTablet,
   isPortrait,
   isLandscape,
-}; 
+};

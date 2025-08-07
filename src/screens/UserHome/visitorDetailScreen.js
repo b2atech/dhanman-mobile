@@ -42,15 +42,15 @@ const VisitorDetailScreen = ({ route }) => {
     const newDate = new Date(date);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = newDate.toLocaleDateString('en-US', options);
-    
+
     const hours = newDate.getHours();
     const minutes = newDate.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const formattedHours = hours % 12 || 12;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    
+
     const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
-    
+
     return `${formattedDate}, ${formattedTime}`;
   };
 

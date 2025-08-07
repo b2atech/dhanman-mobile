@@ -101,7 +101,7 @@ export default function CreateServiceProvider({navigation}) {
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return;
+    if (!validateForm()) {return;}
 
     setIsLoading(true);
     try {

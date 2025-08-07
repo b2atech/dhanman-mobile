@@ -1,7 +1,7 @@
 export enum DhanmanPermissions {
     ADMIN = 'Dhanman.Admin',
     //COMMON_ADMIN = 'Dhanman.Common.Admin',
-  
+
     COMMON_DELETE = 'Dhanman.Common.Delete',
     COMMON_FINANCE_CUSTOMER_READ = 'Dhanman.Common.Finance.Customer.Read',
     COMMON_FINANCE_VENDOR_READ = 'Dhanman.Common.Finance.Vendor.Read',
@@ -20,19 +20,19 @@ export enum DhanmanPermissions {
     COMMON_USER_DELETE = 'Dhanman.Common.User.Delete',
     COMMON_VENDOR_WRITE = 'Dhanman.Common.Vendor.Write',
     COMMON_WRITE = 'Dhanman.Common.Write',
-  
+
     COMMON_COMPANY_WAREHOUSE_READ = 'Dhanman.Common.Company.Warehouse.Read',
     COMMON_COMPANY_WAREHOUSE_WRITE = 'Dhanman.Common.Company.Warehouse.Write',
     COMMON_COMPANY_WAREHOUSE_DELETE = 'Dhanman.Common.Company.Warehouse.Delete',
-  
+
     // COMMON_PURCHASE_WAREHOUSE_READ = 'Dhanman.Common.Company.Warehouse.Read',
     // COMMON_PURCHASE_WAREHOUSE_WRITE = 'Dhanman.Common.Company.Warehouse.Write',
     // COMMON_PURCHASE_WAREHOUSE_DELETE = 'Dhanman.Common.Company.Warehouse.Delete',
-  
+
     // COMMON_SALES_WAREHOUSE_READ = 'Dhanman.Common.Company.Warehouse.Read',
     // COMMON_SALES_WAREHOUSE_WRITE = 'Dhanman.Common.Company.Warehouse.Write',
     // COMMON_SALES_WAREHOUSE_DELETE = 'Dhanman.Common.Company.Warehouse.Delete',
-  
+
     //INVENTORY_ADMIN = 'Dhanman.Inventory.Admin',
     INVENTORY_DELETE = 'Dhanman.Inventory.Delete',
     INVENTORY_READ = 'Dhanman.Inventory.Read',
@@ -40,7 +40,7 @@ export enum DhanmanPermissions {
     INVENTORY_PRODUCT_READ = 'Dhanman.Inventory.Product.Read',
     INVENTORY_PRODUCT_WRITE = 'Dhanman.Inventory.Product.Write',
     INVENTORY_PRODUCT_DELETE = 'Dhanman.Inventory.Product.Delete',
-  
+
     //MYHOME_ADMIN = 'Dhanman.MyHome.Admin',
     MYHOME_APARTMENT_READ = 'Dhanman.MyHome.Apartment.Read',
     MYHOME_BUILDING_DELETE = 'Dhanman.MyHome.Building.Delete',
@@ -143,4 +143,3 @@ export enum DhanmanPermissions {
     PAYROLL_PROJECT_WRITE = 'Dhanman.Payroll.Project.Write',
     PAYROLL_PROJECT_DELETE = 'Dhanman.Payroll.Project.Delete',
   }
-  

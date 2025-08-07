@@ -21,7 +21,7 @@ export const residentColors = {
   primaryLight: '#C4B5FD',
   primaryDark: '#8B5CF6',
   primaryUltraLight: '#EDE9FE',
-  
+
   // Supporting Pastel Colors
   offWhite: '#FAFAFA',
   mutedGold: '#F3E8D3',
@@ -30,31 +30,31 @@ export const residentColors = {
   mintAccent: '#A7F3D0',
   lighterNavy: '#4F46E5', // Instead of full black
   navyAccent: '#6366F1',
-  
+
   // Soft Neutrals
   softGray: '#F8FAFC',
   lightGray: '#F1F5F9',
   mediumGray: '#E2E8F0',
-  
+
   // Text colors (avoiding full black)
   textPrimary: '#334155', // Lighter navy for primary text
   textSecondary: '#64748B',
   textTertiary: '#94A3B8',
   textInverse: '#FFFFFF',
   textAccent: '#6366F1',
-  
+
   // Background colors
   backgroundPrimary: '#FFFFFF',
   backgroundSecondary: '#FAFAFA',
   backgroundTertiary: '#F8FAFC',
   backgroundGradientStart: '#FFFFFF',
   backgroundGradientEnd: '#F8FAFC',
-  
+
   // Card backgrounds
   cardPrimary: '#FFFFFF',
   cardSecondary: '#FAFAFA',
   cardAccent: '#EDE9FE',
-  
+
   // Status colors (soft versions)
   success: '#10B981',
   successLight: '#D1FAE5',
@@ -64,12 +64,12 @@ export const residentColors = {
   errorLight: '#FEE2E2',
   info: '#3B82F6',
   infoLight: '#DBEAFE',
-  
+
   // Border colors
   borderPrimary: '#E2E8F0',
   borderSecondary: '#CBD5E1',
   borderAccent: '#C4B5FD',
-  
+
   // Shadow colors
   shadow: 'rgba(160, 139, 250, 0.08)', // Lavender shadow
   shadowMedium: 'rgba(160, 139, 250, 0.12)',
@@ -85,7 +85,7 @@ export const residentTypography = {
     semiBold: 'Poppins-SemiBold',
     bold: 'Poppins-Bold',
   },
-  
+
   fontSize: {
     caption: fontSize.xs,
     body: fontSize.sm,
@@ -95,7 +95,7 @@ export const residentTypography = {
     largeTitle: fontSize.xxl,
     hero: fontSize.xxxl,
   },
-  
+
   lineHeight: {
     caption: lineHeight.xs,
     body: lineHeight.sm,
@@ -105,7 +105,7 @@ export const residentTypography = {
     largeTitle: lineHeight.xxl,
     hero: lineHeight.xxxl,
   },
-  
+
   fontWeight: {
     light: '300',
     regular: '400',
@@ -123,7 +123,7 @@ export const residentSpacing = {
   lg: spacing.lg * 2, // 40
   xl: spacing.xl * 2.5, // 60
   xxl: spacing.xxl * 3, // 96
-  
+
   // Generous padding for minimal design
   padding: {
     xs: spacing.xs,
@@ -132,7 +132,7 @@ export const residentSpacing = {
     lg: spacing.lg * 2.5,
     xl: spacing.xl * 3,
   },
-  
+
   // Large margins for spacious feel
   margin: {
     xs: spacing.xs,
@@ -154,7 +154,7 @@ export const residentLayout = {
     xxl: borderRadius.xxl * 2, // 48
     round: 50,
   },
-  
+
   shadows: {
     soft: {
       shadowColor: residentColors.shadow,
@@ -190,7 +190,7 @@ export const residentComponents = {
     ...residentLayout.shadows.soft,
     marginBottom: residentSpacing.md,
   },
-  
+
   summaryCard: {
     padding: residentSpacing.lg,
     borderRadius: residentLayout.borderRadius.xl,
@@ -198,7 +198,7 @@ export const residentComponents = {
     ...residentLayout.shadows.medium,
     marginBottom: residentSpacing.lg,
   },
-  
+
   // Button styles
   button: {
     primary: {
@@ -217,7 +217,7 @@ export const residentComponents = {
       borderRadius: residentLayout.borderRadius.lg,
     },
   },
-  
+
   // Floating Action Button
   fab: {
     position: 'absolute',
@@ -231,7 +231,7 @@ export const residentComponents = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
+
   // Avatar placeholder
   avatar: {
     width: 48,
@@ -241,7 +241,7 @@ export const residentComponents = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
+
   // Icon styles
   icon: {
     small: iconSize.sm,

@@ -13,10 +13,10 @@ const IncomeProgressBar = ({
 }) => {
   const { theme } = useTheme();
   const { colors, spacing } = theme;
-  
+
   const progressColor = mainColor || colors.primary;
   const percent = Math.min(achieved / total, 1);
-  
+
   return (
     <View style={styles.container}>
       <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>
@@ -24,10 +24,10 @@ const IncomeProgressBar = ({
       </Text>
       <View style={styles.progressContainer}>
         <View style={styles.iconWrapper}>
-          <Icon 
-            name={iconName} 
-            size={20} 
-            color={progressColor} 
+          <Icon
+            name={iconName}
+            size={20}
+            color={progressColor}
           />
         </View>
         <View style={styles.info}>
@@ -42,11 +42,11 @@ const IncomeProgressBar = ({
           <View style={styles.barWrapper}>
             <View style={[styles.barBg, { backgroundColor: colors.borderPrimary }]} />
             <View style={[
-              styles.bar, 
-              { 
-                width: `${percent * 100}%`, 
-                backgroundColor: progressColor 
-              }
+              styles.bar,
+              {
+                width: `${percent * 100}%`,
+                backgroundColor: progressColor,
+              },
             ]} />
           </View>
           <View style={styles.row}>
@@ -86,21 +86,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  info: { 
-    flex: 1 
+  info: {
+    flex: 1,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  label: { 
-    fontWeight: '600', 
-    fontSize: 14 
+  label: {
+    fontWeight: '600',
+    fontSize: 14,
   },
-  total: { 
-    fontWeight: '600', 
-    fontSize: 14 
+  total: {
+    fontWeight: '600',
+    fontSize: 14,
   },
   barWrapper: {
     position: 'relative',
@@ -109,22 +109,22 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     overflow: 'hidden',
   },
-  barBg: { 
-    ...StyleSheet.absoluteFillObject, 
-    borderRadius: 3 
+  barBg: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 3,
   },
-  bar: { 
-    position: 'absolute', 
-    height: 6, 
-    borderRadius: 3 
+  bar: {
+    position: 'absolute',
+    height: 6,
+    borderRadius: 3,
   },
-  achieved: { 
+  achieved: {
     fontSize: 12,
-    fontWeight: '500'
+    fontWeight: '500',
   },
-  percent: { 
+  percent: {
     fontSize: 12,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 });
 

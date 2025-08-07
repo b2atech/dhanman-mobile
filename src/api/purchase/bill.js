@@ -1,13 +1,13 @@
-import { fetcher, fetcherPost, fetcherPut } from "../../utils/axiosPurchase";
-import cloneDeep from "lodash/cloneDeep";
+import { fetcher, fetcherPost, fetcherPut } from '../../utils/axiosPurchase';
+import cloneDeep from 'lodash/cloneDeep';
 
 export const endpoints = {
   getAllBillsByCompanyId:
-    "v1/companies/{0}/bills/{1}/finYear/{2}?startDate={3}&endDate={4}",
-  sendForApproval: "v1/bills/send-for-approval",
-  cancelBill: "v1/bills/cancel",
-  approveBill: "v1/bills/approve",
-  rejectBill: "v1/bills/reject",
+    'v1/companies/{0}/bills/{1}/finYear/{2}?startDate={3}&endDate={4}',
+  sendForApproval: 'v1/bills/send-for-approval',
+  cancelBill: 'v1/bills/cancel',
+  approveBill: 'v1/bills/approve',
+  rejectBill: 'v1/bills/reject',
 };
 
 export function getFinancialYearDates(finYearId) {
@@ -27,15 +27,15 @@ export const getAllBills = async (
 ) => {
   try {
     const url = endpoints.getAllBillsByCompanyId
-      .replace("{0}", companyId)
-      .replace("{1}", String(billTypeId))
-      .replace("{2}", String(finYearId))
-      .replace("{3}", startDate)
-      .replace("{4}", endDate);
+      .replace('{0}', companyId)
+      .replace('{1}', String(billTypeId))
+      .replace('{2}', String(finYearId))
+      .replace('{3}', startDate)
+      .replace('{4}', endDate);
     const response = await fetcher(url);
     return response.items;
   } catch (error) {
-    console.error("Error fetching bills", error);
+    console.error('Error fetching bills', error);
     throw error;
   }
 };

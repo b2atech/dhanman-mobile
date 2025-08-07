@@ -138,7 +138,7 @@ const ResidentHomeDashboard = ({ navigation, fcmToken }) => {
         backgroundColor={residentTheme.colors.backgroundPrimary}
         barStyle="dark-content"
       />
-      
+
       <LinearGradient
         colors={residentTheme.gradients.background.colors}
         start={residentTheme.gradients.background.start}

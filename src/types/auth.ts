@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Dispatch } from 'react';
 
 export type IUser = {
     id?: string;
@@ -44,7 +44,7 @@ export type IUser = {
     type: string;
     payload?: AuthProps;
   }
-  
+
   export type Auth0ContextType = {
     isLoggedIn: boolean;
     isInitialized?: boolean;
