@@ -77,22 +77,24 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       await AsyncStorage.removeItem(key);
     }
   };
+
+  const setUserState = async (decodedToken: CustomJwtPayload) => {
     console.log("decode : ", decodedToken);
     if (!decodedToken.dhanman_id || !decodedToken.dhanman_company.id) return;
-    {
-      const unitIds = await getUnitsByUserId(
-        decodedToken.dhanman_company.id,
-        decodedToken.dhanman_id
-      );
+    
+    const unitIds = await getUnitsByUserId(
+      decodedToken.dhanman_company.id,
+      decodedToken.dhanman_id
+    );
 
-      dispatch({
-        type: LOGIN,
-        payload: {
-          isLoggedIn: true,
-          user: {
-            id: decodedToken?.sub?.split("|")?.[1],
-            dhanmanId: decodedToken?.dhanman_id,
-            avatar: decodedToken?.picture,
+    dispatch({
+      type: LOGIN,
+      payload: {
+        isLoggedIn: true,
+        user: {
+          id: decodedToken?.sub?.split("|")?.[1],
+          dhanmanId: decodedToken?.dhanman_id,
+          avatar: decodedToken?.picture,
             name: decodedToken?.name,
             tier: "Premium",
             roles: decodedToken?.dhanman_roles || [],
@@ -119,7 +121,6 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
           },
         },
       });
-    }
   };
 
   useEffect(() => {
