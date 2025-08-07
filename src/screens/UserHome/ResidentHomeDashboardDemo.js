@@ -10,6 +10,8 @@ import { LineChart } from 'react-native-gifted-charts';
 import PendingDuesCard from './PendingDuesCard';
 import IncomeExpenseLineGraph from './incomeExpenseGraph'; // Assuming this is a custom component for the line graph
 import TimelineVisitors from './TimelineVisitors';
+import IncomeProgressBar from './IncomeProgressBar';
+import UserHomeHeader from './UserHomeHeader';
 
 const { width: screenWidth } = Dimensions.get('window');
 const cardWidth = screenWidth - 36;
@@ -188,27 +190,13 @@ export default function ResidentDashboard() {
         <StatusBar backgroundColor="transparent" barStyle="dark-content" translucent />
         <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 36 }}>
           {/* Header */}
-          <View style={styles.topContainer}>
-            <View style={styles.headerRow}>
-              <TouchableOpacity style={styles.headerIcon}>
-                <FontAwesomeIcon icon={faBars} size={24} color={colors.textPrimary} />
-              </TouchableOpacity>
-              <View style={styles.headerSpacer} />
-              <View style={styles.headerIconsRight}>
-                <TouchableOpacity style={{ marginRight: 18 }}>
-                  <FontAwesomeIcon icon={faBell} size={22} color={colors.textPrimary} />
-                  <View style={styles.notificationDot} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <FontAwesomeIcon icon={faUserCircle} size={28} color={colors.textPrimary} />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.userRow}>
-              <Text style={styles.userName}>{mockUser.name}</Text>
-              <Text style={styles.unitText}>{mockUser.unit}</Text>
-            </View>
-          </View>
+          <UserHomeHeader
+            name={mockUser.name}
+            secondary={mockUser.unit}
+            bellCount={4}
+            onBellPress={() => {}}
+            onProfilePress={() => {}}
+          />
 
          <PendingDuesCard amount={3000} onPay={() => { /* handle pay */ }} />
 
@@ -234,12 +222,13 @@ export default function ResidentDashboard() {
             style={[styles.donutCard, { transform: [{ translateX: panX }] }]}
             {...panResponder.panHandlers}
           >
-            <GaugeDonut
-              achieved={donut.achieved}
-              total={donut.total}
-              mainColor={colors.lavender}
-              bgColor={colors.lavenderLight}
-            />
+           <IncomeProgressBar
+  label="Settlement Overview"
+  achieved={500000}
+  total={2000000}
+  iconName="insert-chart" // any MaterialIcons icon name
+  mainColor="#FF7300"
+/>
           </Animated.View>
         </ScrollView>
       </SafeAreaView>
