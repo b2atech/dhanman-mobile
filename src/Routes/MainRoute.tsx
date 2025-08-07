@@ -95,19 +95,11 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
 
           if (route.name === "Home") {
             iconName = faHome;
-          } else if (route.name === "UserHome") {
-            iconName = faHome;
-          } else if (route.name === "Resident Dashboard") {
-            iconName = faHome;
-          } else if (route.name === "Dashboard Demo") {
-            iconName = faHome;
-          } else if (route.name === "My Units") {
+          } else if (route.name === "My Unit") {
             iconName = faUser;
-          } else if (route.name === "On Boarding") {
+          } else if (route.name === "Activity") {
             iconName = faUsers;
-          } else if (route.name === "Tickets") {
-            iconName = faTicketAlt;
-          } else if (route.name === "Settings") {
+          } else if (route.name === "Profile") {
             iconName = faCog;
           }
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
@@ -123,19 +115,12 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="UserHome">
-        {(props) => <HomeScreen {...props} fcmToken={fcmToken} />}
+      <Tab.Screen name="Home">
+        {(props) => <ResidentHomeDashboardDemo {...props} fcmToken={fcmToken} />}
       </Tab.Screen>
-      <Tab.Screen name="Resident Dashboard">
-        {(props) => <ResidentHomeDashboard {...props} fcmToken={fcmToken} />}
-      </Tab.Screen>
-      <Tab.Screen name="Dashboard Demo">
-        {(props) => <ResidentHomeDashboardDemo {...props} />}
-      </Tab.Screen>
-      <Tab.Screen name="My Units" component={MyUnitScreen} />
-      <Tab.Screen name="On Boarding" component={OnBoarding} />
-      <Tab.Screen name="Tickets" component={TicketScreen} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="My Unit" component={MyUnitScreen} />
+      <Tab.Screen name="Activity" component={TicketScreen} />
+      <Tab.Screen name="Profile" component={Settings} />
     </Tab.Navigator>
   );
 };

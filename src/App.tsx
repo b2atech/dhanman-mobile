@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { requestUserPermission, notificationListener } from "./api/FCMService";
 import FCMModal from "./components/FCMModal";
 import MainRoutes from "./Routes/MainRoute";
@@ -25,20 +26,22 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <AuthProvider>
-      <>
-        <MainRoutes fcmToken={fcmToken} />
-        {notificationData && (
-          <FCMModal
-            visible={modalVisible}
-            title={notificationData.title}
-            body={notificationData.body}
-            guestId={notificationData.guestId}
-            onClose={() => setModalVisible(false)}
-          />
-        )}
-      </>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <>
+          <MainRoutes fcmToken={fcmToken} />
+          {notificationData && (
+            <FCMModal
+              visible={modalVisible}
+              title={notificationData.title}
+              body={notificationData.body}
+              guestId={notificationData.guestId}
+              onClose={() => setModalVisible(false)}
+            />
+          )}
+        </>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 
