@@ -1,12 +1,26 @@
-// Types
-
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { ICompany, IOrganization, IFinYear } from '../types/common';
+import Logger from '../utils/logger';
+
+interface ConfigReturn {
+  fontFamily: string;
+  i18n: string;
+  miniDrawer: boolean;
+  container: boolean;
+  presetColor: string;
+  organization?: IOrganization;
+  company: ICompany;
+  roles: string[];
+  unitIds?: string[];
+  finYear: IFinYear;
+}
 
 // ==============================|| THEME CONFIG ||============================== //
-const useConfig = () => {
+const useConfig = (): ConfigReturn => {
   const { user } = useContext(AuthContext);
-  console.log('useConfig user', user);
+  Logger.debug('useConfig user retrieved', { userId: user?.id, email: user?.email });
+
   return {
     fontFamily: '\'Public Sans\', sans-serif',
     i18n: 'en',
@@ -21,6 +35,9 @@ const useConfig = () => {
       isApartment: true,
       name: 'Aspen Woods Apartment',
       organizationId: '37437e17-c0e2-4e97-8167-121b854fe90b',
+      phoneNumber: '',
+      email: '',
+      addressLine: '',
     },
     //company: user?.dhanman_company,
     roles: user?.dhanman_roles || [],
