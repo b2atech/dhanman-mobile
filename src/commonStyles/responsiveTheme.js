@@ -25,29 +25,29 @@ export const colors = {
   secondary: '#FFD700',
   secondaryDark: '#E6C200',
   secondaryLight: '#FFE44D',
-  
+
   // Text colors
   textPrimary: '#333333',
   textSecondary: '#666666',
   textTertiary: '#999999',
   textInverse: '#FFFFFF',
-  
+
   // Background colors
   backgroundPrimary: '#FFFFFF',
   backgroundSecondary: '#F7F7F7',
   backgroundTertiary: '#F0F0F0',
-  
+
   // Status colors
   success: '#4CAF50',
   warning: '#FF9800',
   error: '#F44336',
   info: '#2196F3',
-  
+
   // Border colors
   borderPrimary: '#E0E0E0',
   borderSecondary: '#CCCCCC',
   borderTertiary: '#DDDDDD',
-  
+
   // Shadow colors
   shadow: 'rgba(0, 0, 0, 0.1)',
   shadowDark: 'rgba(0, 0, 0, 0.2)',
@@ -63,7 +63,7 @@ export const typography = {
     semiBold: 'Poppins-SemiBold',
     bold: 'Poppins-Bold',
   },
-  
+
   // Font sizes
   fontSize: {
     xs: fontSize.xs,
@@ -76,7 +76,7 @@ export const typography = {
     title: fontSize.title,
     largeTitle: fontSize.largeTitle,
   },
-  
+
   // Line heights
   lineHeight: {
     xs: lineHeight.xs,
@@ -89,7 +89,7 @@ export const typography = {
     title: lineHeight.title,
     largeTitle: lineHeight.largeTitle,
   },
-  
+
   // Font weights
   fontWeight: {
     light: '300',
@@ -108,13 +108,13 @@ export const spacingSystem = {
   lg: spacing.lg,
   xl: spacing.xl,
   xxl: spacing.xxl,
-  
+
   // Responsive padding
   padding: {
     horizontal: responsivePadding.horizontal,
     vertical: responsivePadding.vertical,
   },
-  
+
   // Responsive margins
   margin: {
     horizontal: responsivePadding.horizontal,
@@ -126,10 +126,10 @@ export const spacingSystem = {
 export const layout = {
   // Responsive widths
   width: responsiveWidth,
-  
+
   // Responsive heights
   height: responsiveHeight,
-  
+
   // Border radius
   borderRadius: {
     xs: borderRadius.xs,
@@ -140,7 +140,7 @@ export const layout = {
     xxl: borderRadius.xxl,
     round: borderRadius.round,
   },
-  
+
   // Shadows
   shadow: {
     small: {
@@ -185,7 +185,7 @@ export const components = {
     fontSize: fontSize.md,
     fontWeight: typography.fontWeight.semiBold,
   },
-  
+
   // Input styles
   input: {
     height: {
@@ -201,7 +201,7 @@ export const components = {
     fontSize: fontSize.md,
     borderWidth: 1,
   },
-  
+
   // Card styles
   card: {
     padding: spacing.md,
@@ -209,7 +209,7 @@ export const components = {
     backgroundColor: colors.backgroundPrimary,
     ...layout.shadow.small,
   },
-  
+
   // Icon sizes
   icon: {
     xs: iconSize.xs,
@@ -234,10 +234,10 @@ export const breakpoints = {
 export const responsive = {
   // Get responsive value based on device size
   getValue: getResponsiveValue,
-  
+
   // Get tablet-specific value
   getTabletValue: getTabletValue,
-  
+
   // Scale functions
   horizontalScale,
   verticalScale,
@@ -255,4 +255,4 @@ export const theme = {
   responsive,
 };
 
-export default theme; 
+export default theme;

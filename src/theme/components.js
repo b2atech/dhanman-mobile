@@ -14,20 +14,20 @@ export const createComponentStyles = (colors) => ({
     ...layout.elevation.sm,
     shadowColor: colors.shadow,
   },
-  
+
   // Section header style (subtle as per requirements)
   sectionHeader: {
     marginBottom: spacing.md,
     paddingHorizontal: spacing.sm,
   },
-  
+
   sectionTitle: {
     fontSize: 14,
     fontWeight: '500',
     color: colors.textTertiary, // Subtle, non-prominent
     marginBottom: spacing.xs,
   },
-  
+
   // Button styles
   primaryButton: {
     backgroundColor: colors.primary,
@@ -39,7 +39,7 @@ export const createComponentStyles = (colors) => ({
     ...layout.elevation.sm,
     shadowColor: colors.shadow,
   },
-  
+
   secondaryButton: {
     backgroundColor: colors.backgroundPrimary,
     borderRadius: layout.borderRadius.lg,
@@ -50,7 +50,7 @@ export const createComponentStyles = (colors) => ({
     borderWidth: 1,
     borderColor: colors.borderSecondary,
   },
-  
+
   // Floating Action Button
   fab: {
     position: 'absolute',
@@ -65,7 +65,7 @@ export const createComponentStyles = (colors) => ({
     ...layout.elevation.lg,
     shadowColor: colors.shadow,
   },
-  
+
   // Icon circle (for pending dues, etc.)
   iconCircle: {
     width: 34,
@@ -77,7 +77,7 @@ export const createComponentStyles = (colors) => ({
     alignItems: 'center',
     backgroundColor: colors.backgroundPrimary,
   },
-  
+
   // Avatar/Profile image placeholder
   avatar: {
     width: 40,
@@ -87,7 +87,7 @@ export const createComponentStyles = (colors) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
+
   // Visitor avatars
   visitorAvatar: {
     width: 32,
@@ -99,7 +99,7 @@ export const createComponentStyles = (colors) => ({
     alignItems: 'center',
     backgroundColor: colors.surface,
   },
-  
+
   // Badge/notification indicator
   badge: {
     backgroundColor: '#FF3B30', // Always red for notifications
@@ -110,7 +110,7 @@ export const createComponentStyles = (colors) => ({
     alignItems: 'center',
     paddingHorizontal: 4,
   },
-  
+
   // Input field styles
   input: {
     borderWidth: 1,
@@ -122,7 +122,7 @@ export const createComponentStyles = (colors) => ({
     color: colors.textPrimary,
     backgroundColor: colors.backgroundPrimary,
   },
-  
+
   // Divider/separator
   divider: {
     height: 1,
@@ -139,21 +139,21 @@ export const createGradients = (colors) => ({
     start: { x: 0, y: 0 },
     end: { x: 0, y: 1 },
   },
-  
+
   // Card gradient
   card: {
     colors: [colors.backgroundPrimary, colors.surface],
     start: { x: 0, y: 0 },
     end: { x: 1, y: 1 },
   },
-  
+
   // Header gradient
   header: {
     colors: [colors.backgroundTertiary, colors.surface],
     start: { x: 0, y: 0 },
     end: { x: 1, y: 0 },
   },
-  
+
   // Top-right SVG gradient (as mentioned in requirements)
   topRightAccent: {
     colors: [colors.primaryUltraLight, colors.surface],

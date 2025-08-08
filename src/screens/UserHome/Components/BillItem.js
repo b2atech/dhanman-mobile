@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import Icon from "react-native-vector-icons/Feather";
-import PropTypes from "prop-types";
+} from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import Icon from 'react-native-vector-icons/Feather';
+import PropTypes from 'prop-types';
 import {
   updateBillSendForApproval,
   updateBillApprove,
   updateBillReject,
-} from "../../../api/purchase/bill";
-import commonStyles from "../../../commonStyles/commonStyles";
+} from '../../../api/purchase/bill';
+import commonStyles from '../../../commonStyles/commonStyles';
 
 const BillItem = ({
   bill,
@@ -34,9 +34,9 @@ const BillItem = ({
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
-    return `${String(date.getDate()).padStart(2, "0")}-${String(
+    return `${String(date.getDate()).padStart(2, '0')}-${String(
       date.getMonth() + 1
-    ).padStart(2, "0")}-${date.getFullYear()}`;
+    ).padStart(2, '0')}-${date.getFullYear()}`;
   };
 
   const handleStatusUpdate = async (apiFunc, newStatus, setLoadingFn) => {
@@ -47,7 +47,7 @@ const BillItem = ({
       companyId: company.id,
     };
 
-    console.log("Sending payload to API:", {
+    console.log('Sending payload to API:', {
       ...payload,
       finYearId,
       billType,
@@ -65,17 +65,17 @@ const BillItem = ({
   };
 
   const renderActionButton = () => {
-    if (!isChecked) return null;
+    if (!isChecked) {return null;}
 
     const buttons = [];
 
-    if (localStatus.toLowerCase() === "pending approval") {
+    if (localStatus.toLowerCase() === 'pending approval') {
       buttons.push(
         <ActionButton
           key="approve"
           label="Approve"
           onPress={() =>
-            handleStatusUpdate(updateBillApprove, "Approved", setLoadingApprove)
+            handleStatusUpdate(updateBillApprove, 'Approved', setLoadingApprove)
           }
           loading={loadingApprove}
         />,
@@ -83,12 +83,12 @@ const BillItem = ({
           key="reject"
           label="Reject"
           onPress={() =>
-            handleStatusUpdate(updateBillReject, "Rejected", setLoadingReject)
+            handleStatusUpdate(updateBillReject, 'Rejected', setLoadingReject)
           }
           loading={loadingReject}
         />
       );
-    } else if (localStatus.toLowerCase() === "draft") {
+    } else if (localStatus.toLowerCase() === 'draft') {
       buttons.push(
         <ActionButton
           key="send"
@@ -96,7 +96,7 @@ const BillItem = ({
           onPress={() =>
             handleStatusUpdate(
               updateBillSendForApproval,
-              "Pending Approval",
+              'Pending Approval',
               setLoadingSend
             )
           }
@@ -110,9 +110,9 @@ const BillItem = ({
 
   const statusColor = (() => {
     const status = localStatus?.toLowerCase();
-    if (["approved"].includes(status)) return "#28a745";
-    if (["rejected", "cancelled"].includes(status)) return "#dc3545";
-    return "#000";
+    if (['approved'].includes(status)) {return '#28a745';}
+    if (['rejected', 'cancelled'].includes(status)) {return '#dc3545';}
+    return '#000';
   })();
 
   return (
@@ -122,18 +122,18 @@ const BillItem = ({
           <CheckBox
             value={isChecked}
             onValueChange={onToggleCheck}
-            tintColors={{ true: "#3B6FD6", false: "#999" }}
+            tintColors={{ true: '#3B6FD6', false: '#999' }}
           />
         </View>
         <View style={{ flex: 3 }}>
           <Text style={styles.billTitle}>{bill.billType}</Text>
         </View>
-        <View style={{ flex: 1, alignItems: "flex-end" }}>
+        <View style={{ flex: 1, alignItems: 'flex-end' }}>
           <Text style={styles.billAmount}>₹ {bill.totalAmount}</Text>
         </View>
         <TouchableOpacity onPress={onToggleExpand}>
           <Icon
-            name={isExpanded ? "chevron-up" : "chevron-down"}
+            name={isExpanded ? 'chevron-up' : 'chevron-down'}
             color="#3B6FD6"
             size={22}
           />
@@ -158,7 +158,7 @@ const BillItem = ({
                   styles.infoValue,
                   {
                     color: statusColor,
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                     marginLeft: 35,
                   },
                 ]}
@@ -210,33 +210,33 @@ BillItem.propTypes = {
 const styles = StyleSheet.create({
   billCard: {
     ...commonStyles.shadow,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
     elevation: 3,
   },
   topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   checkboxContainer: {
     flex: 0.5,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: -10,
   },
   billTitle: {
     ...commonStyles.headerText,
     fontSize: 15,
-    fontWeight: "bold",
-    color: "#333",
+    fontWeight: 'bold',
+    color: '#333',
   },
   billAmount: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#000",
+    fontWeight: '600',
+    color: '#000',
     marginRight: 10,
   },
   expandedContainer: {
@@ -244,31 +244,31 @@ const styles = StyleSheet.create({
   },
   infoRow: {
     ...commonStyles.flexDirectionRow,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 4,
     marginTop: 5,
   },
   infoLabel: {
     flex: 1,
-    fontWeight: "600",
+    fontWeight: '600',
     fontSize: 13,
-    color: "#555",
+    color: '#555',
   },
   infoValue: {
     flex: 1,
     fontSize: 14,
-    color: "#000",
+    color: '#000',
   },
   buttonRow: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     gap: 25,
     marginTop: 10,
   },
 
   actionButton: {
-    backgroundColor: "#3B6FD6",
+    backgroundColor: '#3B6FD6',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 6,
@@ -276,8 +276,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     ...commonStyles.fontPoppins,
-    color: "#fff",
-    fontWeight: "600",
+    color: '#fff',
+    fontWeight: '600',
     fontSize: 14,
   },
 });

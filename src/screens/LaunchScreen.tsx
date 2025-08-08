@@ -18,7 +18,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const LaunchScreen: React.FC = () => {
   const navigation = useNavigation();
   const authContext = useContext(AuthContext);
-  
+
   // Animation values
   const logoPosition = useRef(new Animated.Value(-300)).current;
   const logoScale = useRef(new Animated.Value(0.5)).current;
@@ -31,7 +31,7 @@ const LaunchScreen: React.FC = () => {
       navigation.navigate('Home' as never);
       return;
     }
-    
+
     startAnimation();
   }, [authContext?.isLoggedIn, navigation]);
 
@@ -48,7 +48,7 @@ const LaunchScreen: React.FC = () => {
       // Logo drops from top to center
       Animated.parallel([
         Animated.timing(logoPosition, {
-          toValue: 0, // Center of screen 
+          toValue: 0, // Center of screen
           duration: 1000,
           useNativeDriver: true,
         }),
@@ -63,9 +63,9 @@ const LaunchScreen: React.FC = () => {
           useNativeDriver: true,
         }),
       ]),
-      
 
-     
+
+
       // Show text with fade and scale
       Animated.parallel([
         Animated.timing(textOpacity, {
@@ -129,7 +129,7 @@ const LaunchScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
     width: screenDimensions.width, // Full device width
@@ -180,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LaunchScreen; 
+export default LaunchScreen;

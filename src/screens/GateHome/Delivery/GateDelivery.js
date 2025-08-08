@@ -40,7 +40,7 @@ export default function GateDeliveryScreen() {
 
   const handleSubmit = () => {
     if (!deliveryManName.trim()) {
-      Alert.alert('Error', "Please enter the delivery person's name.");
+      Alert.alert('Error', 'Please enter the delivery person\'s name.');
       return;
     }
 

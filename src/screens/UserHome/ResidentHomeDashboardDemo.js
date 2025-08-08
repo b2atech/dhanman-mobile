@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions,
-  StatusBar, SafeAreaView, Image, Animated, PanResponder
+  StatusBar, SafeAreaView, Image, Animated, PanResponder,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Svg, { Path, G } from 'react-native-svg';
@@ -20,7 +20,7 @@ const { width: screenWidth } = Dimensions.get('window');
 export default function ResidentDashboard() {
   const { theme } = useTheme();
   const { colors, components, spacing, gradients, layout } = theme;
-  
+
   // state for graph/donut period index (swipeable)
   const [periodIdx, setPeriodIdx] = useState(0);
 
@@ -91,7 +91,7 @@ export default function ResidentDashboard() {
       >
         <SafeAreaView style={{ flex: 1 }}>
           <StatusBar backgroundColor="transparent" barStyle="dark-content" translucent />
-          
+
           {/* Top-right SVG gradient as mentioned in requirements */}
           <View style={styles.topRightGradient}>
             <LinearGradient
@@ -102,8 +102,8 @@ export default function ResidentDashboard() {
             />
           </View>
 
-          <ScrollView 
-            style={styles.scroll} 
+          <ScrollView
+            style={styles.scroll}
             contentContainerStyle={{ paddingBottom: spacing['6xl'] }}
             showsVerticalScrollIndicator={false}
           >
@@ -148,7 +148,7 @@ export default function ResidentDashboard() {
           </ScrollView>
 
           {/* Quick Action Floating Button */}
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[components.fab, { backgroundColor: colors.primary }]}
             activeOpacity={0.8}
             onPress={() => {/* Handle quick action */}}
@@ -162,9 +162,9 @@ export default function ResidentDashboard() {
 }
 
 const styles = StyleSheet.create({
-  scroll: { 
-    flex: 1, 
-    backgroundColor: 'transparent' 
+  scroll: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
   topRightGradient: {
     position: 'absolute',

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import PropTypes from "prop-types";
-import BillItem from "./BillItem";
+import React, { useState } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+import BillItem from './BillItem';
 
 const BillsList = ({ route }) => {
   const { bills, company, finYearId, billType = 2 } = route.params;
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: '#f2f2f2',
   },
 });

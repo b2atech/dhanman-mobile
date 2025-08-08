@@ -101,7 +101,7 @@ const Boarding = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedBuilding) return;
+    if (!selectedBuilding) {return;}
 
     const fetchFloorNames = async () => {
       try {
@@ -119,7 +119,7 @@ const Boarding = () => {
   }, [selectedBuilding]);
 
   useEffect(() => {
-    if (!selectedFloor) return;
+    if (!selectedFloor) {return;}
     const fetchUnitNames = async () => {
       try {
         const response = await getUnitNames(
@@ -137,7 +137,7 @@ const Boarding = () => {
   }, [selectedBuilding, selectedFloor]);
 
   useEffect(() => {
-    if (!selectedUnit) return;
+    if (!selectedUnit) {return;}
     const fetchUnitDetails = async () => {
       try {
         const unitData = await getUnits(selectedUnit);
@@ -233,7 +233,7 @@ const Boarding = () => {
           }
         } else {
           if (residentResponse)
-            Alert.alert('Success', 'Resident added successfully.');
+            {Alert.alert('Success', 'Resident added successfully.');}
           navigation.goBack();
         }
         setSubmitting(false);
@@ -345,7 +345,7 @@ const Boarding = () => {
       />
       <Text>OnBoarding Charge</Text>
 
-      <SubmitButton title="Save" onPress={formik.handleSubmit}></SubmitButton>
+      <SubmitButton title="Save" onPress={formik.handleSubmit} />
     </ScrollView>
   );
 };

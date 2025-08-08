@@ -69,3 +69,8 @@ android/app/src/main/assets/index.android.bundle
 
 # testing
 /coverage
+
+# Environment files (keep samples but ignore local copies)
+.env.local
+.env.development
+.env.staging

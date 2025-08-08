@@ -51,10 +51,10 @@ const SummaryCard = ({ data }) => {
                 icon={trend === 'up' ? faArrowUp : trend === 'down' ? faArrowDown : faClock}
                 size={10}
                 color={
-                  trend === 'up' 
-                    ? residentTheme.colors.success 
-                    : trend === 'down' 
-                    ? residentTheme.colors.error 
+                  trend === 'up'
+                    ? residentTheme.colors.success
+                    : trend === 'down'
+                    ? residentTheme.colors.error
                     : residentTheme.colors.textTertiary
                 }
                 style={styles.trendIcon}
@@ -107,7 +107,7 @@ const SummaryCard = ({ data }) => {
             residentTheme.colors.mutedGold,
             'down'
           )}
-          
+
           {renderStatItem(
             faUsers,
             'Visitors Today',
@@ -116,7 +116,7 @@ const SummaryCard = ({ data }) => {
             residentTheme.colors.pastelMint,
             'up'
           )}
-          
+
           {renderStatItem(
             faTicketAlt,
             'Open Tickets',
@@ -125,7 +125,7 @@ const SummaryCard = ({ data }) => {
             residentTheme.colors.primaryUltraLight,
             null
           )}
-          
+
           {renderStatItem(
             faCalendarAlt,
             'Events',

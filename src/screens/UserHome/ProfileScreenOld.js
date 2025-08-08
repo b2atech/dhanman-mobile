@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,17 +6,17 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-} from "react-native";
-import { AuthContext } from "../../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Picker } from "@react-native-picker/picker";
+} from 'react-native';
+import { AuthContext } from '../../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 
 const ProfileScreenOld = ({ navigation }) => {
-  const [selectedRole, setSelectedRole] = useState("unit");
+  const [selectedRole, setSelectedRole] = useState('unit');
 
   useEffect(() => {
     const loadSelectedTab = async () => {
-      const storedTab = await AsyncStorage.getItem("selectedTab");
+      const storedTab = await AsyncStorage.getItem('selectedTab');
       if (storedTab) {
         setSelectedRole(storedTab);
       }
@@ -26,50 +26,50 @@ const ProfileScreenOld = ({ navigation }) => {
 
   const handleRoleChange = async (role) => {
     setSelectedRole(role);
-    await AsyncStorage.setItem("selectedTab", role);
+    await AsyncStorage.setItem('selectedTab', role);
     navigation.reset({
       index: 0,
-      routes: [{ name: "Home" }],
+      routes: [{ name: 'Home' }],
     });
   };
 
   const handleChangePassword = () => {
-    Alert.alert("Change Password", "This feature will be available soon!");
+    Alert.alert('Change Password', 'This feature will be available soon!');
   };
 
   const handleChangeProfilePhoto = () => {
-    Alert.alert("Edit Info", "This feature will be available soon!");
+    Alert.alert('Edit Info', 'This feature will be available soon!');
   };
 
   const handleNotificationSettings = () => {
     Alert.alert(
-      "Notification Settings",
-      "Manage your notifications preferences here."
+      'Notification Settings',
+      'Manage your notifications preferences here.'
     );
   };
 
   const settingsOptions = [
     {
-      id: "1",
-      name: "Change Role",
+      id: '1',
+      name: 'Change Role',
       onPress: () => {},
       hasPicker: true,
     },
     {
-      id: "2",
-      name: "Edit Info",
+      id: '2',
+      name: 'Edit Info',
       onPress: handleChangeProfilePhoto,
       hasPicker: false,
     },
     {
-      id: "3",
-      name: "Change Password",
+      id: '3',
+      name: 'Change Password',
       onPress: handleChangePassword,
       hasPicker: false,
     },
     {
-      id: "4",
-      name: "Notification Settings",
+      id: '4',
+      name: 'Notification Settings',
       onPress: handleNotificationSettings,
       hasPicker: false,
     },
@@ -113,34 +113,34 @@ const ProfileScreenOld = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
   },
   text: {
     fontSize: 16,
     marginBottom: 20,
-    color: "#000",
+    color: '#000',
   },
   list: {
-    width: "100%",
-    backgroundColor: "#f5f5f5",
+    width: '100%',
+    backgroundColor: '#f5f5f5',
   },
   optionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 16,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    backgroundColor: "#fff",
-    width: "100%",
+    borderBottomColor: '#eee',
+    backgroundColor: '#fff',
+    width: '100%',
   },
   optionTextContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   optionText: {
     fontSize: 16,
-    color: "#222",
+    color: '#222',
   },
   picker: {
     width: 140,

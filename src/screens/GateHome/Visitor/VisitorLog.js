@@ -208,7 +208,7 @@ const VisitorLog = () => {
                   {item.visitorTypeName}
                 </Text>
                 <Text style={styles.subText}>
-                  <Text style={styles.boldText}></Text>{' '}
+                  <Text style={styles.boldText} />{' '}
                   {item.latestEntryTime
                     ? moment(item.latestEntryTime).format('DD MMM YYYY')
                     : '--'}

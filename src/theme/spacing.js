@@ -22,17 +22,17 @@ export const spacing = {
 // Grid system for consistent alignment
 export const grid = {
   // Horizontal padding for content alignment
-  horizontalPadding: spacing['lg'], // 16
-  contentMaxWidth: screenWidth - (spacing['lg'] * 2), // Full width minus padding
-  
+  horizontalPadding: spacing.lg, // 16
+  contentMaxWidth: screenWidth - (spacing.lg * 2), // Full width minus padding
+
   // Card spacing
-  cardHorizontalMargin: spacing['lg'], // 16
-  cardVerticalMargin: spacing['md'], // 12
-  cardPadding: spacing['lg'], // 16
-  
+  cardHorizontalMargin: spacing.lg, // 16
+  cardVerticalMargin: spacing.md, // 12
+  cardPadding: spacing.lg, // 16
+
   // Section spacing
   sectionSpacing: spacing['2xl'], // 24
-  sectionHeaderSpacing: spacing['md'], // 12
+  sectionHeaderSpacing: spacing.md, // 12
 };
 
 // Layout dimensions
@@ -40,12 +40,12 @@ export const layout = {
   // Screen dimensions
   screenWidth,
   screenHeight,
-  
+
   // Component dimensions
   headerHeight: 60,
   tabBarHeight: 60,
   fabSize: 56,
-  
+
   // Border radius
   borderRadius: {
     sm: 8,
@@ -55,7 +55,7 @@ export const layout = {
     '2xl': 24,
     full: 9999,
   },
-  
+
   // Icon sizes
   iconSize: {
     xs: 16,
@@ -64,7 +64,7 @@ export const layout = {
     lg: 28,
     xl: 32,
   },
-  
+
   // Shadow elevations
   elevation: {
     sm: {

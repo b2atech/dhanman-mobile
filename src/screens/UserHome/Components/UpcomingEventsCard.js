@@ -30,7 +30,7 @@ const UpcomingEventsCard = ({ events }) => {
       key={event.id}
       style={[
         styles.eventItem,
-        index === events.length - 1 && styles.lastEventItem
+        index === events.length - 1 && styles.lastEventItem,
       ]}
       activeOpacity={0.7}
     >
@@ -43,7 +43,7 @@ const UpcomingEventsCard = ({ events }) => {
             color={residentTheme.colors.textTertiary}
           />
         </View>
-        
+
         <View style={styles.eventDetails}>
           <View style={styles.eventDetailItem}>
             <FontAwesomeIcon
@@ -55,7 +55,7 @@ const UpcomingEventsCard = ({ events }) => {
               {formatDate(event.date)}
             </Text>
           </View>
-          
+
           <View style={styles.eventDetailItem}>
             <FontAwesomeIcon
               icon={faClock}
@@ -66,7 +66,7 @@ const UpcomingEventsCard = ({ events }) => {
               {event.time}
             </Text>
           </View>
-          
+
           <View style={styles.eventDetailItem}>
             <FontAwesomeIcon
               icon={faMapMarkerAlt}
@@ -109,7 +109,7 @@ const UpcomingEventsCard = ({ events }) => {
             <Text style={styles.viewAllText}>View All</Text>
           </TouchableOpacity>
         </View>
-        
+
         <View style={styles.eventsContainer}>
           {events.map((event, index) => renderEventItem(event, index))}
         </View>

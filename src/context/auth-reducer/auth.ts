@@ -4,7 +4,7 @@ import { REGISTER, LOGIN, LOGOUT } from './actions';
 export const initialState: AuthProps = {
   isLoggedIn: false,
   isInitialized: false,
-  user: null
+  user: null,
 };
 
 // ==============================|| AUTH REDUCER ||============================== //
@@ -15,7 +15,7 @@ const auth = (state = initialState, action: AuthActionProps) => {
       const { user } = action.payload!;
       return {
         ...state,
-        user
+        user,
       };
     }
     case LOGIN: {
@@ -24,7 +24,7 @@ const auth = (state = initialState, action: AuthActionProps) => {
         ...state,
         isLoggedIn: true,
         isInitialized: true,
-        user
+        user,
       };
     }
     case LOGOUT: {
@@ -32,7 +32,7 @@ const auth = (state = initialState, action: AuthActionProps) => {
         ...state,
         isInitialized: true,
         isLoggedIn: false,
-        user: null
+        user: null,
       };
     }
     default: {

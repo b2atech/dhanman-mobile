@@ -76,7 +76,7 @@ export default function CreateTicket({navigation}) {
     return true;
   };
   const handleSubmit = async () => {
-    if (!validateForm()) return;
+    if (!validateForm()) {return;}
 
     setIsLoading(true);
     try {

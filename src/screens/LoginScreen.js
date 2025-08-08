@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,24 +7,24 @@ import {
   Image,
   Alert,
   Animated,
-} from "react-native";
-import { Input, Button } from "react-native-elements";
-import appIcon from "../assets/images/app_icon.png";
-import { auth0, AuthContext } from "../context/AuthContext";
-import PropTypes from "prop-types";
+} from 'react-native';
+import { Input, Button } from 'react-native-elements';
+import appIcon from '../assets/images/app_icon.png';
+import { auth0, AuthContext } from '../context/AuthContext';
+import PropTypes from 'prop-types';
 
 const LoginScreen = ({ navigation }) => {
   const { login, loginWithCredentials, isLoggedIn, setRole } =
     useContext(AuthContext);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otpCode, setOtpCode] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [useOtpLogin, setUseOtpLogin] = useState(false);
-  const [loginErrorMessage, setLoginErrorMessage] = useState("");
-  const [otpErrorMessage, setOtpErrorMessage] = useState("");
-  const [credentialsError, setCredentialsError] = useState("");
+  const [loginErrorMessage, setLoginErrorMessage] = useState('');
+  const [otpErrorMessage, setOtpErrorMessage] = useState('');
+  const [credentialsError, setCredentialsError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Animation values
@@ -36,7 +36,7 @@ const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigation.navigate("Home");
+      navigation.navigate('Home');
     } else {
       // Start entrance animation
       startEntranceAnimation();
@@ -70,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handlePhoneNumberChange = (text) => {
-    const strippedText = text.replace(/\D/g, "");
+    const strippedText = text.replace(/\D/g, '');
     if (strippedText.length <= 10) {
       setPhoneNumber(strippedText);
     }
@@ -79,13 +79,13 @@ const LoginScreen = ({ navigation }) => {
   const handleLoginWithCredentials = async () => {
     try {
       setLoading(true);
-      setCredentialsError("");
+      setCredentialsError('');
       await loginWithCredentials(username, password);
-      Alert.alert("Logged in successfully");
-      navigation.navigate("Home");
+      Alert.alert('Logged in successfully');
+      navigation.navigate('Home');
     } catch (error) {
-      setCredentialsError("Invalid username or password");
-      console.error("Login with credentials error:", error);
+      setCredentialsError('Invalid username or password');
+      console.error('Login with credentials error:', error);
     } finally {
       setLoading(false);
     }
@@ -98,10 +98,10 @@ const LoginScreen = ({ navigation }) => {
         phone_number: formattedPhoneNumber,
       });
       setIsOtpSent(true);
-      Alert.alert("OTP sent successfully");
+      Alert.alert('OTP sent successfully');
     } catch (error) {
-      setLoginErrorMessage("Failed to send OTP. Please try again.");
-      console.error("Error sending OTP:", error);
+      setLoginErrorMessage('Failed to send OTP. Please try again.');
+      console.error('Error sending OTP:', error);
     } finally {
       setLoading(false);
     }
@@ -111,11 +111,11 @@ const LoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
       await login(formattedPhoneNumber, otpCode);
-      Alert.alert("Logged in successfully");
-      navigation.navigate("Home");
+      Alert.alert('Logged in successfully');
+      navigation.navigate('Home');
     } catch (error) {
-      setOtpErrorMessage("Wrong OTP. Please try again");
-      console.error("Error during login:", error);
+      setOtpErrorMessage('Wrong OTP. Please try again');
+      console.error('Error during login:', error);
     } finally {
       setLoading(false);
     }
@@ -123,23 +123,23 @@ const LoginScreen = ({ navigation }) => {
 
   const toggleLoginMethod = () => {
     setUseOtpLogin(!useOtpLogin);
-    setUsername("");
-    setPassword("");
-    setPhoneNumber("");
-    setOtpCode("");
+    setUsername('');
+    setPassword('');
+    setPhoneNumber('');
+    setOtpCode('');
     setIsOtpSent(false);
-    setLoginErrorMessage("");
-    setOtpErrorMessage("");
-    setCredentialsError("");
+    setLoginErrorMessage('');
+    setOtpErrorMessage('');
+    setCredentialsError('');
   };
 
   const handleGoBack = () => {
     setIsOtpSent(false);
-    setOtpCode("");
-    setOtpErrorMessage("");
+    setOtpCode('');
+    setOtpErrorMessage('');
   };
 
-  if (isLoggedIn) return null;
+  if (isLoggedIn) {return null;}
 
   return (
     <Animated.View
@@ -270,10 +270,10 @@ LoginScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   logo: {
     width: 100,
@@ -283,66 +283,66 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 14,
-    color: "#666",
+    color: '#666',
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   header: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    color: "#333",
+    color: '#333',
   },
   inputContainer: {
-    width: "100%",
+    width: '100%',
     marginBottom: 20,
   },
   input: {
     paddingHorizontal: 10,
   },
   buttonContainer: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "#3B6FD6",
+    backgroundColor: '#3B6FD6',
     borderRadius: 5,
-    width: "100%",
+    width: '100%',
     paddingVertical: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonTitle: {
-    color: "#FFFFFF",
-    fontWeight: "600",
+    color: '#FFFFFF',
+    fontWeight: '600',
     fontSize: 16,
   },
   helpContainer: {
     marginTop: 10,
   },
   helpText: {
-    color: "#3B6FD6",
+    color: '#3B6FD6',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 20,
   },
   goBackButton: {
-    backgroundColor: "#3B6FD6",
+    backgroundColor: '#3B6FD6',
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 25,
     marginTop: 15,
-    alignItems: "center",
+    alignItems: 'center',
   },
   goBackButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   errorText: {
-    color: "red",
+    color: 'red',
   },
 });
 

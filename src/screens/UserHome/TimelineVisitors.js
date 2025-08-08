@@ -1,17 +1,17 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "../../context/ThemeContext";
+import React from 'react';
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '../../context/ThemeContext';
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get('window');
 const maxCircles = 4;
 
 // Main component
 export default function TimelineVisitors({ visitors = [] }) {
   const { theme } = useTheme();
   const { colors, components, spacing } = theme;
-  
+
   const visible = visitors.slice(0, maxCircles);
   const remaining = visitors.length - maxCircles;
 
@@ -29,9 +29,9 @@ export default function TimelineVisitors({ visitors = [] }) {
                   styles.circle,
                   {
                     backgroundColor: colors.surface,
-                    borderColor: v.status === "in" ? colors.primary : colors.borderSecondary,
-                    opacity: v.status === "in" ? 1 : 0.6,
-                  }
+                    borderColor: v.status === 'in' ? colors.primary : colors.borderSecondary,
+                    opacity: v.status === 'in' ? 1 : 0.6,
+                  },
                 ]}
               >
                 {v.photo ? (
@@ -48,10 +48,10 @@ export default function TimelineVisitors({ visitors = [] }) {
                 style={[
                   styles.timeText,
                   {
-                    color: v.status === "in" ? colors.primary : colors.textSecondary,
-                    fontWeight: v.status === "in" ? "bold" : "normal",
-                    opacity: v.status === "in" ? 1 : 0.6,
-                  }
+                    color: v.status === 'in' ? colors.primary : colors.textSecondary,
+                    fontWeight: v.status === 'in' ? 'bold' : 'normal',
+                    opacity: v.status === 'in' ? 1 : 0.6,
+                  },
                 ]}
               >
                 {v.time}
@@ -60,12 +60,12 @@ export default function TimelineVisitors({ visitors = [] }) {
                 style={[
                   styles.statusText,
                   {
-                    color: v.status === "in" ? colors.primary : colors.textSecondary,
-                    opacity: v.status === "in" ? 1 : 0.6,
-                  }
+                    color: v.status === 'in' ? colors.primary : colors.textSecondary,
+                    opacity: v.status === 'in' ? 1 : 0.6,
+                  },
                 ]}
               >
-                {v.status === "in" ? "entered" : "exited"}
+                {v.status === 'in' ? 'entered' : 'exited'}
               </Text>
             </View>
             {/* Draw line except after last visible */}
@@ -78,18 +78,18 @@ export default function TimelineVisitors({ visitors = [] }) {
           <>
             <View style={styles.timelineColumn}>
               <View style={[
-                styles.circle, 
+                styles.circle,
                 {
                   borderColor: colors.primary,
                   backgroundColor: colors.surface,
-                }
+                },
               ]}>
                 <Text style={[styles.moreText, { color: colors.primary }]}>
                   +{remaining}
                 </Text>
               </View>
-              <Text style={styles.timeTextInactive}></Text>
-              <Text style={styles.statusText}></Text>
+              <Text style={styles.timeTextInactive} />
+              <Text style={styles.statusText} />
             </View>
           </>
         )}
@@ -105,14 +105,14 @@ const styles = StyleSheet.create({
     // Card styling is handled by the components.card from theme
   },
   timelineRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    flexWrap: "nowrap",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    flexWrap: 'nowrap',
     marginTop: 8,
   },
   timelineColumn: {
-    alignItems: "center",
+    alignItems: 'center',
     width: circleSize + 6,
   },
   circle: {
@@ -120,24 +120,24 @@ const styles = StyleSheet.create({
     height: circleSize,
     borderRadius: circleSize / 2,
     borderWidth: 2,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 3,
   },
   photo: {
     width: circleSize - 6,
     height: circleSize - 6,
     borderRadius: (circleSize - 6) / 2,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   moreText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 13,
   },
   timelineLine: {
     width: 28,
     height: 2,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: circleSize / 2 - 1,
   },
   timeText: {
@@ -151,6 +151,6 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 10,
     marginTop: 0,
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
 });

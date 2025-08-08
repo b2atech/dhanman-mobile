@@ -1,24 +1,24 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import { Button } from "react-native-elements";
-import commonStyles from "../../commonStyles/commonStyles";
-import FinanceHome from "../dashboard/FinanceHome";
-import { AuthContext } from "../../context/AuthContext";
-import useConfig from "../../hooks/useConfig";
-import { useHasPermission } from "../../hooks/useHasPermission";
-import { DhanmanPermissions } from "../../constant/DhanmanPermission";
-import PropTypes from "prop-types";
-import FloatingActionButton from "../../components/AddButton";
-import HeaderComponent from "../HeaderScreen";
-import { getdefalutors, getdefalutorTotal } from "../../api/sales/defaultor";
-import BillSection from "./Components/BillSection";
-import { getAllBills } from "../../api/purchase/bill";
+} from 'react-native';
+import { Button } from 'react-native-elements';
+import commonStyles from '../../commonStyles/commonStyles';
+import FinanceHome from '../dashboard/FinanceHome';
+import { AuthContext } from '../../context/AuthContext';
+import useConfig from '../../hooks/useConfig';
+import { useHasPermission } from '../../hooks/useHasPermission';
+import { DhanmanPermissions } from '../../constant/DhanmanPermission';
+import PropTypes from 'prop-types';
+import FloatingActionButton from '../../components/AddButton';
+import HeaderComponent from '../HeaderScreen';
+import { getdefalutors, getdefalutorTotal } from '../../api/sales/defaultor';
+import BillSection from './Components/BillSection';
+import { getAllBills } from '../../api/purchase/bill';
 
 const HomeScreen = ({ navigation, fcmToken }) => {
   const { user } = useContext(AuthContext);
@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation, fcmToken }) => {
   const [defalutorTotal, setDefalutorTotal] = useState([]);
   const [defalutors, setDefalutors] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(
-    units.length > 0 ? units[0] : ""
+    units.length > 0 ? units[0] : ''
   );
 
   useEffect(() => {
@@ -51,13 +51,13 @@ const HomeScreen = ({ navigation, fcmToken }) => {
     const fetchTotalAmounts = async () => {
       try {
         const response = await getdefalutorTotal(
-          "12fb50f0-9998-456f-8aee-bb83ab2fbbdb"
+          '12fb50f0-9998-456f-8aee-bb83ab2fbbdb'
         ); //config.company.id);
         if (isMounted) {
           setDefalutorTotal(response);
         }
       } catch (err) {
-        console.error("Error fetching total amount for defaulter");
+        console.error('Error fetching total amount for defaulter');
       }
     };
 
@@ -90,8 +90,8 @@ const HomeScreen = ({ navigation, fcmToken }) => {
   }, [config.company.id]);
 
   const [bills, setBills] = useState([]);
-  const startDate = "2025-01-01";
-  const endDate = "2025-12-31";
+  const startDate = '2025-01-01';
+  const endDate = '2025-12-31';
 
   useEffect(() => {
     let isMounted = true;
@@ -110,7 +110,7 @@ const HomeScreen = ({ navigation, fcmToken }) => {
           setBills(fetchedBills);
         }
       } catch (err) {
-        console.error("Error fetching bills", err);
+        console.error('Error fetching bills', err);
       }
     };
 
@@ -146,14 +146,14 @@ const HomeScreen = ({ navigation, fcmToken }) => {
               <Button
                 title="Pay Now"
                 buttonStyle={styles.topUpButton}
-                onPress={() => navigation.navigate("PaymentScreen")}
+                onPress={() => navigation.navigate('PaymentScreen')}
               />
             </View>
             <View style={styles.singleButtonContainer}>
               <Button
                 title="Details"
                 buttonStyle={styles.topUpButton}
-                onPress={() => navigation.navigate("PaymentDetailScreen")}
+                onPress={() => navigation.navigate('PaymentDetailScreen')}
               />
             </View>
           </View>
@@ -162,7 +162,7 @@ const HomeScreen = ({ navigation, fcmToken }) => {
         <TouchableOpacity
           style={styles.cardContainer}
           onPress={() =>
-            navigation.navigate("Defaulter Screen", { list: defalutors })
+            navigation.navigate('Defaulter Screen', { list: defalutors })
           }
         >
           <View style={styles.cardLeft}>
@@ -188,7 +188,7 @@ const HomeScreen = ({ navigation, fcmToken }) => {
         {!loading && hasPermission && <FinanceHome />}
       </ScrollView>
 
-      <FloatingActionButton onPress={() => console.log("FAB Pressed!")} />
+      <FloatingActionButton onPress={() => console.log('FAB Pressed!')} />
     </View>
   );
 };
@@ -212,12 +212,12 @@ const styles = StyleSheet.create({
   balanceContainer: {
     paddingVertical: 25,
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginHorizontal: 20,
     marginTop: 30,
     borderRadius: 20,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -225,47 +225,47 @@ const styles = StyleSheet.create({
   },
   balanceText: {
     fontSize: 16,
-    color: "#444",
+    color: '#444',
     marginBottom: 8,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 
   balanceAmount: {
     fontSize: 26,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 20,
   },
   topUpButton: {
-    backgroundColor: "#3B6FD6",
+    backgroundColor: '#3B6FD6',
     borderRadius: 25,
     paddingVertical: 12,
   },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     right: 20,
     bottom: 30,
-    backgroundColor: "#3B6FD6",
+    backgroundColor: '#3B6FD6',
     width: 56,
     height: 56,
     borderRadius: 28,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
   },
   cardContainer: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
+    flexDirection: 'row',
+    backgroundColor: '#fff',
     padding: 20,
     marginHorizontal: 20,
     marginTop: 20,
     borderRadius: 20,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -276,29 +276,29 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 16,
-    color: "#333",
-    fontWeight: "bold",
+    color: '#333',
+    fontWeight: 'bold',
   },
   cardDescription: {
     fontSize: 14,
-    color: "#666",
+    color: '#666',
   },
   cardRight: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   cardCount: {
     fontSize: 18,
-    color: "#333",
-    fontWeight: "bold",
+    color: '#333',
+    fontWeight: 'bold',
   },
   cardTotalAmount: {
     fontSize: 16,
-    color: "#333",
+    color: '#333',
   },
   buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
     gap: 10,
   },
   singleButtonContainer: {

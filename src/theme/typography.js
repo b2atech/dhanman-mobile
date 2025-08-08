@@ -7,7 +7,7 @@ export const typography = {
     semiBold: 'System',
     bold: 'System',
   },
-  
+
   fontSize: {
     xs: 12,
     sm: 14,
@@ -18,7 +18,7 @@ export const typography = {
     '3xl': 30,
     '4xl': 36,
   },
-  
+
   lineHeight: {
     xs: 16,
     sm: 20,
@@ -29,7 +29,7 @@ export const typography = {
     '3xl': 36,
     '4xl': 40,
   },
-  
+
   fontWeight: {
     light: '300',
     normal: '400',
@@ -37,7 +37,7 @@ export const typography = {
     semiBold: '600',
     bold: '700',
   },
-  
+
   // Text styles for common use cases
   textStyles: {
     // Headers
@@ -66,7 +66,7 @@ export const typography = {
       fontWeight: '600',
       lineHeight: 28,
     },
-    
+
     // Body text
     bodyLarge: {
       fontSize: 16,
@@ -83,7 +83,7 @@ export const typography = {
       fontWeight: '400',
       lineHeight: 16,
     },
-    
+
     // Subtle section titles (as per requirements)
     sectionTitle: {
       fontSize: 14,
@@ -91,7 +91,7 @@ export const typography = {
       lineHeight: 20,
       // Color will be set by theme
     },
-    
+
     // Interactive elements
     button: {
       fontSize: 16,
@@ -103,7 +103,7 @@ export const typography = {
       fontWeight: '600',
       lineHeight: 20,
     },
-    
+
     // Labels and captions
     label: {
       fontSize: 12,

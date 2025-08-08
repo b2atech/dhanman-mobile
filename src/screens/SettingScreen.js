@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -6,14 +6,14 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-} from "react-native";
+} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPalette, faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { AuthContext } from "../context/AuthContext";
-import { useTheme } from "../context/ThemeContext";
-import ThemeSwitcher from "../components/ThemeSwitcher";
-import commonStyles from "../commonStyles/commonStyles";
-import PropTypes from "prop-types";
+import { AuthContext } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import ThemeSwitcher from '../components/ThemeSwitcher';
+import commonStyles from '../commonStyles/commonStyles';
+import PropTypes from 'prop-types';
 
 const Settings = ({ navigation }) => {
   const { logout } = useContext(AuthContext);
@@ -22,42 +22,42 @@ const Settings = ({ navigation }) => {
   const [themeSwitcherVisible, setThemeSwitcherVisible] = useState(false);
 
   const settingsOptions = [
-    { 
-      id: "1", 
-      name: "Profile", 
+    {
+      id: '1',
+      name: 'Profile',
       icon: faUser,
-      onPress: () => navigation.navigate("Profile") 
+      onPress: () => navigation.navigate('Profile'),
     },
     {
-      id: "2",
-      name: "Theme",
+      id: '2',
+      name: 'Theme',
       icon: faPalette,
       subtitle: `Current: ${theme.displayName}`,
       onPress: () => setThemeSwitcherVisible(true),
     },
-    { 
-      id: "3", 
-      name: "Logout", 
+    {
+      id: '3',
+      name: 'Logout',
       icon: faSignOutAlt,
-      onPress: () => handleLogout() 
+      onPress: () => handleLogout(),
     },
   ];
 
   const handleLogout = () => {
     Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
+      'Logout',
+      'Are you sure you want to logout?',
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: 'Cancel',
+          style: 'cancel',
         },
         {
-          text: "Logout",
+          text: 'Logout',
           onPress: async () => {
             await logout();
 
-            navigation.navigate("Login");
+            navigation.navigate('Login');
           },
         },
       ],
@@ -71,7 +71,7 @@ const Settings = ({ navigation }) => {
 
   const renderSettingItem = ({ item }) => (
     <TouchableOpacity
-      style={[styles.settingItem, { 
+      style={[styles.settingItem, {
         backgroundColor: colors.backgroundPrimary,
         borderBottomColor: colors.borderPrimary,
       }]}
@@ -80,10 +80,10 @@ const Settings = ({ navigation }) => {
     >
       <View style={styles.settingItemLeft}>
         <View style={[styles.iconContainer, { backgroundColor: colors.surface }]}>
-          <FontAwesomeIcon 
-            icon={item.icon} 
-            size={20} 
-            color={colors.primary} 
+          <FontAwesomeIcon
+            icon={item.icon}
+            size={20}
+            color={colors.primary}
           />
         </View>
         <View style={styles.textContainer}>
@@ -110,7 +110,7 @@ const Settings = ({ navigation }) => {
         style={styles.list}
         contentContainerStyle={styles.listContent}
       />
-      
+
       <ThemeSwitcher
         visible={themeSwitcherVisible}
         onClose={() => setThemeSwitcherVisible(false)}

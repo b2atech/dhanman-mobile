@@ -5,7 +5,7 @@ export const endpoints = {
   createPaymentLink: 'v1/generate-link',
 };
 
-export const createPaymentLink =async paymnentData=> {
+export const createPaymentLink = async paymnentData=> {
   try {
     const response = await fetcherPost(endpoints.createPaymentLink, { data: paymnentData });
     return response;

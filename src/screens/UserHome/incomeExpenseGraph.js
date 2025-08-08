@@ -1,14 +1,14 @@
-import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { LineChart } from "react-native-gifted-charts";
-import { useTheme } from "../../context/ThemeContext";
+import React from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { LineChart } from 'react-native-gifted-charts';
+import { useTheme } from '../../context/ThemeContext';
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get('window');
 
 function abbreviateYAxis(num) {
-  if (num >= 10000000) return (num / 10000000).toFixed(1).replace(/\.0$/, "") + "Cr";
-  if (num >= 100000) return (num / 100000).toFixed(1).replace(/\.0$/, "") + "L";
-  if (num >= 1000) return (num / 1000).toFixed(0) + "k";
+  if (num >= 10000000) {return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';}
+  if (num >= 100000) {return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L';}
+  if (num >= 1000) {return (num / 1000).toFixed(0) + 'k';}
   return num?.toString();
 }
 
@@ -19,7 +19,7 @@ export default function IncomeExpenseLineGraph({
 }) {
   const { theme } = useTheme();
   const { colors, components, spacing } = theme;
-  
+
   const maxYValue = Math.max(...incomeData, ...expenseData, 0) * 1.2;
 
   return (
@@ -62,7 +62,7 @@ export default function IncomeExpenseLineGraph({
           rulesThickness={0}
           xAxisLabelTextStyle={{
             color: colors.textSecondary,
-            fontWeight: "500",
+            fontWeight: '500',
             fontSize: 13,
             marginTop: 4,
           }}
@@ -112,24 +112,24 @@ export default function IncomeExpenseLineGraph({
 
 const styles = StyleSheet.create({
   graphCard: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingTop: 8,
     paddingBottom: 8,
   },
   chartWrap: {
     width: '100%',
     minHeight: 180,
-    alignSelf: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 8,
   },
   graphLegendRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
     marginBottom: 16,
     marginTop: 8,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   legendDot: {
     width: 12,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
   },
   legendLabel: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 13,
     marginRight: 12,
     marginLeft: 2,
@@ -161,11 +161,11 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     elevation: 2,
     marginBottom: 8,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   pointerLabelText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
     fontSize: 15,
   },
 });
