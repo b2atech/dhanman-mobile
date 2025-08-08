@@ -36,7 +36,7 @@ const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigation.navigate('Home');
+      navigation.navigate('Main');
     } else {
       // Start entrance animation
       startEntranceAnimation();
@@ -81,8 +81,8 @@ const LoginScreen = ({ navigation }) => {
       setLoading(true);
       setCredentialsError('');
       await loginWithCredentials(username, password);
-      Alert.alert('Logged in successfully');
-      navigation.navigate('Home');
+      
+      navigation.navigate('Main');
     } catch (error) {
       setCredentialsError('Invalid username or password');
       console.error('Login with credentials error:', error);
@@ -111,8 +111,8 @@ const LoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
       await login(formattedPhoneNumber, otpCode);
-      Alert.alert('Logged in successfully');
-      navigation.navigate('Home');
+      
+      navigation.navigate('Main');
     } catch (error) {
       setOtpErrorMessage('Wrong OTP. Please try again');
       console.error('Error during login:', error);

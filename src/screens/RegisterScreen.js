@@ -5,7 +5,7 @@ const RegisterScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>Register Screen</Text>
-      <Button title="Register" onPress={() => navigation.navigate('Home')} />
+      <Button title="Register" onPress={() => navigation.navigate('Main')} />
       <Button
         title="Back to Login"
         onPress={() => navigation.navigate('Login')}

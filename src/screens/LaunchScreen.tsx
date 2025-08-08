@@ -28,7 +28,7 @@ const LaunchScreen: React.FC = () => {
 
   useEffect(() => {
     if (authContext?.isLoggedIn) {
-      navigation.navigate('Home' as never);
+      navigation.navigate('Main' as never);
       return;
     }
 

@@ -8,9 +8,10 @@ import { LOGOUT, LOGIN } from './auth-reducer/actions';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { getUnitsByUserId } from '../api/myHome/unit';
 import * as Keychain from 'react-native-keychain';
+import { getTokenSecurely } from '../utils/secureStorage';
 
 interface CustomJwtPayload extends JwtPayload {
-  dhanman_id: string;
+  dhanmanId: string;
   dhanman_company: {
     id: string;
     organizationId: string;
@@ -76,7 +77,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
     } catch (error) {
       console.error(`Error storing ${key} in Keychain:`, error);
       // Fallback
-      await AsyncStorage.setItem(key, value);
+      //await AsyncStorage.setItem(key, value);
     }
   };
 
@@ -89,18 +90,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   //     return await AsyncStorage.getItem(key);
   //   }
   // };
-  const getTokenSecurely = async (key: string) => {
-    try {
-      const creds = await Keychain.getGenericPassword({
-        service: serviceFor(key),
-      });
-      return creds ? creds.password : null;
-    } catch (error) {
-      console.error(`Error getting ${key} from Keychain:`, error);
-      // Fallback
-      return await AsyncStorage.getItem(key);
-    }
-  };
+
 
   // const removeTokenSecurely = async (key: string) => {
   //   try {
@@ -125,13 +115,14 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
 
   // Set user state and fetch unit IDs
   const setUserState = async (decodedToken: CustomJwtPayload) => {
-    if (!decodedToken.dhanman_id || !decodedToken.dhanman_company.id) {
+    console.log("Decoded Token:", decodedToken);
+    if (!decodedToken.dhanmanId || !decodedToken.dhanman_company.id) {
       return;
     }
     try {
       const unitIds = await getUnitsByUserId(
         decodedToken.dhanman_company.id,
-        decodedToken.dhanman_id
+        decodedToken.dhanmanId
       );
 
       dispatch({
@@ -140,7 +131,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
           isLoggedIn: true,
           user: {
             id: decodedToken?.sub?.split('|')?.[1],
-            dhanmanId: decodedToken?.dhanman_id,
+            dhanmanId: decodedToken?.dhanmanId,
             avatar: decodedToken?.picture,
             name: decodedToken?.name,
             tier: 'Premium',
@@ -178,22 +169,18 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       try {
         // Check for tokens in SecureStore first, then fallback to AsyncStorage
         let token = await getTokenSecurely('userToken');
-        if (!token) {
-          // Migration: Check old AsyncStorage location
-          token = await AsyncStorage.getItem('userToken');
-          if (token) {
-            // Migrate to SecureStore
-            await storeTokenSecurely('userToken', token);
-            await AsyncStorage.removeItem('userToken');
-          }
-        }
-
+       console.log("Retrieved Token:", token);
+       
         if (token) {
+
           const decodedToken = jwtDecode<CustomJwtPayload>(token);
+          console.log("Decoded Token:", decodedToken);
           const currentTime = Math.floor(Date.now() / 1000);
           if (decodedToken.exp && decodedToken.exp > currentTime) {
+            console.log('Token is valid, setting user state');
             await setUserState(decodedToken);
           } else {
+            console.log('Token is expired, refreshing token');
             // Token is expired, refresh it
             await refreshToken();
           }
@@ -237,6 +224,11 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
 
   const loginWithCredentials = async (username: string, password: string) => {
     try {
+      // Validate input
+      if (!username || !password) {
+        throw new Error('Username and password are required');
+      }
+      console.log('Auth0 username login attempt:', username);
       const credentials = await auth0.auth.passwordRealm({
         username,
         password,
@@ -245,13 +237,14 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         audience: 'dev-dhanman-api',
       });
 
-      // Store tokens securely
+      //Store tokens securely
       await storeTokenSecurely('userToken', credentials.accessToken);
       await storeTokenSecurely('idToken', credentials.idToken || credentials.accessToken);
       await storeTokenSecurely('refreshToken', credentials.refreshToken ?? '');
-
+      console.log('credentials.refreshToken:', credentials.refreshToken);
       // Decode and set user state
       const decodedToken = jwtDecode<CustomJwtPayload>(credentials.accessToken);
+      console.log('Decoded Token:', decodedToken);
       await setUserState(decodedToken);
     } catch (error: any) {
       console.error('Auth0 username login failed:', error);
@@ -262,6 +255,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   const refreshToken = async () => {
     try {
       const refreshToken = await getTokenSecurely('refreshToken');
+      console.log('Refreshing token with refreshToken:', refreshToken);
       if (!refreshToken) {
         throw new Error('No refresh token available');
       }
@@ -293,8 +287,8 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       await removeTokenSecurely('refreshToken');
 
       // Also clean up any old AsyncStorage tokens
-      await AsyncStorage.removeItem('userToken');
-      await AsyncStorage.removeItem('refreshToken');
+      // await AsyncStorage.removeItem('userToken');
+      // await AsyncStorage.removeItem('refreshToken');
 
       dispatch({ type: 'LOGOUT' });
     } catch (error) {

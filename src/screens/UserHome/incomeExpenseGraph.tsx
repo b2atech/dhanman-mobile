@@ -5,18 +5,26 @@ import { useTheme } from '../../context/ThemeContext';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-function abbreviateYAxis(num) {
-  if (num >= 10000000) {return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';}
-  if (num >= 100000) {return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L';}
-  if (num >= 1000) {return (num / 1000).toFixed(0) + 'k';}
-  return num?.toString();
+function abbreviateYAxis(label: string): string {
+  const num = Number(label);
+  if (isNaN(num)) return label;
+  if (num >= 10000000) return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';
+  if (num >= 100000) return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L';
+  if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+  return num.toString();
 }
+
+export type IncomeExpenseLineGraphProps = {
+  incomeData?: number[];
+  expenseData?: number[];
+  xLabels?: string[];
+};
 
 export default function IncomeExpenseLineGraph({
   incomeData = [],
   expenseData = [],
   xLabels = [],
-}) {
+}: IncomeExpenseLineGraphProps) {
   const { theme } = useTheme();
   const { colors, components, spacing } = theme;
 
@@ -24,7 +32,7 @@ export default function IncomeExpenseLineGraph({
 
   return (
     <View style={[components.card, styles.graphCard]}>
-      <Text style={[components.sectionTitle, { color: colors.textTertiary }]}>
+      <Text style={components.sectionTitle}>
         Income vs Expense
       </Text>
       <View style={styles.graphLegendRow}>
@@ -39,13 +47,13 @@ export default function IncomeExpenseLineGraph({
           data={incomeData.map((v, i) => ({
             value: v,
             label: xLabels[i],
-            dataPointText: abbreviateYAxis(v),
+            dataPointText: abbreviateYAxis(v.toString()),
             color: colors.primary,
           }))}
           data2={expenseData.map((v, i) => ({
             value: v,
             label: xLabels[i],
-            dataPointText: abbreviateYAxis(v),
+            dataPointText: abbreviateYAxis(v.toString()),
             color: colors.secondary,
           }))}
           curved
@@ -73,16 +81,16 @@ export default function IncomeExpenseLineGraph({
           hideDataPoints={false}
           dataPointsColor={colors.primary}
           dataPointsColor2={colors.secondary}
-          showPointerStrip={true}
-          pointerStripColor={colors.borderSecondary}
+          
+          
           pointerConfig={{
             pointerStripHeight: 120,
             pointerColor: colors.primary,
             pointerLabelWidth: 64,
             pointerStripUptoDataPoint: true,
-            pointerLabelComponent: (point) => (
+            pointerLabelComponent: (point: { value: number }) => (
               <View style={[styles.pointerLabelBubble, { backgroundColor: colors.primary }]}>
-                <Text style={styles.pointerLabelText}>{abbreviateYAxis(point.value)}</Text>
+                <Text style={styles.pointerLabelText}>{abbreviateYAxis(point.value.toString())}</Text>
               </View>
             ),
           }}
@@ -90,20 +98,18 @@ export default function IncomeExpenseLineGraph({
           xAxisLabelsHeight={25}
           hideRules={true}
           maxValue={maxYValue}
-          minValue={0}
+          
           dataPointsShape="circle"
           dataPointsRadius={4}
           dataPointsWidth={4}
           dataPointsHeight={4}
           showVerticalLines={false}
-          pointerStripDashArray={[6, 4]}
+          
           formatYLabel={abbreviateYAxis}
-          customDataPoint={(point, idx) => (
+          customDataPoint={(_point: any, _idx: number) => (
             <View style={[styles.graphDot, { backgroundColor: colors.primary }]} />
           )}
-          customDataPoint2={(point, idx) => (
-            <View style={[styles.graphDot2, { backgroundColor: colors.secondary }]} />
-          )}
+         
         />
       </View>
     </View>

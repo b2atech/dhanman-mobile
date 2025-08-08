@@ -29,7 +29,7 @@ const ProfileScreenOld = ({ navigation }) => {
     await AsyncStorage.setItem('selectedTab', role);
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Home' }],
+      routes: [{ name: 'Main' }],
     });
   };
 

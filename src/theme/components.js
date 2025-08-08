@@ -1,7 +1,38 @@
 import { spacing, layout } from './spacing';
+import { TextStyle, ViewStyle } from 'react-native';
 
-// Component style definitions that can be themed
-export const createComponentStyles = (colors) => ({
+// Define your color and layout types for better typing
+export type ThemeColors = {
+  backgroundPrimary: string;
+  backgroundTertiary: string;
+  borderPrimary: string;
+  borderSecondary: string;
+  surface: string;
+  shadow: string;
+  primary: string;
+  secondary: string;
+  primaryUltraLight: string;
+  textPrimary: string;
+  textTertiary: string;
+  // Add any other color keys you use
+};
+
+export type ComponentStyles = {
+  card: ViewStyle;
+  sectionHeader: ViewStyle;
+  sectionTitle: TextStyle;
+  primaryButton: ViewStyle;
+  secondaryButton: ViewStyle;
+  fab: ViewStyle;
+  iconCircle: ViewStyle;
+  avatar: ViewStyle;
+  visitorAvatar: ViewStyle;
+  badge: ViewStyle;
+  input: TextStyle;
+  divider: ViewStyle;
+};
+
+export const createComponentStyles = (colors: ThemeColors): ComponentStyles => ({
   // Card styles with consistent spacing and shadows
   card: {
     backgroundColor: colors.backgroundPrimary,
@@ -23,7 +54,7 @@ export const createComponentStyles = (colors) => ({
 
   sectionTitle: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '500', // Valid RN value!
     color: colors.textTertiary, // Subtle, non-prominent
     marginBottom: spacing.xs,
   },
@@ -131,8 +162,20 @@ export const createComponentStyles = (colors) => ({
   },
 });
 
-// Linear gradient configurations
-export const createGradients = (colors) => ({
+export type GradientConfig = {
+  colors: string[];
+  start: { x: number; y: number };
+  end: { x: number; y: number };
+};
+
+export type GradientStyles = {
+  background: GradientConfig;
+  card: GradientConfig;
+  header: GradientConfig;
+  topRightAccent: GradientConfig;
+};
+
+export const createGradients = (colors: ThemeColors): GradientStyles => ({
   // Background gradient
   background: {
     colors: [colors.backgroundPrimary, colors.backgroundTertiary],

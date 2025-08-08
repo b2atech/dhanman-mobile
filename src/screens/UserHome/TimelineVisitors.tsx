@@ -3,12 +3,12 @@ import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { TimelineVisitorsProps } from './types';
 
 const { width: screenWidth } = Dimensions.get('window');
 const maxCircles = 4;
 
-// Main component
-export default function TimelineVisitors({ visitors = [] }) {
+export default function TimelineVisitors({ visitors = [] }: TimelineVisitorsProps) {
   const { theme } = useTheme();
   const { colors, components, spacing } = theme;
 
@@ -17,7 +17,12 @@ export default function TimelineVisitors({ visitors = [] }) {
 
   return (
     <View style={[components.card, styles.timelineCard]}>
-      <Text style={[components.sectionTitle, { color: colors.textTertiary }]}>
+      <Text style={{
+    fontSize: 16,
+    fontWeight: "500", // <-- use "normal", "bold", or a number as a string
+    color: colors.primary,
+    marginBottom: 8,
+  }}>
         Today's Visitors
       </Text>
       <View style={styles.timelineRow}>
@@ -75,23 +80,21 @@ export default function TimelineVisitors({ visitors = [] }) {
           </React.Fragment>
         ))}
         {remaining > 0 && (
-          <>
-            <View style={styles.timelineColumn}>
-              <View style={[
-                styles.circle,
-                {
-                  borderColor: colors.primary,
-                  backgroundColor: colors.surface,
-                },
-              ]}>
-                <Text style={[styles.moreText, { color: colors.primary }]}>
-                  +{remaining}
-                </Text>
-              </View>
-              <Text style={styles.timeTextInactive} />
-              <Text style={styles.statusText} />
+          <View style={styles.timelineColumn}>
+            <View style={[
+              styles.circle,
+              {
+                borderColor: colors.primary,
+                backgroundColor: colors.surface,
+              },
+            ]}>
+              <Text style={[styles.moreText, { color: colors.primary }]}>
+                +{remaining}
+              </Text>
             </View>
-          </>
+            <Text style={styles.timeTextInactive} />
+            <Text style={styles.statusText} />
+          </View>
         )}
       </View>
     </View>

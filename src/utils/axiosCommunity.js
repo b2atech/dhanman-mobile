@@ -1,5 +1,6 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getTokenSecurely } from './secureStorage';
+
 
 const axiosCommunityServices = axios.create({
   baseURL: 'https://qa.community.dhanman.com/api/',
@@ -8,7 +9,7 @@ const axiosCommunityServices = axios.create({
 
 export const getAccessToken = async () => {
   try {
-    const token = await AsyncStorage.getItem('userToken');
+    const token = await getTokenSecurely('userToken');
     if (token) {
       return token;
     } else {
@@ -90,7 +91,7 @@ export const fetcher = async (url, config = {}) => {
       headers: config.headers,
       baseURL: axiosCommunityServices.defaults.baseURL,
     });
-
+    
     const res = await axiosCommunityServices.get(url, { ...config });
     console.log('Response received:', res.status, res.statusText);
     return res.data;

@@ -1,9 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '../../context/ThemeContext';
 
-const IncomeProgressBar = ({
+type IncomeProgressBarProps = {
+  label?: string;
+  achieved?: number;
+  total?: number;
+  iconName?: string;
+  mainColor?: string | null | undefined; 
+  currency?: string;
+};
+
+const IncomeProgressBar: React.FC<IncomeProgressBarProps> = ({
   label = 'Investments',
   achieved = 500000,
   total = 2000000,
@@ -63,7 +72,23 @@ const IncomeProgressBar = ({
   );
 };
 
-const styles = StyleSheet.create({
+type Styles = {
+  container: ViewStyle;
+  sectionTitle: TextStyle;
+  progressContainer: ViewStyle;
+  iconWrapper: ViewStyle;
+  info: ViewStyle;
+  row: ViewStyle;
+  label: TextStyle;
+  total: TextStyle;
+  barWrapper: ViewStyle;
+  barBg: ViewStyle;
+  bar: ViewStyle;
+  achieved: TextStyle;
+  percent: TextStyle;
+};
+
+const styles = StyleSheet.create<Styles>({
   container: {
     paddingVertical: 8,
   },

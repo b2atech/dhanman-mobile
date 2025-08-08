@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions,
-  StatusBar, SafeAreaView, Image, Animated, PanResponder,
+  StatusBar, SafeAreaView, Image, Animated, PanResponder, GestureResponderEvent, PanResponderGestureState,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Svg, { Path, G } from 'react-native-svg';
@@ -10,24 +10,34 @@ import { faBars, faBell, faUserCircle, faFileInvoice, faPlus } from '@fortawesom
 import { LineChart } from 'react-native-gifted-charts';
 import { useTheme } from '../../context/ThemeContext';
 import PendingDuesCard from './PendingDuesCard';
-import IncomeExpenseLineGraph from './incomeExpenseGraph'; // Assuming this is a custom component for the line graph
+import IncomeExpenseLineGraph from './incomeExpenseGraph'; // Custom component, ensure it is typed
 import TimelineVisitors from './TimelineVisitors';
 import IncomeProgressBar from './IncomeProgressBar';
 import UserHomeHeader from './UserHomeHeader';
+import { TabNavigatorProps } from '../../Routes/MainRoute';
+import { visitors } from './DummayData';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-export default function ResidentDashboard() {
+type Period = {
+  key: string;
+  xLabels: string[];
+  income: number[];
+  expense: number[];
+  donut: { achieved: number; total: number };
+};
+
+export default function ResidentDashboard({ fcmToken }: TabNavigatorProps) {
   const { theme } = useTheme();
   const { colors, components, spacing, gradients, layout } = theme;
 
   // state for graph/donut period index (swipeable)
-  const [periodIdx, setPeriodIdx] = useState(0);
+  const [periodIdx, setPeriodIdx] = useState<number>(0);
 
   // Mock data
   const mockUser = { name: 'John', unit: 'A-101' };
 
-  const periods = [
+  const periods: Period[] = [
     {
       key: '3M',
       xLabels: ['May', 'Jun', 'Jul'],
@@ -51,21 +61,15 @@ export default function ResidentDashboard() {
     },
   ];
 
-  const visitors = [
-    { id: '1', name: 'Amit', photo: 'https://randomuser.me/api/portraits/men/11.jpg', status: 'in' },
-    { id: '2', name: 'Priya', photo: '', status: 'out' },
-    { id: '3', name: 'David', photo: 'https://randomuser.me/api/portraits/men/33.jpg', status: 'in' },
-    { id: '4', name: 'Sonia', photo: '', status: 'out' },
-    { id: '5', name: 'Anil', photo: 'https://randomuser.me/api/portraits/men/34.jpg', status: 'in' },
-  ];
   // SWIPE logic for graph and donut (shared)
-  const panX = useRef(new Animated.Value(0)).current;
+  const panX = useRef<Animated.Value>(new Animated.Value(0)).current;
   const SWIPE_THRESHOLD = 50;
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dx) > 10,
+      onMoveShouldSetPanResponder: (_: GestureResponderEvent, gestureState: PanResponderGestureState) =>
+        Math.abs(gestureState.dx) > 10,
       onPanResponderMove: Animated.event([null, { dx: panX }], { useNativeDriver: false }),
-      onPanResponderRelease: (_, gestureState) => {
+      onPanResponderRelease: (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
         if (gestureState.dx < -SWIPE_THRESHOLD && periodIdx < periods.length - 1) {
           setPeriodIdx(periodIdx + 1);
         } else if (gestureState.dx > SWIPE_THRESHOLD && periodIdx > 0) {
@@ -110,7 +114,6 @@ export default function ResidentDashboard() {
             {/* Header */}
             <UserHomeHeader
               name={mockUser.name}
-              secondary={mockUser.unit}
               bellCount={4}
               onBellPress={() => {}}
               onProfilePress={() => {}}
@@ -119,20 +122,12 @@ export default function ResidentDashboard() {
 
             <PendingDuesCard amount={3000} onPay={() => { /* handle pay */ }} />
 
-            <TimelineVisitors
-              visitors={[
-                { id: '1', name: 'Amit', photo: 'https://randomuser.me/api/portraits/men/11.jpg', status: 'in', time: '10:30' },
-                { id: '2', name: 'Priya', photo: '', status: 'out', time: '09:40' },
-                { id: '3', name: 'David', photo: 'https://randomuser.me/api/portraits/men/33.jpg', status: 'in', time: '11:15' },
-                { id: '4', name: 'Sonia', photo: '', status: 'out', time: '08:55' },
-                { id: '5', name: 'Anil', photo: 'https://randomuser.me/api/portraits/men/34.jpg', status: 'in', time: '12:12' },
-              ]}
-            />
+            <TimelineVisitors visitors={visitors} />
 
             <IncomeExpenseLineGraph
-              incomeData={[120000, 87000, 140000]}
-              expenseData={[70000, 82000, 93000]}
-              xLabels={['May', 'Jun', 'Jul']}
+              incomeData={income}
+              expenseData={expense}
+              xLabels={xLabels}
             />
 
             {/* Settlement Overview */}

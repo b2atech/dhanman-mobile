@@ -63,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
     // Reset navigation to refresh the app with new role
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Home' }],
+      routes: [{ name: 'Main' }],
     });
   };
 
