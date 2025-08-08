@@ -6,7 +6,7 @@ import { faHome, faUser, faUsers, faCog, faTruck } from '@fortawesome/free-solid
 import { StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { decode as atob, encode as btoa } from 'base-64';
-import { requestUserPermission, notificationListener } from "../api/FCMService";
+import { requestUserPermission, notificationListener } from '../api/FCMService';
 import { AuthContext } from '../context/AuthContext';
 
 // Screens
@@ -84,10 +84,10 @@ export const TabNavigatorForUnit = ({ fcmToken }: TabNavigatorProps) => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName = faHome; // default
-          if (route.name === 'UnitHome') iconName = faHome;
-          else if (route.name === 'My Unit') iconName = faUser;
-          else if (route.name === 'Activity') iconName = faUsers;
-          else if (route.name === 'Profile') iconName = faCog;
+          if (route.name === 'UnitHome') {iconName = faHome;}
+          else if (route.name === 'My Unit') {iconName = faUser;}
+          else if (route.name === 'Activity') {iconName = faUsers;}
+          else if (route.name === 'Profile') {iconName = faCog;}
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#00BFFF',
@@ -119,9 +119,9 @@ export const TabNavigatorForGate = ({ fcmToken }: TabNavigatorProps) => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName = faHome; // default
-          if (route.name === 'GateHome') iconName = faHome;
-          else if (route.name === 'Delivery') iconName = faTruck;
-          else if (route.name === 'Settings') iconName = faCog;
+          if (route.name === 'GateHome') {iconName = faHome;}
+          else if (route.name === 'Delivery') {iconName = faTruck;}
+          else if (route.name === 'Settings') {iconName = faCog;}
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#00BFFF',
@@ -151,7 +151,7 @@ const TabNavigatorForTicket = ({ fcmToken }: TabNavigatorProps) => {
         tabBarIcon: ({ color, size }) => {
           // single tab; still map for completeness
           let iconName = faHome;
-          if (route.name === 'TicketHome') iconName = faHome;
+          if (route.name === 'TicketHome') {iconName = faHome;}
           return <FontAwesomeIcon icon={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#00BFFF',
@@ -194,13 +194,13 @@ const Home = ({ fcmToken }: TabNavigatorProps) => {
     loadSelectedTab();
   }, [userRoles]);
 
-  if (loading) return null;
+  if (loading) {return null;}
 
   let SelectedScreen: React.ComponentType<TabNavigatorProps>;
-  if (selectedTab === 'unit') SelectedScreen = TabNavigatorForUnit;
-  else if (selectedTab === 'Gate') SelectedScreen = TabNavigatorForGate;
-  else if (selectedTab === 'System Admin') SelectedScreen = TabNavigatorForUnit; // default view for admins
-  else SelectedScreen = TabNavigatorForUnit;
+  if (selectedTab === 'unit') {SelectedScreen = TabNavigatorForUnit;}
+  else if (selectedTab === 'Gate') {SelectedScreen = TabNavigatorForGate;}
+  else if (selectedTab === 'System Admin') {SelectedScreen = TabNavigatorForUnit;} // default view for admins
+  else {SelectedScreen = TabNavigatorForUnit;}
 
   return (
     <View style={{ flex: 1 }}>
@@ -216,8 +216,8 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
 
   useEffect(() => {
     // expose atob/btoa in RN env
-    if (typeof global.atob === 'undefined') global.atob = atob;
-    if (typeof global.btoa === 'undefined') global.btoa = btoa;
+    if (typeof global.atob === 'undefined') {global.atob = atob;}
+    if (typeof global.btoa === 'undefined') {global.btoa = btoa;}
   }, []);
 
   useEffect(() => {
@@ -298,13 +298,13 @@ useEffect(() => {
     setModalVisible(true);
   });
   return () => {
-    if (typeof unsub === 'function') unsub();
+    if (typeof unsub === 'function') {unsub();}
   };
 }, []);
 
   // Ensure atob/btoa exist in RN
-  if (typeof global.atob === 'undefined') global.atob = atob;
-  if (typeof global.btoa === 'undefined') global.btoa = btoa;
+  if (typeof global.atob === 'undefined') {global.atob = atob;}
+  if (typeof global.btoa === 'undefined') {global.btoa = btoa;}
 
   return (
     <>

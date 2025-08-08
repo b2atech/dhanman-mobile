@@ -91,7 +91,7 @@ export const fetcher = async (url, config = {}) => {
       headers: config.headers,
       baseURL: axiosCommunityServices.defaults.baseURL,
     });
-    
+
     const res = await axiosCommunityServices.get(url, { ...config });
     console.log('Response received:', res.status, res.statusText);
     return res.data;

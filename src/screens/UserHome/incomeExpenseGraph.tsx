@@ -7,10 +7,10 @@ const { width: screenWidth } = Dimensions.get('window');
 
 function abbreviateYAxis(label: string): string {
   const num = Number(label);
-  if (isNaN(num)) return label;
-  if (num >= 10000000) return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';
-  if (num >= 100000) return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L';
-  if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+  if (isNaN(num)) {return label;}
+  if (num >= 10000000) {return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';}
+  if (num >= 100000) {return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L';}
+  if (num >= 1000) {return (num / 1000).toFixed(0) + 'k';}
   return num.toString();
 }
 
@@ -81,8 +81,8 @@ export default function IncomeExpenseLineGraph({
           hideDataPoints={false}
           dataPointsColor={colors.primary}
           dataPointsColor2={colors.secondary}
-          
-          
+
+
           pointerConfig={{
             pointerStripHeight: 120,
             pointerColor: colors.primary,
@@ -98,18 +98,18 @@ export default function IncomeExpenseLineGraph({
           xAxisLabelsHeight={25}
           hideRules={true}
           maxValue={maxYValue}
-          
+
           dataPointsShape="circle"
           dataPointsRadius={4}
           dataPointsWidth={4}
           dataPointsHeight={4}
           showVerticalLines={false}
-          
+
           formatYLabel={abbreviateYAxis}
           customDataPoint={(_point: any, _idx: number) => (
             <View style={[styles.graphDot, { backgroundColor: colors.primary }]} />
           )}
-         
+
         />
       </View>
     </View>

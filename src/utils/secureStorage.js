@@ -8,7 +8,7 @@ export const getTokenSecurely = async (key) => {
       });
       return creds ? creds.password : null;
     } catch (error) {
-      console.error(`Error getting ${key} from Keychain:`, error); 
+      console.error(`Error getting ${key} from Keychain:`, error);
       // Fallback
       //return await AsyncStorage.getItem(key);
     }

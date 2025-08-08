@@ -19,7 +19,7 @@ export default function TimelineVisitors({ visitors = [] }: TimelineVisitorsProp
     <View style={[components.card, styles.timelineCard]}>
       <Text style={{
     fontSize: 16,
-    fontWeight: "500", // <-- use "normal", "bold", or a number as a string
+    fontWeight: '500', // <-- use "normal", "bold", or a number as a string
     color: colors.primary,
     marginBottom: 8,
   }}>

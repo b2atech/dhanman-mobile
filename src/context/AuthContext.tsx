@@ -115,7 +115,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
 
   // Set user state and fetch unit IDs
   const setUserState = async (decodedToken: CustomJwtPayload) => {
-    console.log("Decoded Token:", decodedToken);
+    console.log('Decoded Token:', decodedToken);
     if (!decodedToken.dhanmanId || !decodedToken.dhanman_company.id) {
       return;
     }
@@ -169,12 +169,12 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       try {
         // Check for tokens in SecureStore first, then fallback to AsyncStorage
         let token = await getTokenSecurely('userToken');
-       console.log("Retrieved Token:", token);
-       
+       console.log('Retrieved Token:', token);
+
         if (token) {
 
           const decodedToken = jwtDecode<CustomJwtPayload>(token);
-          console.log("Decoded Token:", decodedToken);
+          console.log('Decoded Token:', decodedToken);
           const currentTime = Math.floor(Date.now() / 1000);
           if (decodedToken.exp && decodedToken.exp > currentTime) {
             console.log('Token is valid, setting user state');

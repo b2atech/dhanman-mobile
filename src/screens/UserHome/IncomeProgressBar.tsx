@@ -8,7 +8,7 @@ type IncomeProgressBarProps = {
   achieved?: number;
   total?: number;
   iconName?: string;
-  mainColor?: string | null | undefined; 
+  mainColor?: string | null | undefined;
   currency?: string;
 };
 

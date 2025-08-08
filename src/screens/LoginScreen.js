@@ -81,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
       setLoading(true);
       setCredentialsError('');
       await loginWithCredentials(username, password);
-      
+
       navigation.navigate('Main');
     } catch (error) {
       setCredentialsError('Invalid username or password');
@@ -111,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
       await login(formattedPhoneNumber, otpCode);
-      
+
       navigation.navigate('Main');
     } catch (error) {
       setOtpErrorMessage('Wrong OTP. Please try again');

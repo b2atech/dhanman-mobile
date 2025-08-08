@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { AuthProvider } from "./context/AuthContext";
-import { ThemeProvider } from "./context/ThemeContext";
-import { requestUserPermission, notificationListener } from "./api/FCMService";
-import FCMModal from "./components/FCMModal";
-import MainRoutes from "./Routes/MainRoute";
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { requestUserPermission, notificationListener } from './api/FCMService';
+import FCMModal from './components/FCMModal';
+import MainRoutes from './Routes/MainRoute';
 
 interface NotificationData {
   title: string;
@@ -32,7 +32,7 @@ const App: React.FC = () => {
       <AuthProvider>
       <>
         <NavigationContainer>
-          <MainRoutes fcmToken={fcmToken ?? ""} />
+          <MainRoutes fcmToken={fcmToken ?? ''} />
         </NavigationContainer>
 
         {notificationData && (
