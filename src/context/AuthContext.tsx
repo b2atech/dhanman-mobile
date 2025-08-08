@@ -1,12 +1,13 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import Auth0 from 'react-native-auth0';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 import authReducer from '../context/auth-reducer/auth';
 import { Auth0ContextType } from '../types/auth';
 import { LOGOUT, LOGIN } from './auth-reducer/actions';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { getUnitsByUserId } from '../api/myHome/unit';
+import * as Keychain from 'react-native-keychain';
 
 interface CustomJwtPayload extends JwtPayload {
   dhanman_id: string;
@@ -48,40 +49,85 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
     user: null,
   });
 
+  const serviceFor = (key: string) => `com.dhanman.secure.${key}`;
+
   // Secure token storage helper functions
+  // const storeTokenSecurely = async (key: string, value: string) => {
+  //   try {
+  //     await SecureStore.setItemAsync(key, value);
+  //   } catch (error) {
+  //     console.error(`Error storing ${key} securely:`, error);
+  //     // Fallback to AsyncStorage if SecureStore fails
+  //     await AsyncStorage.setItem(key, value);
+  //   }
+  // };
   const storeTokenSecurely = async (key: string, value: string) => {
     try {
-      await SecureStore.setItemAsync(key, value);
+      await Keychain.setGenericPassword(
+        // account (username) & password — username can be anything; keep it constant
+        'token',
+        value,
+        {
+          service: serviceFor(key),
+          // Sensible defaults; adjust if you require biometrics, etc.
+          accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+        }
+      );
     } catch (error) {
-      console.error(`Error storing ${key} securely:`, error);
-      // Fallback to AsyncStorage if SecureStore fails
+      console.error(`Error storing ${key} in Keychain:`, error);
+      // Fallback
       await AsyncStorage.setItem(key, value);
     }
   };
 
+  // const getTokenSecurely = async (key: string) => {
+  //   try {
+  //     return await SecureStore.getItemAsync(key);
+  //   } catch (error) {
+  //     console.error(`Error getting ${key} securely:`, error);
+  //     // Fallback to AsyncStorage if SecureStore fails
+  //     return await AsyncStorage.getItem(key);
+  //   }
+  // };
   const getTokenSecurely = async (key: string) => {
     try {
-      return await SecureStore.getItemAsync(key);
+      const creds = await Keychain.getGenericPassword({
+        service: serviceFor(key),
+      });
+      return creds ? creds.password : null;
     } catch (error) {
-      console.error(`Error getting ${key} securely:`, error);
-      // Fallback to AsyncStorage if SecureStore fails
+      console.error(`Error getting ${key} from Keychain:`, error);
+      // Fallback
       return await AsyncStorage.getItem(key);
     }
   };
 
+  // const removeTokenSecurely = async (key: string) => {
+  //   try {
+  //     await SecureStore.deleteItemAsync(key);
+  //   } catch (error) {
+  //     console.error(`Error removing ${key} securely:`, error);
+  //     // Fallback to AsyncStorage if SecureStore fails
+  //     await AsyncStorage.removeItem(key);
+  //   }
+  // };
   const removeTokenSecurely = async (key: string) => {
     try {
-      await SecureStore.deleteItemAsync(key);
+      await Keychain.resetGenericPassword({
+        service: serviceFor(key),
+      });
     } catch (error) {
-      console.error(`Error removing ${key} securely:`, error);
-      // Fallback to AsyncStorage if SecureStore fails
+      console.error(`Error removing ${key} from Keychain:`, error);
+      // Fallback
       await AsyncStorage.removeItem(key);
     }
   };
 
   // Set user state and fetch unit IDs
   const setUserState = async (decodedToken: CustomJwtPayload) => {
-    if (!decodedToken.dhanman_id || !decodedToken.dhanman_company.id) {return;}
+    if (!decodedToken.dhanman_id || !decodedToken.dhanman_company.id) {
+      return;
+    }
     try {
       const unitIds = await getUnitsByUserId(
         decodedToken.dhanman_company.id,
@@ -170,8 +216,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         phoneNumber: phoneNumber,
         code: otpCode,
         realm: 'sms',
-        scope:
-          'openid profile email offline_access read:current_user update:current_user_metadata',
+        scope: 'openid profile email offline_access read:current_user update:current_user_metadata',
         audience: 'dev-dhanman-api',
       });
 
@@ -196,18 +241,14 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         username,
         password,
         realm: 'dhanman-db', // This must match your Auth0 DB connection name
-        scope:
-          'openid profile email offline_access read:current_user update:current_user_metadata',
+        scope: 'openid profile email offline_access read:current_user update:current_user_metadata',
         audience: 'dev-dhanman-api',
       });
 
       // Store tokens securely
       await storeTokenSecurely('userToken', credentials.accessToken);
       await storeTokenSecurely('idToken', credentials.idToken || credentials.accessToken);
-      await storeTokenSecurely(
-        'refreshToken',
-        credentials.refreshToken ?? ''
-      );
+      await storeTokenSecurely('refreshToken', credentials.refreshToken ?? '');
 
       // Decode and set user state
       const decodedToken = jwtDecode<CustomJwtPayload>(credentials.accessToken);
@@ -234,7 +275,9 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
         await storeTokenSecurely('refreshToken', newCredentials.refreshToken);
       }
 
-      const decodedToken = jwtDecode<CustomJwtPayload>(newCredentials.idToken || newCredentials.accessToken);
+      const decodedToken = jwtDecode<CustomJwtPayload>(
+        newCredentials.idToken || newCredentials.accessToken
+      );
       await setUserState(decodedToken);
     } catch (error) {
       console.error('Failed to refresh token', error);

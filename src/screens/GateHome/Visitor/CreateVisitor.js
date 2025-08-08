@@ -17,7 +17,7 @@ import {
 import commonStyles from '../../../commonStyles/commonStyles';
 import UnitSelection from '../../CommonFiles/UnitSelection';
 import {getOTP} from '../../../api/myHome/otp';
-import SubmitButton from '../../../components/SubmitButton';
+import SubmitButton from '../../../components/shared/SubmitButton';
 import useConfig from '../../../hooks/useConfig';
 import {SaveGuestNotification} from '../../../api/myHome/fcmService';
 import {AuthContext} from '../../../context/AuthContext';
