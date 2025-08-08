@@ -12,20 +12,20 @@ const scale = SCREEN_WIDTH / baseWidth;
 const verticalScaleFactor = SCREEN_HEIGHT / baseHeight;
 
 // Responsive scaling functions
-export const horizontalScale = (size) => {
+export const horizontalScale = (size: number): number => {
   return size * scale;
 };
 
-export const verticalScale = (size) => {
+export const verticalScale = (size: number): number => {
   return size * verticalScaleFactor;
 };
 
-export const moderateScale = (size, factor = 0.5) => {
+export const moderateScale = (size: number, factor: number = 0.5): number => {
   return size + (scale - 1) * factor;
 };
 
 // Font scaling with limits
-export const fontScale = (size) => {
+export const fontScale = (size: number): number => {
   const newSize = size * scale;
   if (Platform.OS === 'ios') {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
@@ -125,14 +125,14 @@ export const screenDimensions = {
 };
 
 // Utility function to get responsive value based on device size
-export const getResponsiveValue = (small, medium, large) => {
+export const getResponsiveValue = <T>(small: T, medium: T, large: T): T => {
   if (isSmallDevice) {return small;}
   if (isMediumDevice) {return medium;}
   return large;
 };
 
 // Utility function to get responsive value for tablets
-export const getTabletValue = (phone, tablet) => {
+export const getTabletValue = <T>(phone: T, tablet: T): T => {
   return isTablet ? tablet : phone;
 };
 

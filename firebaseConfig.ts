@@ -1,4 +1,4 @@
-// firebaseConfig.js
+// firebaseConfig.ts
 // Firebase configuration temporarily disabled
 // import app from '@react-native-firebase/app';
 // import messaging from '@react-native-firebase/messaging';

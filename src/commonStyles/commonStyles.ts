@@ -39,7 +39,7 @@ const commonStyles = StyleSheet.create({
     fontSize: fontSize.xxl,
     lineHeight: lineHeight.xxl,
     color: '#333',
-    fontWeight: 'condensedBold',
+    fontWeight: 'bold',
     fontFamily: 'Poppins-ExtraLight',
   },
   descriptionText: {

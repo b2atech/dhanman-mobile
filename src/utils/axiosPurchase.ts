@@ -1,23 +1,24 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Logger from './logger';
 
 const axiosPurchaseServices = axios.create({
   baseURL: 'https://qa.purchase.dhanman.com/api/',
   timeout: 10000,
 });
 
-const getAccessToken = async () => {
+const getAccessToken = async (): Promise<string | null> => {
   try {
     const token = await AsyncStorage.getItem('userToken');
     if (token) {
-      console.log('Token retrieved successfully:', token);
+      Logger.debug('Token retrieved successfully:', token);
       return token;
     } else {
-      console.error('No access token found in AsyncStorage');
+      Logger.error('No access token found in AsyncStorage');
       return null;
     }
   } catch (error) {
-    console.error('Error retrieving access token:', error);
+    Logger.error('Error retrieving access token:', error);
     return null;
   }
 };
@@ -26,27 +27,41 @@ axiosPurchaseServices.interceptors.request.use(
   async (config) => {
     const token = await getAccessToken();
     if (token) {
-      console.log('Adding token to request headers:', token);
+      Logger.debug('Adding token to request headers:', token);
       config.headers.Authorization = `Bearer ${token}`;
-    } else {
-      console.error('No token available for request');
     }
     return config;
   },
   (error) => {
-    console.error('Request Interceptor Error:', error);
+    Logger.error('Request error:', error);
     return Promise.reject(error);
+  }
+);
+
+axiosPurchaseServices.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      Logger.warn('axiosPurchaseServices unauthorized', { status: error.response.status });
+    }
+    const errorMessage =
+      typeof error?.response?.data === 'string'
+        ? error.response.data
+        : 'Wrong Services';
+    const errorObject = new Error(errorMessage);
+    return Promise.reject(errorObject);
   }
 );
 
 export default axiosPurchaseServices;
 
-export const fetcher = async (url, config = {}) => {
+interface FetcherConfig extends AxiosRequestConfig {
+  data?: any;
+}
+
+export const fetcher = async (url: string, config: FetcherConfig = {}): Promise<any> => {
   try {
     const token = await getAccessToken();
-    console.log('Making request to:', url);
-    console.log('Token available:', !!token);
-    console.log('Config', config);
 
     if (token) {
       config.headers = {
@@ -57,7 +72,7 @@ export const fetcher = async (url, config = {}) => {
       };
     }
 
-    console.log('Request config:', {
+    Logger.debug('Request config:', {
       url,
       method: 'GET',
       headers: config.headers,
@@ -65,10 +80,10 @@ export const fetcher = async (url, config = {}) => {
     });
 
     const res = await axiosPurchaseServices.get(url, { ...config });
-    console.log('Response received:', res);
+    Logger.debug('Response received:', res);
     return res.data;
-  } catch (error) {
-    console.error('Fetcher Error Details:', {
+  } catch (error: any) {
+    Logger.error('Fetcher Error Details:', {
       message: error.message,
       status: error.response?.status,
       statusText: error.response?.statusText,
@@ -83,41 +98,38 @@ export const fetcher = async (url, config = {}) => {
   }
 };
 
-export const fetcherPost = async (url, data = {}, config = {}) => {
+export const fetcherPost = async (url: string, data: any = {}, config: FetcherConfig = {}): Promise<any> => {
   try {
     const token = await getAccessToken();
-    const organizationId = '37437e17-c0e2-4e97-8167-121b854fe90b';
-
-    config.headers = {
-      ...config.headers,
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'x-organization-id': organizationId,
-    };
-
+    if (token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+    }
     const res = await axiosPurchaseServices.post(url, data, config);
     return res.data;
   } catch (error) {
-    console.error('Fetcher Post Error:', error);
+    Logger.error('Fetcher Post Error:', error);
     throw error;
   }
 };
 
-export const fetcherPut = async (url, data = {}, config = {}) => {
+export const fetcherPut = async (url: string, data: any = {}, config: FetcherConfig = {}): Promise<any> => {
   try {
     const token = await getAccessToken();
-    const organizationId = '37437e17-c0e2-4e97-8167-121b854fe90b';
-    config.headers = {
-      ...config.headers,
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'x-organization-id': organizationId,
-    };
-
+    if (token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+    }
     const res = await axiosPurchaseServices.put(url, data, config);
     return res.data;
   } catch (error) {
-    console.error('Fetcher Put Error:', error);
+    Logger.error('Fetcher Put Error:', error);
     throw error;
   }
 };
