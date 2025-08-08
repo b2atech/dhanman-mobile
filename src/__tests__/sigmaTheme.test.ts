@@ -2,9 +2,24 @@
  * Test suite for Sigma theme implementation
  */
 
+interface SigmaTheme {
+  name: string;
+  displayName: string;
+  colors: Record<string, string>;
+  typography: Record<string, any>;
+  spacing: Record<string, number>;
+  layout: Record<string, any>;
+  components: Record<string, any>;
+  gradients: Record<string, any>;
+}
+
+interface SigmaPalette {
+  [key: string]: string;
+}
+
 describe('Sigma Theme', () => {
-  let sigmaTheme;
-  let sigmaPalette;
+  let sigmaTheme: SigmaTheme;
+  let sigmaPalette: SigmaPalette;
 
   beforeAll(() => {
     // Import the sigma theme files
@@ -30,48 +45,48 @@ describe('Sigma Theme', () => {
 
   describe('Sigma Palette Colors', () => {
     test('should have complete primary color range (50-950)', () => {
-      const primaryShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-      primaryShades.forEach(shade => {
+      const primaryShades: number[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      primaryShades.forEach((shade: number) => {
         expect(sigmaPalette[`primary${shade}`]).toBeDefined();
         expect(sigmaPalette[`primary${shade}`]).toMatch(/^#[0-9A-F]{6}$/i);
       });
     });
 
     test('should have complete secondary color range (50-950)', () => {
-      const secondaryShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-      secondaryShades.forEach(shade => {
+      const secondaryShades: number[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      secondaryShades.forEach((shade: number) => {
         expect(sigmaPalette[`secondary${shade}`]).toBeDefined();
         expect(sigmaPalette[`secondary${shade}`]).toMatch(/^#[0-9A-F]{6}$/i);
       });
     });
 
     test('should have complete success color range (50-950)', () => {
-      const successShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-      successShades.forEach(shade => {
+      const successShades: number[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      successShades.forEach((shade: number) => {
         expect(sigmaPalette[`success${shade}`]).toBeDefined();
         expect(sigmaPalette[`success${shade}`]).toMatch(/^#[0-9A-F]{6}$/i);
       });
     });
 
     test('should have complete warning color range (50-950)', () => {
-      const warningShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-      warningShades.forEach(shade => {
+      const warningShades: number[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      warningShades.forEach((shade: number) => {
         expect(sigmaPalette[`warning${shade}`]).toBeDefined();
         expect(sigmaPalette[`warning${shade}`]).toMatch(/^#[0-9A-F]{6}$/i);
       });
     });
 
     test('should have complete danger color range (50-950)', () => {
-      const dangerShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-      dangerShades.forEach(shade => {
+      const dangerShades: number[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      dangerShades.forEach((shade: number) => {
         expect(sigmaPalette[`danger${shade}`]).toBeDefined();
         expect(sigmaPalette[`danger${shade}`]).toMatch(/^#[0-9A-F]{6}$/i);
       });
     });
 
     test('should have complete dark color range (50-950)', () => {
-      const darkShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-      darkShades.forEach(shade => {
+      const darkShades: number[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      darkShades.forEach((shade: number) => {
         expect(sigmaPalette[`dark${shade}`]).toBeDefined();
         expect(sigmaPalette[`dark${shade}`]).toMatch(/^#[0-9A-F]{6}$/i);
       });

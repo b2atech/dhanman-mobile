@@ -10,23 +10,31 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUserCircle, faBuilding} from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
-import PropTypes from 'prop-types';
+import { IUser, IUnit } from '../types/common';
 
-const HeaderComponent = ({
+interface HeaderComponentProps {
+  user: IUser;
+  companyName: string;
+  units: IUnit[];
+  selectedUnit: string | null;
+  setSelectedUnit: (unitId: string) => void;
+}
+
+const HeaderComponent: React.FC<HeaderComponentProps> = ({
   user,
   companyName,
   units,
   selectedUnit,
   setSelectedUnit,
 }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   // Set the first unit as default when component mounts
   useEffect(() => {
     if (units.length > 0 && !selectedUnit) {
       setSelectedUnit(units[0].id);
     }
-  }, [units, selectedUnit]);
+  }, [units, selectedUnit, setSelectedUnit]);
 
   return (
     <>
@@ -68,7 +76,7 @@ const HeaderComponent = ({
             <Text style={styles.modalTitle}>Select Your Unit</Text>
 
             <View style={styles.iconRow}>
-              {units.map(unit => (
+              {units.map((unit: IUnit) => (
                 <TouchableOpacity
                   key={unit.id}
                   style={styles.unitItem}
@@ -102,21 +110,6 @@ const HeaderComponent = ({
       </Modal>
     </>
   );
-};
-
-HeaderComponent.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string,
-  }).isRequired,
-  companyName: PropTypes.string.isRequired,
-  units: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-    }),
-  ).isRequired,
-  selectedUnit: PropTypes.string,
-  setSelectedUnit: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -24,3 +24,25 @@ export interface ICompany {
     tan: string;
     shortName: string;
   }
+
+  export interface IPermission {
+    id: string;
+    name: string;
+    parentPermissionId?: string;
+  }
+
+  export interface IUserPermission {
+    permissionId: string;
+    userId: string;
+    organizationId: string;
+  }
+
+  export interface IUnit {
+    id: string;
+    name: string;
+  }
+
+  export interface PermissionHookReturn {
+    hasPermission: boolean;
+    loading: boolean;
+  }
