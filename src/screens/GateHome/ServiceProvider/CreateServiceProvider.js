@@ -16,7 +16,7 @@ import {
   getServiceProviderType,
 } from '../../../api/myHome/serviceProvider';
 import AddressForm from '../../CommonFiles/AddressForm';
-import SubmitButton from '../../../components/SubmitButton';
+import SubmitButton from '../../../components/shared/SubmitButton';
 import commonStyles from '../../../commonStyles/commonStyles';
 
 export default function CreateServiceProvider({navigation}) {

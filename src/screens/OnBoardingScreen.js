@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, Text, Alert, StyleSheet} from 'react-native';
-import {TextInput, Checkbox, HelperText} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useFormik} from 'formik';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, Text, Alert, StyleSheet } from 'react-native';
+import { TextInput, Checkbox, HelperText } from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {useNavigation} from '@react-navigation/native';
-import {format} from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
 import useConfig from '../hooks/useConfig';
-import {insertInvoice} from '../api/sales/invoice';
-import {insertResident} from '../api/myHome/resident';
+import { insertInvoice } from '../api/sales/invoice';
+import { insertResident } from '../api/myHome/resident';
 import commonStyles from '../commonStyles/commonStyles';
-import {getBuildingNames} from '../api/myHome/building';
-import {getFloorName} from '../api/myHome/floor';
-import {getUnitNames, getUnits} from '../api/myHome/unit';
-import SubmitButton from '../components/SubmitButton';
-import {getOrganizationAccounts} from '../api/commonApi/organization';
+import { getBuildingNames } from '../api/myHome/building';
+import { getFloorName } from '../api/myHome/floor';
+import { getUnitNames, getUnits } from '../api/myHome/unit';
+import SubmitButton from '../components/shared/SubmitButton';
+import { getOrganizationAccounts } from '../api/commonApi/organization';
 import 'react-native-get-random-values';
 
 const AddResidentRequestSchema = Yup.object().shape({
@@ -28,10 +28,7 @@ const AddResidentRequestSchema = Yup.object().shape({
     .required('Please Enter Last Name'),
   email: Yup.string()
     .required('Please Enter E-mail Address')
-    .matches(
-      /^[a-zA-Z0-9._-]+@gmail\.com$/,
-      'Only Gmail addresses are allowed',
-    ),
+    .matches(/^[a-zA-Z0-9._-]+@gmail\.com$/, 'Only Gmail addresses are allowed'),
   contactNumber: Yup.string()
     .matches(/^\d{10}$/, 'Please enter a valid 10-digit contact number')
     .required('Please Enter Contact Number'),
@@ -63,7 +60,7 @@ const Boarding = () => {
     const hex = [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
     return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(
       12,
-      16,
+      16
     )}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
   };
 
@@ -75,9 +72,7 @@ const Boarding = () => {
   useEffect(() => {
     const fetchOrganization = async () => {
       try {
-        const organizationData = await getOrganizationAccounts(
-          config?.organization?.id,
-        );
+        const organizationData = await getOrganizationAccounts(config?.organization?.id);
         setOrganizationDetails(organizationData);
       } catch (error) {
         console.error('Error fetching organization details:', error);
@@ -101,14 +96,13 @@ const Boarding = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedBuilding) {return;}
+    if (!selectedBuilding) {
+      return;
+    }
 
     const fetchFloorNames = async () => {
       try {
-        const response = await getFloorName(
-          config?.company?.id,
-          selectedBuilding,
-        );
+        const response = await getFloorName(config?.company?.id, selectedBuilding);
         setFloorNames(response || []);
       } catch (error) {
         console.error('Error fetching floor names:', error);
@@ -119,14 +113,12 @@ const Boarding = () => {
   }, [selectedBuilding]);
 
   useEffect(() => {
-    if (!selectedFloor) {return;}
+    if (!selectedFloor) {
+      return;
+    }
     const fetchUnitNames = async () => {
       try {
-        const response = await getUnitNames(
-          config?.company?.id,
-          selectedBuilding,
-          selectedFloor,
-        );
+        const response = await getUnitNames(config?.company?.id, selectedBuilding, selectedFloor);
         setUnitNames(response || []);
       } catch (error) {
         console.error('Error fetching unit names:', error);
@@ -137,7 +129,9 @@ const Boarding = () => {
   }, [selectedBuilding, selectedFloor]);
 
   useEffect(() => {
-    if (!selectedUnit) {return;}
+    if (!selectedUnit) {
+      return;
+    }
     const fetchUnitDetails = async () => {
       try {
         const unitData = await getUnits(selectedUnit);
@@ -159,7 +153,7 @@ const Boarding = () => {
       residentTypeId: '',
     },
     validationSchema: AddResidentRequestSchema,
-    onSubmit: async (values, {setSubmitting}) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const residentData = {
           firstName: values.firstName,
@@ -232,8 +226,9 @@ const Boarding = () => {
             navigation.goBack();
           }
         } else {
-          if (residentResponse)
-            {Alert.alert('Success', 'Resident added successfully.');}
+          if (residentResponse) {
+            Alert.alert('Success', 'Resident added successfully.');
+          }
           navigation.goBack();
         }
         setSubmitting(false);
@@ -246,11 +241,8 @@ const Boarding = () => {
   });
 
   return (
-    <ScrollView
-      contentContainerStyle={[commonStyles.container, styles.container]}>
-      <Text style={[styles.label, commonStyles.headerText]}>
-        Select Building
-      </Text>
+    <ScrollView contentContainerStyle={[commonStyles.container, styles.container]}>
+      <Text style={[styles.label, commonStyles.headerText]}>Select Building</Text>
       <Dropdown
         data={buildingNames}
         labelField="name"
@@ -325,9 +317,7 @@ const Boarding = () => {
         <HelperText type="error">{formik.errors.email}</HelperText>
       )}
 
-      <Text style={[styles.label, commonStyles.headerText]}>
-        Contact Number
-      </Text>
+      <Text style={[styles.label, commonStyles.headerText]}>Contact Number</Text>
       <TextInput
         keyboardType="numeric"
         onChangeText={formik.handleChange('contactNumber')}
