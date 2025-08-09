@@ -19,12 +19,18 @@ interface FCMModalProps {
   visible: boolean;
   title: string;
   body: string;
-  guestId: string;
+  guestId?: string;
   onClose: () => void;
 }
 
 const FCMModal: React.FC<FCMModalProps> = ({visible, title, body, guestId, onClose}) => {
   const onApprove = async () => {
+    if (!guestId) {
+      Alert.alert('Error', 'No guest ID provided');
+      Logger.error('No guest ID provided for approval');
+      return;
+    }
+    
     const visitorId = {
       id: guestId,
     };
@@ -41,6 +47,12 @@ const FCMModal: React.FC<FCMModalProps> = ({visible, title, body, guestId, onClo
   };
 
   const onReject = async () => {
+    if (!guestId) {
+      Alert.alert('Error', 'No guest ID provided');
+      Logger.error('No guest ID provided for rejection');
+      return;
+    }
+    
     const visitorId = {
       id: guestId,
     };
