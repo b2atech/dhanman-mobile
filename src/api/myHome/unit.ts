@@ -1,5 +1,6 @@
 import {fetcher} from '../../utils/axiosCommunity';
 import Logger from '../../utils/logger';
+import { Unit, UnitName, UnitNamesResponse, UserUnitsResponse } from '../../types/unit';
 
 export const endpoints = {
   list: '/',
@@ -8,7 +9,7 @@ export const endpoints = {
   getById: 'v1/unit',
 };
 
-export const getUnitNames = async (apartmentId: string | number, buildingId: string | number, floorId: string | number) => {
+export const getUnitNames = async (apartmentId: string | number, buildingId: string | number, floorId: string | number): Promise<UnitName[]> => {
   try {
     const url = endpoints.getUnitNamesByAllIds
       .replace('{0}', String(apartmentId))
@@ -18,7 +19,7 @@ export const getUnitNames = async (apartmentId: string | number, buildingId: str
     Logger.apiCall('GET', url);
     Logger.debug('Fetching unit names', { apartmentId, buildingId, floorId });
 
-    const response = await fetcher(url);
+    const response: UnitNamesResponse = await fetcher(url);
     Logger.debug('Unit names fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -27,13 +28,13 @@ export const getUnitNames = async (apartmentId: string | number, buildingId: str
   }
 };
 
-export const getUnits = async (unitID: string | number) => {
+export const getUnits = async (unitID: string | number): Promise<Unit> => {
   try {
     const url = `${endpoints.getById}${endpoints.list}${unitID}`;
     Logger.apiCall('GET', url);
     Logger.debug('Fetching units', { unitID });
 
-    const response = await fetcher(url);
+    const response: Unit = await fetcher(url);
     Logger.debug('Units fetched successfully');
     return response;
   } catch (error) {
@@ -42,7 +43,7 @@ export const getUnits = async (unitID: string | number) => {
   }
 };
 
-export const getUnitsByUserId = async (apartmentId: string | number, dhanmanId: string | number) => {
+export const getUnitsByUserId = async (apartmentId: string | number, dhanmanId: string | number): Promise<number[]> => {
   try {
     const url = endpoints.getUnitsByUserId
       .replace('{0}', String(dhanmanId))
@@ -51,9 +52,9 @@ export const getUnitsByUserId = async (apartmentId: string | number, dhanmanId: 
     Logger.apiCall('GET', url);
     Logger.debug('Fetching unit by user id', { apartmentId, dhanmanId });
 
-    const response = await fetcher(url);
+    const response: UserUnitsResponse = await fetcher(url);
     Logger.debug('Unit by user id fetched successfully');
-    return response;
+    return response.items;
   } catch (error) {
     Logger.error('Error fetching unit by user id', error, { apartmentId, dhanmanId });
     throw error;

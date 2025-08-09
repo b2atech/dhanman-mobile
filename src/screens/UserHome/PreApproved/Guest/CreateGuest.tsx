@@ -10,17 +10,11 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Logger from '../utils/logger';
 import useConfig from '../../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import {addPreApprovedVisitor} from '../../../../api/myHome/visitorLog';
-import Logger from '../utils/logger';
 import {useContext} from 'react';
-import Logger from '../utils/logger';
 import {AuthContext} from '../../../../context/AuthContext';
-import Logger from '../utils/logger';
 import {useNavigation} from '@react-navigation/native';
-import Logger from '../utils/logger';
 
 const CreateGuest = ({route}) => {
   const config = useConfig();

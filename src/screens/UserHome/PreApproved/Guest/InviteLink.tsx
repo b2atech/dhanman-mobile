@@ -8,13 +8,9 @@ import {
   TextInput,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import Logger from '../utils/logger';
 import {faPlus, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
-import Logger from '../utils/logger';
 import commonStyles from '../../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import Logger from '../utils/logger';
 
 const formatTime = (time, date = new Date()) => {
   if (!time || isNaN(time.split(':').join(''))) {

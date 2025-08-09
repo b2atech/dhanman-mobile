@@ -1,5 +1,13 @@
 import {fetcher, fetcherPost, fetcherPut} from '../../utils/axiosCommunity';
 import Logger from '../../utils/logger';
+import {
+  VisitorLog,
+  VisitorLogsResponse,
+  VisitorLogsByUnitResponse,
+  CreateVisitorLogRequest,
+  VisitorLogStatusUpdate,
+  PreApprovedVisitorRequest,
+} from '../../types/visitorLog';
 
 export const endpoints = {
   list: '/',
@@ -13,7 +21,7 @@ export const endpoints = {
   insertPreApprove: 'v1/visitor-approval',
 };
 
-export const getVisitorsLog = async (apartmentId: string | number, visitorId: string | number, visitorTypeId: string | number) => {
+export const getVisitorsLog = async (apartmentId: string | number, visitorId: string | number, visitorTypeId: string | number): Promise<VisitorLog[]> => {
   try {
     const url = endpoints.get
       .replace('{0}', String(apartmentId))
@@ -23,7 +31,7 @@ export const getVisitorsLog = async (apartmentId: string | number, visitorId: st
     Logger.apiCall('GET', url);
     Logger.debug('Fetching visitors log', { apartmentId, visitorId, visitorTypeId });
 
-    const response = await fetcher(url);
+    const response: VisitorLogsResponse = await fetcher(url);
     Logger.debug('Visitors log fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -32,7 +40,7 @@ export const getVisitorsLog = async (apartmentId: string | number, visitorId: st
   }
 };
 
-export const addVisitorLog = async (visitorLog: any) => {
+export const addVisitorLog = async (visitorLog: CreateVisitorLogRequest): Promise<VisitorLog> => {
   try {
     Logger.apiCall('POST', endpoints.insert);
     Logger.debug('Adding visitor log', { visitorLog });
@@ -46,7 +54,7 @@ export const addVisitorLog = async (visitorLog: any) => {
   }
 };
 
-export const getVisitorsByUnitId = async (apartmentId: string | number, unitId: string | number) => {
+export const getVisitorsByUnitId = async (apartmentId: string | number, unitId: string | number): Promise<VisitorLog[]> => {
   try {
     const url = endpoints.visitorsByUnitId
       .replace('{0}', String(apartmentId))
@@ -55,7 +63,7 @@ export const getVisitorsByUnitId = async (apartmentId: string | number, unitId: 
     Logger.apiCall('GET', url);
     Logger.debug('Fetching visitors by unit ID', { apartmentId, unitId });
 
-    const response = await fetcher(url);
+    const response: VisitorLogsByUnitResponse = await fetcher(url);
     Logger.debug('Visitors by unit ID fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -64,7 +72,7 @@ export const getVisitorsByUnitId = async (apartmentId: string | number, unitId: 
   }
 };
 
-export const getAllVisitorsLog = async (apartmentId: string | number, date: string) => {
+export const getAllVisitorsLog = async (apartmentId: string | number, date: string): Promise<VisitorLog[]> => {
   try {
     const url = endpoints.getAllVisitorLog
       .replace('{0}', String(apartmentId))
@@ -73,7 +81,7 @@ export const getAllVisitorsLog = async (apartmentId: string | number, date: stri
     Logger.apiCall('GET', url);
     Logger.debug('Fetching all visitors log', { apartmentId, date });
 
-    const response = await fetcher(url);
+    const response: VisitorLogsResponse = await fetcher(url);
     Logger.debug('All visitors log fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -82,7 +90,7 @@ export const getAllVisitorsLog = async (apartmentId: string | number, date: stri
   }
 };
 
-export const visitorCheckOut = async (visitorId: any) => {
+export const visitorCheckOut = async (visitorId: VisitorLogStatusUpdate): Promise<VisitorLog> => {
   try {
     Logger.apiCall('PUT', endpoints.checkOut);
     Logger.debug('Checking out visitor', { visitorId });
@@ -96,7 +104,7 @@ export const visitorCheckOut = async (visitorId: any) => {
   }
 };
 
-export const visitorApprove = async (visitorId: any) => {
+export const visitorApprove = async (visitorId: VisitorLogStatusUpdate): Promise<VisitorLog> => {
   try {
     Logger.apiCall('PUT', endpoints.approve);
     Logger.debug('Approving visitor', { visitorId });
@@ -110,7 +118,7 @@ export const visitorApprove = async (visitorId: any) => {
   }
 };
 
-export const visitorReject = async (visitorId: any) => {
+export const visitorReject = async (visitorId: VisitorLogStatusUpdate): Promise<VisitorLog> => {
   try {
     Logger.apiCall('PUT', endpoints.reject);
     Logger.debug('Rejecting visitor', { visitorId });
@@ -124,7 +132,7 @@ export const visitorReject = async (visitorId: any) => {
   }
 };
 
-export const addPreApprovedVisitor = async (PreApprovedVisitor: any) => {
+export const addPreApprovedVisitor = async (PreApprovedVisitor: PreApprovedVisitorRequest): Promise<VisitorLog> => {
   try {
     Logger.apiCall('POST', endpoints.insertPreApprove);
     Logger.debug('Adding pre-approved visitor', { PreApprovedVisitor });

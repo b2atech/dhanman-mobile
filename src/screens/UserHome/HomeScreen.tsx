@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import Logger from '../utils/logger';
 import {
   View,
   Text,
@@ -8,33 +7,26 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import Logger from '../utils/logger';
-import commonStyles from '../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
-import FinanceHome from '../dashboard/FinanceHome';
-import Logger from '../utils/logger';
-import { AuthContext } from '../../context/AuthContext';
-import Logger from '../utils/logger';
-import useConfig from '../../hooks/useConfig';
-import Logger from '../utils/logger';
-import { useHasPermission } from '../../hooks/useHasPermission';
-import Logger from '../utils/logger';
-import { DhanmanPermissions } from '../../constant/DhanmanPermission';
-import Logger from '../utils/logger';
 import PropTypes from 'prop-types';
 import Logger from '../utils/logger';
+import commonStyles from '../../commonStyles/commonStyles';
+import FinanceHome from '../dashboard/FinanceHome';
+import { AuthContext } from '../../context/AuthContext';
+import useConfig from '../../hooks/useConfig';
+import { useHasPermission } from '../../hooks/useHasPermission';
+import { DhanmanPermissions } from '../../constant/DhanmanPermission';
 import FloatingActionButton from '../../components/AddButton';
-import Logger from '../utils/logger';
 import HeaderComponent from '../HeaderScreen';
-import Logger from '../utils/logger';
 import { getdefalutors, getdefalutorTotal } from '../../api/sales/defaultor';
-import Logger from '../utils/logger';
 import BillSection from './Components/BillSection';
-import Logger from '../utils/logger';
 import { getAllBills } from '../../api/purchase/bill';
-import Logger from '../utils/logger';
 
-const HomeScreen = ({ navigation, fcmToken }) => {
+interface HomeScreenProps {
+  navigation: any;
+  fcmToken?: string;
+}
+
+const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
   const { user } = useContext(AuthContext);
   const config = useConfig();
   const units = user?.unitIds || [];
@@ -43,9 +35,9 @@ const HomeScreen = ({ navigation, fcmToken }) => {
     user?.dhanmanId,
     DhanmanPermissions.ADMIN
   );
-  const [defalutorTotal, setDefalutorTotal] = useState([]);
-  const [defalutors, setDefalutors] = useState([]);
-  const [selectedUnit, setSelectedUnit] = useState(
+  const [defalutorTotal, setDefalutorTotal] = useState<any[]>([]);
+  const [defalutors, setDefalutors] = useState<any[]>([]);
+  const [selectedUnit, setSelectedUnit] = useState<string | number>(
     units.length > 0 ? units[0] : ''
   );
 

@@ -1,13 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import PropTypes from 'prop-types';
 import {getCountries, getStates} from '../../api/myHome/address';
+import { Country, State } from '../../types/address';
 import commonStyles from '../../commonStyles/commonStyles';
 
-const AddressForm = ({formData, handleInputChange, label, addressType}) => {
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
+interface AddressFormProps {
+  formData: any;
+  handleInputChange: (field: string, value: any, isAddress?: boolean, addressType?: string) => void;
+  label: string;
+  addressType: string;
+}
+
+const AddressForm = ({formData, handleInputChange, label, addressType}: AddressFormProps) => {
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [states, setStates] = useState<State[]>([]);
 
   useEffect(() => {
     const fetchCountries = async () => {

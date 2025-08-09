@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import Logger from '../utils/logger';
 import PropTypes from 'prop-types';
-import Logger from '../utils/logger';
-
 import {
   View,
   Text,
@@ -13,23 +10,18 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Logger from '../utils/logger';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import Logger from '../utils/logger';
 import {faBell} from '@fortawesome/free-regular-svg-icons';
-import Logger from '../utils/logger';
 import {
   faClock,
   faTools,
   faTruck,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
+import Logger from '../utils/logger';
 import commonStyles from '../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 import LinearGradient from 'react-native-linear-gradient';
-import Logger from '../utils/logger';
 import {SaveGuestNotification} from '../../api/myHome/fcmService';
-import Logger from '../utils/logger';
 
 export default function GateHomeScreen({fcmToken}) {
   const navigation = useNavigation();

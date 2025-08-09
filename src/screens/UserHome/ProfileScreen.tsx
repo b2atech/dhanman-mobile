@@ -12,11 +12,8 @@ import {
   ScrollView,
 } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
-import Logger from '../utils/logger';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Logger from '../utils/logger';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import Logger from '../utils/logger';
 import {
   faUser,
   faBell,

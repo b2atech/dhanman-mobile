@@ -32,7 +32,7 @@ const FCMModal: React.FC<FCMModalProps> = ({visible, title, body, guestId, onClo
     }
     
     const visitorId = {
-      id: guestId,
+      visitorLogId: parseInt(guestId, 10),
     };
     Logger.debug('Approving visitor', { visitorId });
     try {
@@ -54,7 +54,7 @@ const FCMModal: React.FC<FCMModalProps> = ({visible, title, body, guestId, onClo
     }
     
     const visitorId = {
-      id: guestId,
+      visitorLogId: parseInt(guestId, 10),
     };
     Logger.debug('Rejecting visitor', { visitorId });
     try {

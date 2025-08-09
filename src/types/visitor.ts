@@ -16,7 +16,30 @@ export interface Visitor {
   modifiedOnUtc: string;
 }
 
-export interface VisitorsResponse {
-  cursor: string;
-  items: Visitor[];
+export interface VisitorType {
+  id: number;
+  name: string;
+  description?: string;
+  isActive: boolean;
 }
+
+export interface VisitorIdentityType {
+  id: number;
+  name: string;
+  description?: string;
+  isActive: boolean;
+}
+
+export interface VisitorTypesResponse {
+  cursor?: string;
+  items: VisitorType[];
+}
+
+export interface VisitorIdentityTypesResponse {
+  cursor?: string;
+  items: VisitorIdentityType[];
+}
+
+export interface VisitorsResponse {
+  cursor?: string;
+  items: Visitor[];

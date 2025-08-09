@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
 import {
   Text,
   TextInput,
@@ -13,25 +12,27 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import Logger from '../utils/logger';
 import useConfig from '../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import {
   createTicket,
   getTicketCategories,
   getTicketPrioirity,
 } from '../../../api/myHome/ticket';
+import { TicketCategory, TicketPriority, CreateTicketRequest } from '../../../types/ticket';
 import SubmitButton from '../../../components/shared/SubmitButton';
-import Logger from '../utils/logger';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
-export default function CreateTicket({navigation}) {
+interface CreateTicketProps {
+  navigation: any;
+}
+
+export default function CreateTicket({navigation}: CreateTicketProps) {
   const config = useConfig();
-  const [categories, setCategories] = useState([]);
-  const [prioirity, setPrioirity] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState<TicketCategory[]>([]);
+  const [prioirity, setPrioirity] = useState<TicketPriority[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState({
-    apartmentId: config?.company?.id,
+  const [formData, setFormData] = useState<CreateTicketRequest>({
+    apartmentId: config?.company?.id || 0,
     title: '',
     unitId: 1155,
     description: '',

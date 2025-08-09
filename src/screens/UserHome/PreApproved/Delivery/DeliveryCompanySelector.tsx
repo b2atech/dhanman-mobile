@@ -10,11 +10,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Logger from '../utils/logger';
 import {getDeliveryCompanies} from '../../../../api/myHome/delivery';
-import Logger from '../utils/logger';
 import commonStyles from '../../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
 const DeliveryCompanySelector = ({visible, onClose, onSelectCompany}) => {
   const [companies, setCompanies] = useState([]);

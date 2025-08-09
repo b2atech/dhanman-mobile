@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Logger from '../utils/logger';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
-import Logger from '../utils/logger';
 import {
   VictoryChart,
   VictoryBar,
@@ -10,13 +9,9 @@ import {
   VictoryGroup,
 } from 'victory-native';
 import {Checkbox} from 'react-native-paper';
-import Logger from '../utils/logger';
 import {useGetAccountOverview} from '../../../api/myHome/financeReports';
-import Logger from '../utils/logger';
 import useConfig from '../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
 const IncomeVsExpenseChart = () => {
   const {company, finYear} = useConfig();

@@ -11,4 +11,3 @@ export interface DeliveryCompaniesResponse {
   cursor: string;
   items: DeliveryCompany[];
 }
-export type GroupedCompanies = Record<string, DeliveryCompany[]>;
