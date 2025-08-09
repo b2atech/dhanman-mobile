@@ -61,9 +61,10 @@ export default function ExpensesPieChart({ companyId, year }: ExpensesPieChartPr
     <View style={styles.card}>
       <Text style={styles.title}>Expenses by Categories</Text>
       <PieChart
-        data={data.map(item => ({
+        data={data.map((item, idx) => ({
           value: item.totalExpense,
-          color: '#4eaeff', // fallback color if not present
+           color: theme.colors.chartPalette[idx % theme.colors.chartPalette.length],
+
           label: item.accountName,
         }))}
         radius={70}

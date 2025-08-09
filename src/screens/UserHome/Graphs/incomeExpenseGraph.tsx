@@ -146,11 +146,11 @@ export default function IncomeExpenseLineGraph({
             pointerColor: palette[0],
             pointerLabelWidth: 64,
             pointerStripUptoDataPoint: true,
-            pointerLabelComponent: (point: { value: number }) => (
-              <View style={[styles.pointerLabelBubble, { backgroundColor: palette[0] }]}>
-                <Text style={styles.pointerLabelText}>{abbreviateYAxis(point.value.toString())}</Text>
-              </View>
-            ),
+            // pointerLabelComponent: (point: { value: number }) => (
+            //   <View style={[styles.pointerLabelBubble, { backgroundColor: palette[0] }]}>
+            //     <Text style={styles.pointerLabelText}>{abbreviateYAxis(point.value.toString())}</Text>
+            //   </View>
+            // ),
           }}
           xAxisLabelTexts={xLabels}
           xAxisLabelsHeight={25}
