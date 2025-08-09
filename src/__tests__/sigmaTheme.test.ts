@@ -23,8 +23,8 @@ describe('Sigma Theme', () => {
 
   beforeAll(() => {
     // Import the sigma theme files
-    sigmaTheme = require('../theme/palettes/sigma.js').default;
-    sigmaPalette = require('../theme/colors/sigmaPalette.js').sigmaPalette;
+    sigmaTheme = require('../theme/palettes/sigma.ts').default;
+    sigmaPalette = require('../theme/colors/sigmaPalette.ts').sigmaPalette;
   });
 
   describe('Theme Structure', () => {

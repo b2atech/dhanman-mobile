@@ -1,13 +1,18 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-export default function SubmitButton({onPress, title}) {
+interface SubmitButtonProps {
+  onPress: () => void;
+  title: string;
+}
+
+const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, title }) => {
   return (
     <TouchableOpacity style={styles.submitButton} onPress={onPress}>
       <Text style={styles.submitButtonText}>{title}</Text>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   submitButton: {
@@ -25,3 +30,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default SubmitButton;
