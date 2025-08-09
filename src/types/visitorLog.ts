@@ -63,4 +63,3 @@ export interface PreApprovedVisitorRequest {
   validTo: string;
   purpose: string;
   approvedBy: string;
-}

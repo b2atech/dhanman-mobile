@@ -17,17 +17,22 @@ import {
   getTicketCategories,
   getTicketPrioirity,
 } from '../../../api/myHome/ticket';
+import { TicketCategory, TicketPriority, CreateTicketRequest } from '../../../types/ticket';
 import SubmitButton from '../../../components/shared/SubmitButton';
 import commonStyles from '../../../commonStyles/commonStyles';
 
-export default function CreateTicket({navigation}) {
-  const config = useConfig();
-  const [categories, setCategories] = useState([]);
-  const [prioirity, setPrioirity] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+interface CreateTicketProps {
+  navigation: any;
+}
 
-  const [formData, setFormData] = useState({
-    apartmentId: config?.company?.id,
+export default function CreateTicket({navigation}: CreateTicketProps) {
+  const config = useConfig();
+  const [categories, setCategories] = useState<TicketCategory[]>([]);
+  const [prioirity, setPrioirity] = useState<TicketPriority[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [formData, setFormData] = useState<CreateTicketRequest>({
+    apartmentId: config?.company?.id || 0,
     title: '',
     unitId: 1155,
     description: '',

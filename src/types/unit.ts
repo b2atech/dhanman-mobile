@@ -34,4 +34,3 @@ export interface UnitNamesResponse {
 export interface UserUnitsResponse {
   cursor?: string;
   items: number[];
-}

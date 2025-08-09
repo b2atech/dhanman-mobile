@@ -53,4 +53,3 @@ export interface FinancialYear {
   id: number;
   startDate: Date;
   endDate: Date;
-}

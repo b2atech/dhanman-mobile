@@ -63,4 +63,3 @@ export interface CitiesResponse {
 export interface AddressesResponse {
   cursor?: string;
   items: Address[];
-}

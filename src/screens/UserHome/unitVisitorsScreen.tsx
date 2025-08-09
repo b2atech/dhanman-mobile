@@ -1,17 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Logger from '../utils/logger';
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
-import Logger from '../utils/logger';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import Logger from '../utils/logger';
 import {faPhone, faEnvelope} from '@fortawesome/free-regular-svg-icons';
-import Logger from '../utils/logger';
 import commonStyles from '../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 import {getVisitorsByUnitId} from '../../api/myHome/visitorLog';
-import Logger from '../utils/logger';
 import defaultUserIcon from '../../assets/images/user_icon.png';
-import Logger from '../utils/logger';
 
 const UnitVisitorsScreen = ({route}) => {
   const {unitId, unitName} = route.params;

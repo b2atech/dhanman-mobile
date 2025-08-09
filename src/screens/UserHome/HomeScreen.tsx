@@ -21,7 +21,12 @@ import { getdefalutors, getdefalutorTotal } from '../../api/sales/defaultor';
 import BillSection from './Components/BillSection';
 import { getAllBills } from '../../api/purchase/bill';
 
-const HomeScreen = ({ navigation, fcmToken }) => {
+interface HomeScreenProps {
+  navigation: any;
+  fcmToken?: string;
+}
+
+const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
   const { user } = useContext(AuthContext);
   const config = useConfig();
   const units = user?.unitIds || [];
@@ -30,9 +35,9 @@ const HomeScreen = ({ navigation, fcmToken }) => {
     user?.dhanmanId,
     DhanmanPermissions.ADMIN
   );
-  const [defalutorTotal, setDefalutorTotal] = useState([]);
-  const [defalutors, setDefalutors] = useState([]);
-  const [selectedUnit, setSelectedUnit] = useState(
+  const [defalutorTotal, setDefalutorTotal] = useState<any[]>([]);
+  const [defalutors, setDefalutors] = useState<any[]>([]);
+  const [selectedUnit, setSelectedUnit] = useState<string | number>(
     units.length > 0 ? units[0] : ''
   );
 

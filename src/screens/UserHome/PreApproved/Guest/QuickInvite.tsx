@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Logger from '../utils/logger';
 import PropTypes from 'prop-types';
-import Logger from '../utils/logger';
 import {
   View,
   Text,
@@ -11,15 +10,10 @@ import {
   TextInput,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import Logger from '../utils/logger';
 import {faCalendar, faClock, faLock} from '@fortawesome/free-solid-svg-icons';
-import Logger from '../utils/logger';
 import {useNavigation} from '@react-navigation/native';
-import Logger from '../utils/logger';
 import LinearGradient from 'react-native-linear-gradient';
-import Logger from '../utils/logger';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Logger from '../utils/logger';
 
 const QuickInvite = ({type}) => {
   const navigation = useNavigation();

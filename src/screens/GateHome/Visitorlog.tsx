@@ -1,17 +1,11 @@
 import React, {useState} from 'react';
 import Logger from '../utils/logger';
 import {View, Text, TextInput, StyleSheet, Button, Alert} from 'react-native';
-import Logger from '../utils/logger';
 import {Dropdown} from 'react-native-element-dropdown';
-import Logger from '../utils/logger';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import Logger from '../utils/logger';
 import commonStyles from '../../style/CommonStyles';
-import Logger from '../utils/logger';
 import {addVisitorLog} from '../../api/visitorLog';
-import Logger from '../utils/logger';
 import UnitSelection from '../CommonFiles/UnitSelection';
-import Logger from '../utils/logger';
 
 export default function VisitorLogScreen() {
   const navigation = useNavigation();

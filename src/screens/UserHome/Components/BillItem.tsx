@@ -8,18 +8,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import Logger from '../utils/logger';
 import Icon from 'react-native-vector-icons/Feather';
-import Logger from '../utils/logger';
 import PropTypes from 'prop-types';
-import Logger from '../utils/logger';
 import {
   updateBillSendForApproval,
   updateBillApprove,
   updateBillReject,
 } from '../../../api/purchase/bill';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
 const BillItem = ({
   bill,

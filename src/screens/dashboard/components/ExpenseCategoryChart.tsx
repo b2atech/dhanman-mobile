@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Logger from '../utils/logger';
 import {Dimensions, StyleSheet, View, Text, ScrollView} from 'react-native';
-import Logger from '../utils/logger';
 import {
   VictoryBar,
   VictoryChart,
@@ -10,11 +9,8 @@ import {
   VictoryStack,
 } from 'victory-native';
 import {useGetaccountExpenseOverviews} from '../../../api/myHome/financeReports';
-import Logger from '../utils/logger';
 import useConfig from '../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
 const screenWidth = Dimensions.get('window').width;
 
