@@ -1,4 +1,4 @@
-import { Visitor, VisitorsResponse } from '../../types/visitor';
+import { Visitor, VisitorsResponse, VisitorType, VisitorIdentityType, VisitorTypesResponse, VisitorIdentityTypesResponse } from '../../types/visitor';
 import {fetcher, fetcherPost} from '../../utils/axiosCommunity';
 import Logger from '../../utils/logger';
 
@@ -28,7 +28,7 @@ export const getVisitors = async (identityTypeId: string | number): Promise<Visi
   }
 };
 
-export const addVisitor = async (visitor: any) => {
+export const addVisitor = async (visitor: Partial<Visitor>): Promise<Visitor> => {
   try {
     Logger.apiCall('POST', endpoints.insert);
     Logger.debug('Adding visitor', { visitor });
@@ -42,21 +42,21 @@ export const addVisitor = async (visitor: any) => {
   }
 };
 
-export const addVisitorPending = async (visitorPending: any) => {
+export const addVisitorPending = async (visitorPending: Partial<Visitor>): Promise<Visitor> => {
   try {
     Logger.apiCall('POST', endpoints.visitorPending);
     Logger.debug('Adding visitor pending', { visitorPending });
 
     const response = await fetcherPost(endpoints.visitorPending, visitorPending);
     Logger.debug('Visitor pending added successfully');
-    return response;
+    return response.data;
   } catch (error) {
     Logger.error('Error adding visitor pending', error, { visitorPending });
     throw error;
   }
 };
 
-export const getVisitorByUnitId = async (apartmentId: string | number, unitId: string | number) => {
+export const getVisitorByUnitId = async (apartmentId: string | number, unitId: string | number): Promise<Visitor[]> => {
   const url = endpoints.visitorsByUnit
     .replace('{0}', String(apartmentId))
     .replace('{1}', String(unitId));
@@ -64,7 +64,7 @@ export const getVisitorByUnitId = async (apartmentId: string | number, unitId: s
     Logger.apiCall('GET', url);
     Logger.debug('Fetching visitors by unit ID', { apartmentId, unitId });
 
-    const response = await fetcher(url);
+    const response: VisitorsResponse = await fetcher(url);
     Logger.debug('Visitors by unit ID fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -73,12 +73,12 @@ export const getVisitorByUnitId = async (apartmentId: string | number, unitId: s
   }
 };
 
-export const getVisitorType = async () => {
+export const getVisitorType = async (): Promise<VisitorType[]> => {
   try {
     Logger.apiCall('GET', endpoints.visitorTypes);
     Logger.debug('Fetching visitor types');
 
-    const response = await fetcher(endpoints.visitorTypes);
+    const response: VisitorTypesResponse = await fetcher(endpoints.visitorTypes);
     Logger.debug('Visitor types fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -87,12 +87,12 @@ export const getVisitorType = async () => {
   }
 };
 
-export const getVisitorIdentityType = async () => {
+export const getVisitorIdentityType = async (): Promise<VisitorIdentityType[]> => {
   try {
     Logger.apiCall('GET', endpoints.visitorIdentityTypes);
     Logger.debug('Fetching visitor identity types');
 
-    const response = await fetcher(endpoints.visitorIdentityTypes);
+    const response: VisitorIdentityTypesResponse = await fetcher(endpoints.visitorIdentityTypes);
     Logger.debug('Visitor identity types fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {

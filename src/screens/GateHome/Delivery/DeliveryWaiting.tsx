@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Logger from '../utils/logger';
 import {
   View,
   Text,
@@ -14,11 +13,8 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import Logger from '../utils/logger';
 import {getVisitors} from '../../../api/myHome/visitors';
-import Logger from '../utils/logger';
 import {getVisitorsLog} from '../../../api/myHome/visitorLog';
-import Logger from '../utils/logger';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
 const defaultUserIcon = require('../../../assets/images/user_icon.png');
 

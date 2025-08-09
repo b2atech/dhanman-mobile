@@ -1,6 +1,15 @@
 import { fetcher, fetcherPost, fetcherPut } from '../../utils/axiosPurchase';
 import * as _ from 'lodash';
 import Logger from '../../utils/logger';
+import {
+  Bill,
+  BillsResponse,
+  SendForApprovalRequest,
+  ApproveBillRequest,
+  CancelBillRequest,
+  RejectBillRequest,
+  FinancialYear,
+} from '../../types/bill';
 
 export const endpoints = {
   getAllBillsByCompanyId:
@@ -11,9 +20,10 @@ export const endpoints = {
   rejectBill: 'v1/bills/reject',
 };
 
-export function getFinancialYearDates(finYearId: string | number) {
+export function getFinancialYearDates(finYearId: string | number): FinancialYear {
   const year = parseInt(String(finYearId), 10);
   return {
+    id: year,
     startDate: new Date(year, 3, 1),
     endDate: new Date(year + 1, 2, 31),
   };
@@ -25,7 +35,7 @@ export const getAllBills = async (
   finYearId: string | number,
   startDate: string,
   endDate: string
-) => {
+): Promise<Bill[]> => {
   try {
     const url = endpoints.getAllBillsByCompanyId
       .replace('{0}', String(companyId))
@@ -37,7 +47,7 @@ export const getAllBills = async (
     Logger.apiCall('GET', url);
     Logger.debug('Fetching bills', { companyId, billTypeId, finYearId, startDate, endDate });
 
-    const response = await fetcher(url);
+    const response: BillsResponse = await fetcher(url);
     Logger.debug('Bills fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -47,7 +57,7 @@ export const getAllBills = async (
 };
 
 export async function updateBillSendForApproval(
-  sendForApprovalStatus: any,
+  sendForApprovalStatus: SendForApprovalRequest,
   finYearId: string | number,
   billTypeId: string | number
 ) {
@@ -65,7 +75,7 @@ export async function updateBillSendForApproval(
   }
 }
 
-export async function updateBillApprove(approveStatus: any, finYearId: string | number, billTypeId: string | number) {
+export async function updateBillApprove(approveStatus: ApproveBillRequest, finYearId: string | number, billTypeId: string | number) {
   try {
     const safeData = _.cloneDeep(approveStatus);
     Logger.apiCall('POST', endpoints.approveBill);
@@ -80,7 +90,7 @@ export async function updateBillApprove(approveStatus: any, finYearId: string | 
   }
 }
 
-export async function updateBillCancel(cancelStatus: any, finYearId: string | number, billTypeId: string | number) {
+export async function updateBillCancel(cancelStatus: CancelBillRequest, finYearId: string | number, billTypeId: string | number) {
   try {
     const safeData = _.cloneDeep(cancelStatus);
     Logger.apiCall('PUT', endpoints.cancelBill);
@@ -95,7 +105,7 @@ export async function updateBillCancel(cancelStatus: any, finYearId: string | nu
   }
 }
 
-export async function updateBillReject(rejectStatus: any, finYearId: string | number, billTypeId: string | number) {
+export async function updateBillReject(rejectStatus: RejectBillRequest, finYearId: string | number, billTypeId: string | number) {
   try {
     const safeData = _.cloneDeep(rejectStatus);
     Logger.apiCall('PUT', endpoints.rejectBill);

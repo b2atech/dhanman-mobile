@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
 import {
   Text,
   TextInput,
@@ -13,16 +12,13 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import Logger from '../utils/logger';
 import useConfig from '../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import {
   createTicket,
   getTicketCategories,
   getTicketPrioirity,
 } from '../../../api/myHome/ticket';
 import SubmitButton from '../../../components/shared/SubmitButton';
-import Logger from '../utils/logger';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 
 export default function CreateTicket({navigation}) {
   const config = useConfig();
