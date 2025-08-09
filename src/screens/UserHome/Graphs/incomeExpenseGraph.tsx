@@ -1,44 +1,104 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
+import { getIncomeExpensesOverview } from '../../../api/commonApi/reports';
+// You must implement this API function as per your backend
 
-const { width: screenWidth } = Dimensions.get('window');
 
 function abbreviateYAxis(label: string): string {
   const num = Number(label);
-  if (isNaN(num)) {return label;}
-  if (num >= 10000000) {return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr';}
-  if (num >= 100000) {return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L';}
-  if (num >= 1000) {return (num / 1000).toFixed(0) + 'k';}
+  if (isNaN(num)) { return label; }
+  if (num >= 10000000) { return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr'; }
+  if (num >= 100000) { return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L'; }
+  if (num >= 1000) { return (num / 1000).toFixed(0) + 'k'; }
   return num.toString();
 }
 
 export type IncomeExpenseLineGraphProps = {
-  incomeData?: number[];
-  expenseData?: number[];
-  xLabels?: string[];
+  companyId: string;
+  periodType: number;
+  period: number;
+
 };
 
 export default function IncomeExpenseLineGraph({
-  incomeData = [],
-  expenseData = [],
-  xLabels = [],
+  companyId,
+  periodType,
+  period
 }: IncomeExpenseLineGraphProps) {
   const { theme } = useTheme();
   const { colors, components, spacing } = theme;
 
+  // Palette usage for lines & dots
+  const palette = Array.isArray(colors.chartPalette)
+    ? colors.chartPalette
+    : [colors.chartPrimary ?? '#189e8a', colors.chartSecondary ?? '#4eaeff'];
+
+  // State for API data
+  const [incomeData, setIncomeData] = useState<number[]>([]);
+  const [expenseData, setExpenseData] = useState<number[]>([]);
+  const [xLabels, setXLabels] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+  let mounted = true;
+  setLoading(true);
+  setError(null);
+  getIncomeExpensesOverview(companyId, periodType, period)
+    .then((items) => {
+      if (mounted) {
+        // Map the API result to chart-friendly arrays
+        const incomeData = items.map(item => item.totalIncome);
+        const expenseData = items.map(item => item.totalExpense);
+        const xLabels = items.map(item => item.period);
+
+        setIncomeData(incomeData);
+        setExpenseData(expenseData);
+        setXLabels(xLabels);
+      }
+    })
+    .catch(() => {
+      if (mounted) setError('Failed to load income/expense data');
+    })
+    .finally(() => {
+      if (mounted) setLoading(false);
+    });
+  return () => { mounted = false; };
+}, [companyId, periodType, period]);
+
   const maxYValue = Math.max(...incomeData, ...expenseData, 0) * 1.2;
+
+  if (loading) {
+    return (
+      <View style={[components.card, styles.graphCard]}>
+        <ActivityIndicator size="small" color={palette[0]} />
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={[components.card, styles.graphCard]}>
+        <Text style={{ color: typeof colors.error === 'string' ? colors.error : '#EF4444' }}>{error}</Text>
+      </View>
+    );
+  }
+  if (!incomeData.length && !expenseData.length) {
+    return (
+      <View style={[components.card, styles.graphCard]}>
+        <Text style={{ color: colors.textSecondary }}>No income/expense data found.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[components.card, styles.graphCard]}>
-      <Text style={components.sectionTitle}>
-        Income vs Expense
-      </Text>
+      <Text style={components.sectionTitle}>Income vs Expense</Text>
       <View style={styles.graphLegendRow}>
-        <View style={[styles.legendDot, { backgroundColor: colors.primary }]} />
+        <View style={[styles.legendDot, { backgroundColor: palette[0] }]} />
         <Text style={[styles.legendLabel, { color: colors.textSecondary }]}>Income</Text>
-        <View style={[styles.legendDot, { backgroundColor: colors.secondary }]} />
+        <View style={[styles.legendDot, { backgroundColor: palette[1] }]} />
         <Text style={[styles.legendLabel, { color: colors.textSecondary }]}>Expense</Text>
       </View>
       <View style={styles.chartWrap}>
@@ -48,22 +108,22 @@ export default function IncomeExpenseLineGraph({
             value: v,
             label: xLabels[i],
             dataPointText: abbreviateYAxis(v.toString()),
-            color: colors.primary,
+            color: palette[0],
           }))}
           data2={expenseData.map((v, i) => ({
             value: v,
             label: xLabels[i],
             dataPointText: abbreviateYAxis(v.toString()),
-            color: colors.secondary,
+            color: palette[1],
           }))}
           curved
           areaChart
-          startFillColor={colors.primary}
+          startFillColor={palette[0]}
           endFillColor={colors.surface}
           startOpacity={0.13}
           endOpacity={0.02}
-          color={colors.primary}
-          color2={colors.secondary}
+          color={palette[0]}
+          color2={palette[1]}
           thickness={2.2}
           thickness2={2.2}
           rulesColor="transparent"
@@ -79,17 +139,15 @@ export default function IncomeExpenseLineGraph({
           yAxisColor="transparent"
           noOfSections={4}
           hideDataPoints={false}
-          dataPointsColor={colors.primary}
-          dataPointsColor2={colors.secondary}
-
-
+          dataPointsColor={palette[0]}
+          dataPointsColor2={palette[1]}
           pointerConfig={{
             pointerStripHeight: 120,
-            pointerColor: colors.primary,
+            pointerColor: palette[0],
             pointerLabelWidth: 64,
             pointerStripUptoDataPoint: true,
             pointerLabelComponent: (point: { value: number }) => (
-              <View style={[styles.pointerLabelBubble, { backgroundColor: colors.primary }]}>
+              <View style={[styles.pointerLabelBubble, { backgroundColor: palette[0] }]}>
                 <Text style={styles.pointerLabelText}>{abbreviateYAxis(point.value.toString())}</Text>
               </View>
             ),
@@ -98,18 +156,15 @@ export default function IncomeExpenseLineGraph({
           xAxisLabelsHeight={25}
           hideRules={true}
           maxValue={maxYValue}
-
           dataPointsShape="circle"
           dataPointsRadius={4}
           dataPointsWidth={4}
           dataPointsHeight={4}
           showVerticalLines={false}
-
           formatYLabel={abbreviateYAxis}
-          customDataPoint={(_point: any, _idx: number) => (
-            <View style={[styles.graphDot, { backgroundColor: colors.primary }]} />
+          customDataPoint={(_point: any, idx: number) => (
+            <View style={[styles.graphDot, { backgroundColor: idx === 1 ? palette[1] : palette[0] }]} />
           )}
-
         />
       </View>
     </View>
@@ -150,12 +205,6 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   graphDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    opacity: 0.7,
-  },
-  graphDot2: {
     width: 8,
     height: 8,
     borderRadius: 4,

@@ -30,7 +30,11 @@ interface Theme {
     borderSecondary: string;
     borderAccent: string;
     shadow: string;
-    [key: string]: string | undefined;
+    // Chart/graph-related colors
+    chartPrimary: string;            // e.g., main color for pie/bar
+    chartSecondary: string;          // e.g., secondary color
+    chartPalette: string[];
+    [key: string]: string | string[] | undefined;
   };
   typography: typeof typography;
   spacing: typeof spacing;

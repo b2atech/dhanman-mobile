@@ -2,6 +2,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getTokenSecurely } from './secureStorage';
 import Logger from './logger';
 
+const ORGANIZATION_ID = 'acc867cb-af91-4746-862d-139682d5c3e3';
+
 const axiosCommunityServices = axios.create({
   baseURL: 'https://qa.community.dhanman.com/api/',
   timeout: 10000, // 10 seconds timeout
@@ -21,30 +23,6 @@ export const getAccessToken = async (): Promise<string | null> => {
     return null;
   }
 };
-// axiosCommunityServices.interceptors.request.use(
-//   async config => {
-//     try {
-//       // config.headers[
-//       //   'Authorization'
-//       // ] = `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IloxenFhbmlBZWowRWlyN1ZVZ281VCJ9.eyJkaGFubWFuX2lkIjoiNjU5NGE5MmMtYjJjNC00ZjAyLTk3ZmMtNTY4MjI2ZTYxMmJmIiwiZGhhbm1hbl9wZXJtaXNzaW9ucyI6WyJTWVNfQURNSU4iLCJDQSIsIk9XTkVSIl0sImRoYW5tYW5fY29tcGFueSI6eyJkZXNjcmlwdGlvbiI6IkFwYXJ0bWVudCBNeUhvbWUgIiwiZ3N0SW4iOiIyN0ZHSElKNTY3OEszTDgiLCJpZCI6IjEyZmI1MGYwLTk5OTgtNDU2Zi04YWVlLWJiODNhYjJmYmJkYiIsImlzQXBhcnRtZW50Ijp0cnVlLCJuYW1lIjoiQXNwZW4gV29vZHMgQXBhcnRtZW50Iiwib3JnYW5pemF0aW9uSWQiOiIzNzQzN2UxNy1jMGUyLTRlOTctODE2Ny0xMjFiODU0ZmU5MGIifSwiZGhhbm1hbl9vcmdhbml6YXRpb24iOnsiZ3N0SW4iOiJBQUxDQjA3ODZBIiwiaWQiOiIzNzQzN2UxNy1jMGUyLTRlOTctODE2Ny0xMjFiODU0ZmU5MGIiLCJuYW1lIjoiQjJBIFRlY2ggT3JnYW5pemF0aW9uIiwicGFuIjoiQUFMQ0IwNzg2QSIsInNob3J0TmFtZSI6IkIyQSIsInRhbiI6IktMUEIwMzM3M0cifSwiaXNzIjoiaHR0cHM6Ly9kZXYtZGhhbm1hbi51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTcxNzE3NDU3MjYyNTg3MTk5NDQiLCJhdWQiOlsiZGV2LWRoYW5tYW4tYXBpIiwiaHR0cHM6Ly9kZXYtZGhhbm1hbi51cy5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNzI1MzQyNTMzLCJleHAiOjE3MjU0Mjg5MzMsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJhenAiOiIyYVpic1VDdVNLNTNYQjdzZE9LVGhGMGNDaFZEWHgyOCJ9.pJSWpC52O3gV2O9GE1KRGYWScxxwWQ891c6PtWEoAn8WdqCO16DN7VvMmHGR_C98qz44wmOPxgeMsvIJ19D0zcxJZBtCT6ISW-mZdw379x8W1vDpce1pvRtMWB-W7x5TGEdP0Xo619Y8FYWh5deX4PGmENx6Fhzv2S9m1buSkgQCJzp4T6H1HX_pCNoS4W0VKvmG9-F1HWblk1BSj9Z4k6iGEqZwQWtJAeTDZjb4oNUHb_780wSA9iu-YwIU2AsgYZVRNlujKk5NyriqpLuByLbdEb5BXkq8NNFAAgQsj4MEGemqZJrEAHLDnmit8aCWiJVrEeuDDVNb0exsgCb3eQ`;
-
-//       const accessToken = await AsyncStorage.getItem('userToken');
-//       Logger.debug('Retrieved token from AsyncStorage:', accessToken);
-//       if (accessToken) {
-//         Logger.debug('Bearer', accessToken);
-//         config.headers['Authorization'] = `Bearer ${accessToken}`;
-//       }
-//     } catch (error) {
-//       Logger.error('Error retrieving token from AsyncStorage:', error);
-//     }
-//     return config;
-//   },
-//   error => {
-//     const errorMessage = 'Something went wrong: ' + error.message;
-//     const customError = new Error(errorMessage);
-//     return Promise.reject(customError);
-//   },
-// );
 
 axiosCommunityServices.interceptors.response.use(
   (response: AxiosResponse) => response,
@@ -52,7 +30,6 @@ axiosCommunityServices.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401
-      // !window.location.href.includes('/login')
     ) {
       Logger.warn('axiosCommunityServices unauthorized', { status: error.response.status });
       // window.location.pathname = '/maintenance/500';
@@ -73,6 +50,20 @@ interface FetcherConfig extends AxiosRequestConfig {
   data?: any;
 }
 
+// Utility to build headers with organization and token
+function buildHeaders(token?: string | null, existingHeaders?: Record<string, any>)
+{
+  const headers: Record<string, any> = {
+    ...(existingHeaders || {}),
+    'x-organization-id': ORGANIZATION_ID,
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 export const fetcher = async (url: string, config: FetcherConfig = {}): Promise<any> => {
   try {
     const token = await getAccessToken();
@@ -80,14 +71,7 @@ export const fetcher = async (url: string, config: FetcherConfig = {}): Promise<
     Logger.debug('Token available:', !!token);
     Logger.debug('Config', config);
 
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        'x-organization-id': '37437e17-c0e2-4e97-8167-121b854fe90b',
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      };
-    }
+    config.headers = buildHeaders(token, config.headers);
 
     Logger.debug('Request config:', {
       url,
@@ -115,14 +99,8 @@ export const fetcher = async (url: string, config: FetcherConfig = {}): Promise<
 export const fetcherPost = async (url: string, data: any = {}, config: FetcherConfig = {}): Promise<any> => {
   try {
     const token = await getAccessToken();
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      };
-    }
-    // Fix: Pass data separately
+    config.headers = buildHeaders(token, config.headers);
+
     const res = await axiosCommunityServices.post(url, data, config);
 
     return res.data;
@@ -135,13 +113,8 @@ export const fetcherPost = async (url: string, data: any = {}, config: FetcherCo
 export const fetcherPut = async (url: string, data: any = {}, config: FetcherConfig = {}): Promise<any> => {
   try {
     const token = await getAccessToken();
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      };
-    }
+    config.headers = buildHeaders(token, config.headers);
+
     const res = await axiosCommunityServices.put(url, data, config);
     return res.data;
   } catch (error) {

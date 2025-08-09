@@ -1,9 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import config from '../app/config';
 import { captureException } from '../app/sentry';
+import { getTokenSecurely } from '../utils/secureStorage';
 
-// Create axios instance with configuration from environment
+const ORGANIZATION_ID = 'acc867cb-af91-4746-862d-139682d5c3e3';
+
+// Factory to create axios instance with required interceptors
 const createApiClient = (baseURL: string): AxiosInstance => {
   const apiClient = axios.create({
     baseURL,
@@ -13,24 +15,30 @@ const createApiClient = (baseURL: string): AxiosInstance => {
     },
   });
 
-  // Request interceptor to add auth token
+  // Request interceptor: always add auth token and organization id
   apiClient.interceptors.request.use(
-    async (requestConfig) => {
+    async (requestConfig: InternalAxiosRequestConfig) => {
       try {
-        const token = await AsyncStorage.getItem('userToken');
+        const token = await getTokenSecurely('userToken');
+        // Ensure headers object exists and update directly!
+        requestConfig.headers['x-organization-id'] = ORGANIZATION_ID;
+        requestConfig.headers['Content-Type'] = 'application/json';
         if (token) {
-          requestConfig.headers.Authorization = `Bearer ${token}`;
+          requestConfig.headers['Authorization'] = `Bearer ${token}`;
         }
 
-        if (config.enableLogging) {
+        // Conditional logging: check config.enableLogging or global config
+        if ((requestConfig as any).enableLogging || config.enableLogging) {
           console.log('API Request:', {
             method: requestConfig.method,
             url: requestConfig.url,
             baseURL: requestConfig.baseURL,
+            headers: requestConfig.headers,
+            data: requestConfig.data,
           });
         }
       } catch (error) {
-        console.error('Error setting auth token:', error);
+        console.error('Error setting headers:', error);
       }
       return requestConfig;
     },
@@ -40,25 +48,42 @@ const createApiClient = (baseURL: string): AxiosInstance => {
     }
   );
 
-  // Response interceptor for error handling
+  // Response interceptor for logging and error handling
   apiClient.interceptors.response.use(
     (response: AxiosResponse) => {
-      if (config.enableLogging) {
-        console.log('API Response:', response.status, response.statusText);
+      if ((response.config as any).enableLogging || config.enableLogging) {
+        console.log('API Response:', {
+          url: response.config.url,
+          method: response.config.method,
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+          data: response.data,
+        });
       }
       return response;
     },
     (error) => {
       if (error.response?.status === 401) {
         console.log('Unauthorized access detected');
-        // Handle logout logic here if needed
+        // Optionally, trigger logout or redirect logic here
       }
 
-      const errorMessage = error.response?.data?.message || error.message || 'API Error';
+      const errorMessage =
+        error.response?.data?.message ||
+        (typeof error.response?.data === 'string' ? error.response?.data : undefined) ||
+        error.message ||
+        'API Error';
+
+      // Enhanced error logging
       captureException(error, {
         url: error.config?.url,
+        method: error.config?.method,
+        requestHeaders: error.config?.headers,
+        requestData: error.config?.data,
         status: error.response?.status,
-        data: error.response?.data,
+        responseHeaders: error.response?.headers,
+        responseData: error.response?.data,
       });
 
       return Promise.reject(new Error(errorMessage));
@@ -74,7 +99,7 @@ export const salesApiClient = createApiClient(config.salesApiBaseUrl);
 export const purchaseApiClient = createApiClient(config.purchaseApiBaseUrl);
 export const myhomeApiClient = createApiClient(config.myhomeApiBaseUrl);
 
-// Generic fetcher functions
+// Generic fetcher functions (headers handled in interceptor)
 export const fetcher = async (url: string, apiClient = commonApiClient): Promise<any> => {
   const response = await apiClient.get(url);
   return response.data;

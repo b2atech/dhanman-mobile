@@ -34,7 +34,7 @@ const useConfig = (): ConfigReturn => {
       id: '12fb50f0-9998-456f-8aee-bb83ab2fbbdb',
       isApartment: true,
       name: 'Aspen Woods Apartment',
-      organizationId: '37437e17-c0e2-4e97-8167-121b854fe90b',
+      organizationId: 'acc867cb-af91-4746-862d-139682d5c3e3',
       phoneNumber: '',
       email: '',
       addressLine: '',

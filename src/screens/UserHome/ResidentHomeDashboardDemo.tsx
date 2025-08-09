@@ -1,92 +1,40 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions,
-  StatusBar, SafeAreaView, Image, Animated, PanResponder, GestureResponderEvent, PanResponderGestureState,
+  StatusBar, SafeAreaView, Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Svg, { Path, G } from 'react-native-svg';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBars, faBell, faUserCircle, faFileInvoice, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { LineChart } from 'react-native-gifted-charts';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '../../context/ThemeContext';
-import PendingDuesCard from './PendingDuesCard';
-import IncomeExpenseLineGraph from './incomeExpenseGraph'; // Custom component, ensure it is typed
 import TimelineVisitors from './TimelineVisitors';
+import IncomeExpenseLineGraph from './Graphs/incomeExpenseGraph';
 import IncomeProgressBar from './IncomeProgressBar';
-import UserHomeHeader from './UserHomeHeader';
 import { TabNavigatorProps } from '../../Routes/MainRoute';
 import { visitors } from './DummayData';
+import DashboardGraphs from './DashboardGraphs';
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-type Period = {
-  key: string;
-  xLabels: string[];
-  income: number[];
-  expense: number[];
-  donut: { achieved: number; total: number };
-};
+// Subtle color for page background (offwhite/snow)
+const snowBg = '#F7F8FA';
+
+// Subtle color for pending dues label
+const subtleTextColor = 'rgba(255,255,255,0.72)';
 
 export default function ResidentDashboard({ fcmToken }: TabNavigatorProps) {
   const { theme } = useTheme();
-  const { colors, components, spacing, gradients, layout } = theme;
+  const { colors, components, spacing, gradients } = theme;
+  const { companyId, periodType, period, year } = { companyId: 'a723f0a0-db0f-4b7a-ae6a-fd15b8ac7ca9', periodType: 1, period: 2024, year: 2024 };
+  // Mock user data
+  const mockUser = { name: 'Marathi Mawala', unit: 'A-101' };
+  const pendingAmount = 3000;
 
-  // state for graph/donut period index (swipeable)
-  const [periodIdx, setPeriodIdx] = useState<number>(0);
-
-  // Mock data
-  const mockUser = { name: 'John', unit: 'A-101' };
-
-  const periods: Period[] = [
-    {
-      key: '3M',
-      xLabels: ['May', 'Jun', 'Jul'],
-      income: [120000, 87000, 140000],
-      expense: [70000, 82000, 93000],
-      donut: { achieved: 8, total: 9.5 },
-    },
-    {
-      key: '6M',
-      xLabels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-      income: [65000, 85000, 110000, 120000, 87000, 140000],
-      expense: [54000, 64000, 79000, 70000, 82000, 93000],
-      donut: { achieved: 5.5, total: 9.5 },
-    },
-    {
-      key: '1Y',
-      xLabels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-      income: [45000, 55000, 68000, 62000, 80000, 97000, 65000, 85000, 110000, 120000, 87000, 140000],
-      expense: [38000, 43000, 53000, 48000, 64000, 79000, 54000, 64000, 79000, 70000, 82000, 93000],
-      donut: { achieved: 9.2, total: 10 },
-    },
-  ];
-
-  // SWIPE logic for graph and donut (shared)
-  const panX = useRef<Animated.Value>(new Animated.Value(0)).current;
-  const SWIPE_THRESHOLD = 50;
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_: GestureResponderEvent, gestureState: PanResponderGestureState) =>
-        Math.abs(gestureState.dx) > 10,
-      onPanResponderMove: Animated.event([null, { dx: panX }], { useNativeDriver: false }),
-      onPanResponderRelease: (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
-        if (gestureState.dx < -SWIPE_THRESHOLD && periodIdx < periods.length - 1) {
-          setPeriodIdx(periodIdx + 1);
-        } else if (gestureState.dx > SWIPE_THRESHOLD && periodIdx > 0) {
-          setPeriodIdx(periodIdx - 1);
-        }
-        Animated.spring(panX, { toValue: 0, useNativeDriver: false }).start();
-      },
-      onPanResponderTerminate: () => {
-        Animated.spring(panX, { toValue: 0, useNativeDriver: false }).start();
-      },
-    })
-  ).current;
-
-  const { xLabels, income, expense, donut } = periods[periodIdx];
+  // Online profile image
+  const profileImageUrl = 'https://randomuser.me/api/portraits/men/32.jpg';
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#38b7a7' }}>
       <LinearGradient
         colors={gradients.background.colors}
         start={gradients.background.start}
@@ -96,60 +44,86 @@ export default function ResidentDashboard({ fcmToken }: TabNavigatorProps) {
         <SafeAreaView style={{ flex: 1 }}>
           <StatusBar backgroundColor="transparent" barStyle="dark-content" translucent />
 
-          {/* Top-right SVG gradient as mentioned in requirements */}
-          <View style={styles.topRightGradient}>
-            <LinearGradient
-              colors={gradients.topRightAccent.colors}
-              start={gradients.topRightAccent.start}
-              end={gradients.topRightAccent.end}
-              style={styles.topRightGradientInner}
-            />
+          {/* Top Card Section */}
+          <View style={styles.topCard}>
+            {/* Header Row */}
+            <View style={styles.headerRow}>
+              {/* Profile Image */}
+              <Image
+                source={{ uri: profileImageUrl }}
+                style={styles.profileImage}
+              />
+              {/* Name and Unit */}
+              <View style={{ flex: 1, marginLeft: 12 }}>
+                <Text style={styles.nameText}>{mockUser.name}</Text>
+                <Text style={styles.unitText}>{mockUser.unit}</Text>
+              </View>
+              {/* Bell Icon */}
+              <TouchableOpacity style={styles.bellCircle}>
+                <FontAwesomeIcon icon={faBell} size={22} color="#fff" />
+                <View style={styles.badge} />
+              </TouchableOpacity>
+            </View>
+            {/* Pending Dues Section */}
+            <View style={styles.pendingDuesArea}>
+              <View>
+                <Text style={styles.pendingLabel}>Pending dues</Text>
+                <Text style={styles.pendingAmount}>₹{pendingAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</Text>
+              </View>
+              <TouchableOpacity style={styles.payNowCircle}>
+                <Image
+                  source={{ uri: 'https://img.icons8.com/fluency/48/money.png' }} // Mild green pay icon
+                  style={styles.payIcon}
+                />
+                <Text style={styles.payNowText}>Pay Now</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <ScrollView
-            style={styles.scroll}
-            contentContainerStyle={{ paddingBottom: spacing['6xl'] }}
-            showsVerticalScrollIndicator={false}
-          >
-            {/* Header */}
-            <UserHomeHeader
-              name={mockUser.name}
-              bellCount={4}
-              onBellPress={() => {}}
-              onProfilePress={() => {}}
-              style={{ backgroundColor: colors.backgroundTertiary }}
-            />
+          {/* Main Content Section */}
+          <View style={styles.mainContent}>
+            <ScrollView
+              style={styles.scroll}
+              contentContainerStyle={{ paddingBottom: spacing['6xl'] }}
+              showsVerticalScrollIndicator={false}
+            >
+              {/* Today's Visitors - more compact and less padding */}
+               <TimelineVisitors visitors={visitors} />
 
-            <PendingDuesCard amount={3000} onPay={() => { /* handle pay */ }} />
+              {/* Income vs Expense Graph */}
+             <View style={styles.sectionCard}>
+  <DashboardGraphs
+    incomeExpense={{
+      companyId,        // Pass relevant companyId
+      periodType,       // Pass relevant periodType
+      period,           // Pass relevant period
+      // Remove static arrays: all graphs now fetch their own API data
+    }}
+    expenseCategories={{
+      companyId,        // Pass relevant companyId
+      year,             // Or other prop required by ExpensesPieChart
+      // Add other needed props for API call
+    }}
+    topExpenses={{
+      companyId,        // Pass relevant companyId
+      year,             // Or other prop required by TopExpensesBarChart
+      // Add other needed props for API call
+    }}
+  />
+</View>
 
-            <TimelineVisitors visitors={visitors} />
-
-            <IncomeExpenseLineGraph
-              incomeData={income}
-              expenseData={expense}
-              xLabels={xLabels}
-            />
-
-            {/* Settlement Overview */}
-            <View style={[components.card, { marginHorizontal: spacing.lg }]}>
-              <IncomeProgressBar
-                label="Settlement Overview"
-                achieved={500000}
-                total={2000000}
-                iconName="insert-chart"
-                mainColor={colors.primary}
-              />
-            </View>
-          </ScrollView>
-
-          {/* Quick Action Floating Button */}
-          <TouchableOpacity
-            style={[components.fab, { backgroundColor: colors.primary }]}
-            activeOpacity={0.8}
-            onPress={() => {/* Handle quick action */}}
-          >
-            <FontAwesomeIcon icon={faPlus} size={24} color={colors.textInverse} />
-          </TouchableOpacity>
+              {/* Settlement Overview */}
+              <View style={styles.sectionCard}>
+                <IncomeProgressBar
+                  label="Settlement Overview"
+                  achieved={500000}
+                  total={2000000}
+                  iconName="insert-chart"
+                  mainColor={colors.primary}
+                />
+              </View>
+            </ScrollView>
+          </View>
         </SafeAreaView>
       </LinearGradient>
     </View>
@@ -157,22 +131,163 @@ export default function ResidentDashboard({ fcmToken }: TabNavigatorProps) {
 }
 
 const styles = StyleSheet.create({
+  topCard: {
+    width: screenWidth,
+    backgroundColor: '#38b7a7',
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    paddingHorizontal: 15,
+    paddingTop: 15,
+    paddingBottom: 12,
+    elevation: 2,
+    minHeight: 130,
+    justifyContent: 'flex-start',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    marginBottom: 0,
+  },
+  profileImage: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: '#eee',
+  },
+  nameText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 0,
+  },
+  unitText: {
+    color: '#fff',
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  bellCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  badge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#FF3B30',
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  pendingDuesArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
+    paddingHorizontal: 30,
+    paddingBottom: 10,
+    // No border for clean look
+  },
+  pendingLabel: {
+    color: subtleTextColor,
+    fontSize: 13,
+    fontWeight: '500',
+    marginBottom: 2,
+  },
+  pendingAmount: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  payNowCircle: {
+    marginLeft: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  payIcon: {
+    width: 28,
+    height: 28,
+    marginBottom: 2,
+  },
+  payNowText: {
+    color: '#fff',
+    fontSize: 11,
+    marginTop: 2,
+    fontWeight: '600',
+  },
+  mainContent: {
+    flex: 1,
+    backgroundColor: snowBg,
+    marginTop: -10,
+    paddingHorizontal: 0,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+  },
   scroll: {
     flex: 1,
     backgroundColor: 'transparent',
+    paddingHorizontal: 10, // Reduced padding for compact look
   },
-  topRightGradient: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 120,
-    height: 120,
-    zIndex: 1,
-    overflow: 'hidden',
-    borderBottomLeftRadius: 60,
+  visitorsCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginVertical: 10,
+    paddingHorizontal: 10, // Reduced padding
+    paddingVertical: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 3,
+    elevation: 1,
   },
-  topRightGradientInner: {
-    width: '100%',
-    height: '100%',
+  visitorsTitle: {
+    fontSize: 15,
+    color: '#189e8a',
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  visitorsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  visitorItem: {
+    alignItems: 'center',
+    marginRight: 12,
+    minWidth: 55,
+  },
+  visitorAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    marginBottom: 2,
+    backgroundColor: '#eee',
+  },
+  visitorTime: {
+    fontSize: 12,
+    color: '#189e8a',
+    fontWeight: 'bold',
+  },
+  visitorStatus: {
+    fontSize: 12,
+    color: '#666',
+  },
+  sectionCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginVertical: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 3,
+    elevation: 1,
   },
 });

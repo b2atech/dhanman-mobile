@@ -1,6 +1,138 @@
-// Sigma theme color palette - comprehensive variable-based color system
-// Modern tech-inspired blue/cyan theme with full shade ranges
+// Base color system for both themes
+export const baseColors = {
+  // System colors
+  white: '#FFFFFF',
+  black: '#000000',
+  transparent: 'transparent',
 
+  // Gray scale
+  gray50: '#FAFAFA',
+  gray100: '#F4F4F5',
+  gray200: '#E4E4E7',
+  gray300: '#D4D4D8',
+  gray400: '#A1A1AA',
+  gray500: '#71717A',
+  gray600: '#52525B',
+  gray700: '#3F3F46',
+  gray800: '#27272A',
+  gray900: '#18181B',
+
+  // Status colors
+  success: '#10B981',
+  successLight: '#D1FAE5',
+  warning: '#F59E0B',
+  warningLight: '#FEF3C7',
+  error: '#EF4444',
+  errorLight: '#FEE2E2',
+  info: '#3B82F6',
+  infoLight: '#DBEAFE',
+};
+
+// Green theme colors
+export const greenPalette = {
+  // Primary greens
+  primary: '#059669',
+  primaryLight: '#34D399',
+  primaryDark: '#047857',
+  primaryUltraLight: '#ECFDF5',
+
+  // Supporting colors
+  secondary: '#10B981',
+  accent: '#6EE7B7',
+  surface: '#F0FDF4',
+
+  // Text colors
+  textPrimary: '#065F46',
+  textSecondary: '#047857',
+  textTertiary: '#6B7280',
+  textInverse: '#FFFFFF',
+
+  // Background colors
+  backgroundPrimary: '#FFFFFF',
+  backgroundSecondary: '#F9FAFB',
+  backgroundTertiary: '#F0FDF4',
+
+  // Border colors
+  borderPrimary: '#D1FAE5',
+  borderSecondary: '#A7F3D0',
+  borderAccent: '#6EE7B7',
+
+  // Shadow color
+  shadow: 'rgba(5, 150, 105, 0.1)',
+
+  // Chart Colors
+  chartPrimary: '#059669',
+  chartSecondary: '#10B981',
+  chartPalette: [
+    '#059669', // primary green
+    '#10B981', // secondary green
+    '#34D399', // light green
+    '#6EE7B7', // accent green
+    '#4eaeff', // blue (optional, for variety in charts)
+    '#ffc700', // yellow
+    '#ee6b7e', // pink
+    '#9a6aff', // purple
+    '#60e2e0', // teal
+    '#f8923b', // orange
+    '#72c6a8', // mint
+    '#e8b8b7', // light pink
+    '#a6d2ff', // light blue
+  ],
+};
+
+// Lavender theme colors
+export const lavenderPalette = {
+  // Primary lavenders
+  primary: '#A78BFA',
+  primaryLight: '#C4B5FD',
+  primaryDark: '#8B5CF6',
+  primaryUltraLight: '#EDE9FE',
+
+  // Supporting colors
+  secondary: '#7B61FF',
+  accent: '#DDD6FE',
+  surface: '#F3EEFC',
+
+  // Text colors
+  textPrimary: '#5B21B6',
+  textSecondary: '#7C3AED',
+  textTertiary: '#6B7280',
+  textInverse: '#FFFFFF',
+
+  // Background colors
+  backgroundPrimary: '#FFFFFF',
+  backgroundSecondary: '#F9FAFB',
+  backgroundTertiary: '#F3EEFC',
+
+  // Border colors
+  borderPrimary: '#EDE9FE',
+  borderSecondary: '#DDD6FE',
+  borderAccent: '#C4B5FD',
+
+  // Shadow color
+  shadow: 'rgba(167, 139, 250, 0.1)',
+
+  // Chart Colors
+  chartPrimary: '#A78BFA',
+  chartSecondary: '#7B61FF',
+  chartPalette: [
+    '#A78BFA', // primary lavender
+    '#7B61FF', // secondary lavender
+    '#C4B5FD', // light lavender
+    '#DDD6FE', // accent lavender
+    '#8B5CF6', // dark lavender
+    '#F8923B', // orange
+    '#EE6B7E', // pink
+    '#60E2E0', // teal
+    '#FFC700', // yellow
+    '#A6D2FF', // light blue
+    '#E8B8B7', // light pink
+    '#72C6A8', // mint
+    '#9A6AFF', // purple
+  ],
+};
+
+// Sigma theme colors
 export const sigmaPalette = {
   // Primary colors (50–950) - Modern blue/tech theme
   primary50: '#EFF6FF',
@@ -8,7 +140,7 @@ export const sigmaPalette = {
   primary200: '#BFDBFE',
   primary300: '#93C5FD',
   primary400: '#60A5FA',
-  primary500: '#3B82F6', // Main primary
+  primary500: '#3B82F6',
   primary600: '#2563EB',
   primary700: '#1D4ED8',
   primary800: '#1E40AF',
@@ -21,7 +153,7 @@ export const sigmaPalette = {
   secondary200: '#A5F3FC',
   secondary300: '#67E8F9',
   secondary400: '#22D3EE',
-  secondary500: '#06B6D4', // Main secondary
+  secondary500: '#06B6D4',
   secondary600: '#0891B2',
   secondary700: '#0E7490',
   secondary800: '#155E75',
@@ -34,7 +166,7 @@ export const sigmaPalette = {
   success200: '#BBF7D0',
   success300: '#86EFAC',
   success400: '#4ADE80',
-  success500: '#22C55E', // Main success
+  success500: '#22C55E',
   success600: '#16A34A',
   success700: '#15803D',
   success800: '#166534',
@@ -47,7 +179,7 @@ export const sigmaPalette = {
   warning200: '#FDE68A',
   warning300: '#FCD34D',
   warning400: '#FBBF24',
-  warning500: '#F59E0B', // Main warning
+  warning500: '#F59E0B',
   warning600: '#D97706',
   warning700: '#B45309',
   warning800: '#92400E',
@@ -60,7 +192,7 @@ export const sigmaPalette = {
   danger200: '#FECACA',
   danger300: '#FCA5A5',
   danger400: '#F87171',
-  danger500: '#EF4444', // Main danger
+  danger500: '#EF4444',
   danger600: '#DC2626',
   danger700: '#B91C1C',
   danger800: '#991B1B',
@@ -85,59 +217,79 @@ export const sigmaPalette = {
   light950: '#FFFFFF',
 
   // Horizontal gradients
-  gradientH01: '#3B82F6', // Primary start
-  gradientH02: '#06B6D4', // Primary to secondary
-  gradientH03: '#1D4ED8', // Deeper primary start
-  gradientH04: '#0891B2', // Deeper secondary end
-  gradientH05: '#60A5FA', // Light primary start
-  gradientH06: '#22D3EE', // Light secondary end
+  gradientH01: '#3B82F6',
+  gradientH02: '#06B6D4',
+  gradientH03: '#1D4ED8',
+  gradientH04: '#0891B2',
+  gradientH05: '#60A5FA',
+  gradientH06: '#22D3EE',
 
   // Vertical gradients
-  gradientV01: '#EFF6FF', // Light primary start
-  gradientV02: '#3B82F6', // To main primary
-  gradientV03: '#ECFEFF', // Light secondary start
-  gradientV04: '#06B6D4', // To main secondary
-  gradientV05: '#DBEAFE', // Medium light start
-  gradientV06: '#1E40AF', // To deep primary
+  gradientV01: '#EFF6FF',
+  gradientV02: '#3B82F6',
+  gradientV03: '#ECFEFF',
+  gradientV04: '#06B6D4',
+  gradientV05: '#DBEAFE',
+  gradientV06: '#1E40AF',
 
   // Bi-directional gradients (diagonal/radial)
-  gradientB01: '#3B82F6', // Primary diagonal start
-  gradientB02: '#06B6D4', // Secondary diagonal end
-  gradientB03: '#1D4ED8', // Deep primary radial center
-  gradientB04: '#EFF6FF', // Light primary radial edge
-  gradientB05: '#2563EB', // Medium primary start
-  gradientB06: '#0E7490', // Medium secondary end
-  gradientB07: '#60A5FA', // Light primary multi-stop
-  gradientB08: '#22D3EE', // Light secondary multi-stop
-  gradientB09: '#1E3A8A', // Dark primary accent
-  gradientB10: '#164E63', // Dark secondary accent
+  gradientB01: '#3B82F6',
+  gradientB02: '#06B6D4',
+  gradientB03: '#1D4ED8',
+  gradientB04: '#EFF6FF',
+  gradientB05: '#2563EB',
+  gradientB06: '#0E7490',
+  gradientB07: '#60A5FA',
+  gradientB08: '#22D3EE',
+  gradientB09: '#1E3A8A',
+  gradientB10: '#164E63',
 
   // Theme-specific mappings for consistency with existing architecture
-  primary: '#3B82F6',           // Maps to primary500
-  primaryLight: '#60A5FA',      // Maps to primary400
-  primaryDark: '#1D4ED8',       // Maps to primary700
-  primaryUltraLight: '#EFF6FF', // Maps to primary50
+  primary: '#3B82F6',
+  primaryLight: '#60A5FA',
+  primaryDark: '#1D4ED8',
+  primaryUltraLight: '#EFF6FF',
 
-  secondary: '#06B6D4',         // Maps to secondary500
-  accent: '#22D3EE',           // Maps to secondary400
-  surface: '#F0F9FF',          // Light blue surface
+  secondary: '#06B6D4',
+  accent: '#22D3EE',
+  surface: '#F0F9FF',
 
   // Text colors
-  textPrimary: '#1E3A8A',      // Maps to primary900
-  textSecondary: '#1D4ED8',    // Maps to primary700
-  textTertiary: '#64748B',     // Maps to dark500
-  textInverse: '#FFFFFF',      // Maps to light950
+  textPrimary: '#1E3A8A',
+  textSecondary: '#1D4ED8',
+  textTertiary: '#64748B',
+  textInverse: '#FFFFFF',
 
   // Background colors
-  backgroundPrimary: '#FFFFFF',  // Maps to light950
-  backgroundSecondary: '#F8FAFC', // Maps to dark50
-  backgroundTertiary: '#F0F9FF', // Light blue background
+  backgroundPrimary: '#FFFFFF',
+  backgroundSecondary: '#F8FAFC',
+  backgroundTertiary: '#F0F9FF',
 
   // Border colors
-  borderPrimary: '#DBEAFE',     // Maps to primary100
-  borderSecondary: '#93C5FD',   // Maps to primary300
-  borderAccent: '#60A5FA',      // Maps to primary400
+  borderPrimary: '#DBEAFE',
+  borderSecondary: '#93C5FD',
+  borderAccent: '#60A5FA',
 
   // Shadow color
-  shadow: 'rgba(59, 130, 246, 0.1)', // Primary with opacity
+  shadow: 'rgba(59, 130, 246, 0.1)',
+
+  // Chart Colors
+  chartPrimary: '#3B82F6',
+  chartSecondary: '#06B6D4',
+  chartPalette: [
+    '#3B82F6', // primary blue
+    '#06B6D4', // secondary cyan
+    '#60A5FA', // light blue
+    '#22D3EE', // accent cyan
+    '#2563EB', // deep blue
+    '#0891B2', // deep cyan
+    '#F59E0B', // amber
+    '#EF4444', // red
+    '#22C55E', // green
+    '#64748B', // slate
+    '#FBBF24', // yellow
+    '#FCA5A5', // pink
+    '#A5F3FC', // light teal
+    '#8B5CF6', // purple
+  ],
 };

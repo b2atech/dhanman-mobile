@@ -59,6 +59,25 @@ export const greenPalette = {
 
   // Shadow color
   shadow: 'rgba(5, 150, 105, 0.1)',
+
+  // Chart Colors
+  chartPrimary: '#059669',
+  chartSecondary: '#10B981',
+  chartPalette: [
+    '#059669', // primary green
+    '#10B981', // secondary green
+    '#34D399', // light green
+    '#6EE7B7', // accent green
+    '#4eaeff', // blue (optional, for variety in charts)
+    '#ffc700', // yellow
+    '#ee6b7e', // pink
+    '#9a6aff', // purple
+    '#60e2e0', // teal
+    '#f8923b', // orange
+    '#72c6a8', // mint
+    '#e8b8b7', // light pink
+    '#a6d2ff', // light blue
+  ],
 };
 
 // Lavender theme colors
@@ -92,4 +111,23 @@ export const lavenderPalette = {
 
   // Shadow color
   shadow: 'rgba(167, 139, 250, 0.1)',
+
+  // Chart Colors
+  chartPrimary: '#A78BFA',
+  chartSecondary: '#7B61FF',
+  chartPalette: [
+    '#A78BFA', // primary lavender
+    '#7B61FF', // secondary lavender
+    '#C4B5FD', // light lavender
+    '#DDD6FE', // accent lavender
+    '#8B5CF6', // dark lavender
+    '#F8923B', // orange
+    '#EE6B7E', // pink
+    '#60E2E0', // teal
+    '#FFC700', // yellow
+    '#A6D2FF', // light blue
+    '#E8B8B7', // light pink
+    '#72C6A8', // mint
+    '#9A6AFF', // purple
+  ],
 };
