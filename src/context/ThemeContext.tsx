@@ -1,22 +1,46 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { greenTheme, lavenderTheme } from '../theme';
+import { greenTheme, lavenderTheme, sigmaTheme } from '../theme';
+import Logger from '../utils/logger';
+
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { greenTheme, lavenderTheme, sigmaTheme } from '../theme';
+import { ComponentStyles, GradientStyles } from '../theme/components';
+import { typography } from '../theme/typography';
+import { spacing, layout } from '../theme/spacing';
 import Logger from '../utils/logger';
 
 // Types
 interface Theme {
+  name: string;
+  displayName: string;
   colors: {
     primary: string;
     primaryLight: string;
+    primaryDark?: string;
+    primaryUltraLight: string;
+    secondary: string;
+    accent: string;
     surface: string;
     backgroundPrimary: string;
     backgroundSecondary: string;
+    backgroundTertiary: string;
     textPrimary: string;
     textSecondary: string;
+    textTertiary: string;
+    textInverse: string;
     borderPrimary: string;
-    [key: string]: string;
+    borderSecondary: string;
+    borderAccent: string;
+    shadow: string;
+    [key: string]: string | undefined;
   };
-  displayName: string;
+  typography: typeof typography;
+  spacing: typeof spacing;
+  layout: typeof layout;
+  components: ComponentStyles;
+  gradients: GradientStyles;
 }
 
 interface ThemeContextType {
@@ -34,6 +58,7 @@ interface ThemeProviderProps {
 const themes: Record<string, Theme> = {
   green: greenTheme,
   lavender: lavenderTheme,
+  sigma: sigmaTheme,
 };
 
 // Theme context
