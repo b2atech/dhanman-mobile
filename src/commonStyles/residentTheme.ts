@@ -271,6 +271,8 @@ export const residentGradients = {
 
 // Complete theme object
 export const residentTheme = {
+  name: 'resident',
+  displayName: 'Resident',
   colors: residentColors,
   typography: residentTypography,
   spacing: residentSpacing,
