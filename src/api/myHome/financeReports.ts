@@ -1,3 +1,4 @@
+import { ExpenseBreakdownItem, ExpenseBreakdownResponse } from '../../types/expenseBreakdown';
 import {fetcher} from '../../utils/axiosCommon';
 import Logger from '../../utils/logger';
 
@@ -61,13 +62,12 @@ export const useGetExpenseCategories = async (companyId: string | number, financ
     throw error;
   }
 };
-
-export const useGetaccountExpenseOverviews = async (
+export const getAccountExpenseOverviews = async (
   companyId: string | number,
   periodType: string,
   finYearId: string | number,
   period: string,
-) => {
+): Promise<ExpenseBreakdownItem[]> => {
   try {
     const url = `${endpoints.company}${companyId}${endpoints.expenseAccount}${finYearId}/${periodType}/${period}`;
     Logger.apiCall('GET', url);

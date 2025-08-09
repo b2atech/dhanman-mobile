@@ -58,7 +58,7 @@ const defaultIcon = require('../assets/images/decent_user.png');
 
 const MyUnitScreen: React.FC<MyUnitScreenProps> = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const handleNavigation = (item) => {
+  const handleNavigation = (item: HouseholdItem) => {
     switch (item.title) {
       case 'Visitors':
         navigation.navigate('VisitorsList');
@@ -81,115 +81,116 @@ const MyUnitScreen: React.FC<MyUnitScreenProps> = () => {
   };
 
   return (
-    <FlatList
-      ListHeaderComponent={
-        <>
-          <View style={styles.header}>
-            <View style={styles.headerTop}>
-              <Image source={defaultIcon} style={styles.profileImage} />
-              <View style={styles.usernameContainer}>
-                <Text style={styles.greeting}>Hi User,</Text>
-                <Text style={styles.subGreeting}>
-                  this is your recent usage
-                </Text>
-              </View>
-              <Icon name="bell" size={24} color="#fff" />
-            </View>
-          </View>
+    <>  </>
+    // <FlatList
+    //   ListHeaderComponent={
+    //     <>
+    //       <View style={styles.header}>
+    //         <View style={styles.headerTop}>
+    //           <Image source={defaultIcon} style={styles.profileImage} />
+    //           <View style={styles.usernameContainer}>
+    //             <Text style={styles.greeting}>Hi User,</Text>
+    //             <Text style={styles.subGreeting}>
+    //               this is your recent usage
+    //             </Text>
+    //           </View>
+    //           <Icon name="bell" size={24} color="#fff" />
+    //         </View>
+    //       </View>
 
-          <View style={styles.householdContainer}>
-            <View style={styles.headerRow}>
-              <View style={styles.householdTitle}>
-                <Icon
-                  name="home"
-                  size={19}
-                  color="#3b5998"
-                  style={styles.householdIcon}
-                />
-                <Text style={styles.sectionTitle}>Household</Text>
-              </View>
-            </View>
-          </View>
-        </>
-      }
-      data={householdItems}
-      keyExtractor={(item) => item.id}
-      numColumns={2}
-      columnWrapperStyle={styles.row}
-      contentContainerStyle={commonStyles.container}
-      renderItem={({ item }) => (
-        <Card
-          containerStyle={[styles.card, !item.hasData && styles.dottedBorder]}
-        >
-          <View style={styles.cardContent}>
-            <Icon
-              name={item.icon}
-              size={18}
-              color="black"
-              style={styles.IconStyle}
-            />
-            <View style={styles.textContainer}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
-            </View>
-          </View>
+    //       <View style={styles.householdContainer}>
+    //         <View style={styles.headerRow}>
+    //           <View style={styles.householdTitle}>
+    //             <Icon
+    //               name="home"
+    //               size={19}
+    //               color="#3b5998"
+    //               style={styles.householdIcon}
+    //             />
+    //             <Text style={styles.sectionTitle}>Household</Text>
+    //           </View>
+    //         </View>
+    //       </View>
+    //     </>
+    //   }
+    //   data={householdItems}
+    //   keyExtractor={(item) => item.id}
+    //   numColumns={2}
+    //   columnWrapperStyle={styles.row}
+    //   contentContainerStyle={commonStyles.container}
+    //   // renderItem={({ item }) => (
+    //   //   <Card
+    //   //     containerStyle={[styles.card, !item.hasData && styles.dottedBorder]}
+    //   //   >
+    //   //     <View style={styles.cardContent}>
+    //   //       <Icon
+    //   //         name={item.icon}
+    //   //         size={18}
+    //   //         color="black"
+    //   //         style={styles.IconStyle}
+    //   //       />
+    //   //       <View style={styles.textContainer}>
+    //   //         <Text style={styles.cardTitle}>{item.title}</Text>
+    //   //         <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
+    //   //       </View>
+    //   //     </View>
 
-          {item.title !== 'Visitors' && item.title !== 'Daily Help' && (
-            <TouchableOpacity
-              style={commonStyles.addButton}
-              onPress={() => handleNavigation(item)}
-            >
-              <View style={commonStyles.addCircle}>
-                <Icon name="plus" size={12} color="black" />
-              </View>
-            </TouchableOpacity>
-          )}
+    //   //     {item.title !== 'Visitors' && item.title !== 'Daily Help' && (
+    //   //       <TouchableOpacity
+    //   //         style={commonStyles.addButton}
+    //   //         onPress={() => handleNavigation(item)}
+    //   //       >
+    //   //         <View style={commonStyles.addCircle}>
+    //   //           <Icon name="plus" size={12} color="black" />
+    //   //         </View>
+    //   //       </TouchableOpacity>
+    //   //     )}
 
-          {(item.title === 'Visitors' || item.title === 'Daily Help') && (
-            <TouchableOpacity
-              style={commonStyles.addButton}
-              onPress={() => {
-                if (item.title === 'Daily Help') {
-                  navigation.navigate('DailyHelpScreen');
-                } else if (item.title === 'Visitors') {
-                  navigation.navigate('VisitorsList');
-                }
-              }}
-            >
-              <View style={commonStyles.infoCircle}>
-                <Text style={commonStyles.infoText}>i</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        </Card>
-      )}
-      ListFooterComponent={
-        <Card containerStyle={styles.addressCard}>
-          <View style={styles.addressContent}>
-            <Icon
-              name="map-marker"
-              size={24}
-              color="#d32f2f"
-              style={styles.MapIconStyle}
-            />
-            <View style={styles.addressText}>
-              <Text style={styles.addressTitle}>My Address</Text>
-              <Text style={styles.addressDetail}>
-                A 511, Aspen Woods Apartment, Bengaluru-560076
-              </Text>
-            </View>
-            <TouchableOpacity style={commonStyles.shareButton}>
-              <Icon
-                name="share"
-                size={22}
-                color="#3b5998"
-                style={styles.MapIconStyle}
-              />
-            </TouchableOpacity>
-          </View>
-        </Card>
-      }
-    />
+    //   //     {(item.title === 'Visitors' || item.title === 'Daily Help') && (
+    //   //       <TouchableOpacity
+    //   //         style={commonStyles.addButton}
+    //   //         onPress={() => {
+    //   //           if (item.title === 'Daily Help') {
+    //   //             navigation.navigate('DailyHelpScreen');
+    //   //           } else if (item.title === 'Visitors') {
+    //   //             navigation.navigate('VisitorsList');
+    //   //           }
+    //   //         }}
+    //   //       >
+    //   //         <View style={commonStyles.infoCircle}>
+    //   //           <Text style={commonStyles.infoText}>i</Text>
+    //   //         </View>
+    //   //       </TouchableOpacity>
+    //   //     )}
+    //   //   </Card>
+    //   // )}
+    //   // ListFooterComponent={
+    //   //   <Card containerStyle={styles.addressCard}>
+    //   //     <View style={styles.addressContent}>
+    //   //       <Icon
+    //   //         name="map-marker"
+    //   //         size={24}
+    //   //         color="#d32f2f"
+    //   //         style={styles.MapIconStyle}
+    //   //       />
+    //   //       <View style={styles.addressText}>
+    //   //         <Text style={styles.addressTitle}>My Address</Text>
+    //   //         <Text style={styles.addressDetail}>
+    //   //           A 511, Aspen Woods Apartment, Bengaluru-560076
+    //   //         </Text>
+    //   //       </View>
+    //   //       <TouchableOpacity style={commonStyles.shareButton}>
+    //   //         <Icon
+    //   //           name="share"
+    //   //           size={22}
+    //   //           color="#3b5998"
+    //   //           style={styles.MapIconStyle}
+    //   //         />
+    //   //       </TouchableOpacity>
+    //   //     </View>
+    //   //   </Card>
+    //   // }
+    // />
   );
 };
 

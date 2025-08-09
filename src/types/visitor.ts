@@ -43,3 +43,4 @@ export interface VisitorIdentityTypesResponse {
 export interface VisitorsResponse {
   cursor?: string;
   items: Visitor[];
+}

@@ -30,28 +30,28 @@ import DeliveryWaitingScreen from '../screens/GateHome/Delivery/DeliveryWaiting'
 import Settings from '../screens/SettingScreen';
 import TicketScreen from '../screens/TicketScreen';
 import ViewAllScreen from '../screens/CommonFiles/ViewAllScreen';
-import CreateTicket from '../screens/UserHome/Ticket/CreateTicket';
+//import CreateTicket from '../screens/UserHome/Ticket/CreateTicket';
 import TicketHomeScreen from '../screens/TicketDashboard/TicketHomeScreen';
 import MyUnitScreen from '../screens/MyUnitScreen';
 import DailyHelpScreen from '../screens/UserHome/DailyHelpScreen';
 import AddFamilyMember from '../screens/UserHome/AddFamilyMember';
 import GuestInvite from '../screens/UserHome/PreApproved/Guest/GuestInvite';
-import QuickInvite from '../screens/UserHome/PreApproved/Guest/QuickInvite';
+//import QuickInvite from '../screens/UserHome/PreApproved/Guest/QuickInvite';
 import DefaulterScreen from '../screens/UserHome/Defaulter/DefaulterScreen';
 import FCMModal from '../components/FCMModal';
 import FrequentInvite from '../screens/UserHome/PreApproved/Guest/FrequentInvite';
 import PrivateInvite from '../screens/UserHome/PreApproved/Guest/PrivateInvite';
 import VisitorDetailScreen from '../screens/UserHome/visitorDetailScreen';
 import VisitorsList from '../screens/UserHome/visitorsList';
-import InviteLink from '../screens/UserHome/PreApproved/Guest/InviteLink';
+//import InviteLink from '../screens/UserHome/PreApproved/Guest/InviteLink';
 import PaymentScreen from '../screens/CommonFiles/PaymentScreen';
 import PaymentDetailScreen from '../screens/CommonFiles/PaymentDetailScreen';
 import CabEntry from '../screens/UserHome/PreApproved/Cab/CabEntry';
 import CabSelection from '../screens/UserHome/PreApproved/Cab/CabSelection';
 import DeliveryPreEntry from '../screens/UserHome/PreApproved/Delivery/DeliveryPreEntry';
 import DeliveryType from '../screens/UserHome/PreApproved/Delivery/DeliveryType';
-import CreateGuest from '../screens/UserHome/PreApproved/Guest/CreateGuest';
-import UnitVisitorsScreen from '../screens/UserHome/unitVisitorsScreen';
+//import CreateGuest from '../screens/UserHome/PreApproved/Guest/CreateGuest';
+//import UnitVisitorsScreen from '../screens/UserHome/unitVisitorsScreen';
 import { SaveFCMToken } from '../api/myHome/fcmService';
 import VisitorLog from '../screens/GateHome/Visitor/VisitorLog';
 import ProfileScreen from '../screens/UserHome/ProfileScreen';
@@ -253,7 +253,7 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
       </Stack.Screen>
 
       <Stack.Screen name="VisitorDetailScreen" component={VisitorDetailScreen} options={{ headerShown: true }} />
-      <Stack.Screen name="Unit Visitors" component={UnitVisitorsScreen} options={{ headerShown: true }} />
+      {/* <Stack.Screen name="Unit Visitors" component={UnitVisitorsScreen} options={{ headerShown: true }} /> */}
       <Stack.Screen name="View All" component={ViewAllScreen} options={{ headerShown: true }} />
       <Stack.Screen name="GateServiceProvider" component={GateServiceProviderScreen} options={{ headerShown: true }} />
       <Stack.Screen name="GateDelivery" component={GateDeliveryScreen} options={{ headerShown: true }} />
@@ -263,15 +263,15 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
       <Stack.Screen name="Create Visitors" component={CreateVisitors} options={{ headerShown: true }} />
       <Stack.Screen name="DeliveryApproval" component={DeliveryApprovalScreen} options={{ headerShown: true }} />
       <Stack.Screen name="DeliveryWaiting" component={DeliveryWaitingScreen} options={{ headerShown: true }} />
-      <Stack.Screen name="CreateTicket" component={CreateTicket} options={{ headerShown: true }} />
+      {/* <Stack.Screen name="CreateTicket" component={CreateTicket} options={{ headerShown: true }} /> */}
       <Stack.Screen name="VisitorsList" component={VisitorsList} options={{ headerShown: true }} />
       <Stack.Screen name="Guest Invite" component={GuestInvite} options={{ headerShown: false }} />
-      <Stack.Screen name="Quick Invite" options={{ headerShown: false }}>
+      {/* <Stack.Screen name="Quick Invite" options={{ headerShown: false }}>
         {(props) => <QuickInvite {...props} type="guest" />}
-      </Stack.Screen>
+      </Stack.Screen> */}
       <Stack.Screen name="Frequent Invite" component={FrequentInvite} options={{ headerShown: false }} />
       <Stack.Screen name="Private Invite" component={PrivateInvite} options={{ headerShown: false }} />
-      <Stack.Screen name="Invite Link" component={InviteLink} options={{ headerShown: true }} />
+      {/* <Stack.Screen name="Invite Link" component={InviteLink} options={{ headerShown: true }} /> */}
       <Stack.Screen name="DailyHelpScreen" component={DailyHelpScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Add Family Member" component={AddFamilyMember} options={{ headerShown: true }} />
       <Stack.Screen name="Defaulter Screen" component={DefaulterScreen} options={{ headerShown: true }} />
@@ -281,7 +281,7 @@ const RootNavigator = ({ fcmToken }: TabNavigatorProps) => {
       <Stack.Screen name="Cab Selection" component={CabSelection} options={{ headerShown: true }} />
       <Stack.Screen name="Delivery Type" component={DeliveryType} options={{ headerShown: false }} />
       <Stack.Screen name="Delivery Entry" component={DeliveryPreEntry} options={{ headerShown: false }} />
-      <Stack.Screen name="Create Guest" component={CreateGuest} options={{ headerShown: true }} />
+      {/* <Stack.Screen name="Create Guest" component={CreateGuest} options={{ headerShown: true }} /> */}
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Bills List" component={BillsList} options={{ headerShown: true }} />
     </Stack.Navigator>

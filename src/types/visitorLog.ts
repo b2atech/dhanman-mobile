@@ -30,6 +30,11 @@ export interface VisitorLog {
   createdOnUtc: string;
   modifiedBy?: string;
   modifiedOnUtc?: string;
+  latestEntryTime?: string;
+  latestExitTime?: string;
+  expectedArrival?: string;
+  visitorTypeName?: string;
+  unitName?: string;
 }
 
 export interface VisitorLogsByUnitResponse {
@@ -63,3 +68,4 @@ export interface PreApprovedVisitorRequest {
   validTo: string;
   purpose: string;
   approvedBy: string;
+}

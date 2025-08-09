@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
 import {Dimensions, StyleSheet, View, Text, ScrollView} from 'react-native';
 import {
   VictoryBar,
@@ -8,9 +8,10 @@ import {
   VictoryAxis,
   VictoryStack,
 } from 'victory-native';
-import {useGetaccountExpenseOverviews} from '../../../api/myHome/financeReports';
+// import {useGetaccountExpenseOverviews} from '../../../api/myHome/financeReports';
 import useConfig from '../../../hooks/useConfig';
 import commonStyles from '../../../commonStyles/commonStyles';
+import { ExpenseBreakdownItem } from '../../../types/expenseBreakdown';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -20,49 +21,49 @@ const ExpenseCategoryChart = () => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const accountExpensesOverview = await useGetaccountExpenseOverviews(
-          company?.id,
-          2,
-          finYear.id,
-          1,
-        );
-        Logger.debug(accountExpensesOverview);
-        if (accountExpensesOverview && accountExpensesOverview.length > 0) {
-          const data = accountExpensesOverview;
+      // try {
+      //   const accountExpensesOverview = await useGetaccountExpenseOverviews(
+      //     company?.id,
+      //     2,
+      //     finYear.id,
+      //     1,
+      //   );
+      //   Logger.debug(accountExpensesOverview);
+      //   if (accountExpensesOverview && accountExpensesOverview.length > 0) {
+      //     const data:ExpenseBreakdownItem[] = accountExpensesOverview;
 
-          const uniquePeriods = Array.from(
-            new Set(data.map(item => `${item.period} ${item.year}`)),
-          );
-          setCategories(uniquePeriods);
+      //     const uniquePeriods = Array.from(
+      //       new Set(data.map(item => `${item.period} ${item.year}`)),
+      //     );
+      //     setCategories(uniquePeriods);
 
-          const groupedByAccount = data.reduce((acc, curr) => {
-            const period = `${curr.period} ${curr.year}`;
-            if (!acc[curr.accountName]) {
-              acc[curr.accountName] = Array(uniquePeriods.length).fill(0);
-            }
-            const periodIndex = uniquePeriods.indexOf(period);
-            if (periodIndex !== -1) {
-              acc[curr.accountName][periodIndex] = curr.totalExpense;
-            }
-            return acc;
-          }, {});
+      //     const groupedByAccount = data.reduce((acc, curr) => {
+      //       const period = `${curr.period} ${curr.year}`;
+      //       if (!acc[curr.accountName]) {
+      //         acc[curr.accountName] = Array(uniquePeriods.length).fill(0);
+      //       }
+      //       const periodIndex = uniquePeriods.indexOf(period);
+      //       if (periodIndex !== -1) {
+      //         acc[curr.accountName][periodIndex] = curr.totalExpense;
+      //       }
+      //       return acc;
+      //     }, {});
 
-          const formattedData = Object.keys(groupedByAccount).map(
-            accountName => ({
-              accountName,
-              data: groupedByAccount[accountName].map((yValue, index) => ({
-                x: uniquePeriods[index],
-                y: yValue,
-              })),
-            }),
-          );
+      //     const formattedData = Object.keys(groupedByAccount).map(
+      //       accountName => ({
+      //         accountName,
+      //         data: groupedByAccount[accountName].map((yValue, index) => ({
+      //           x: uniquePeriods[index],
+      //           y: yValue,
+      //         })),
+      //       }),
+      //     );
 
-          setChartData(formattedData);
-        }
-      } catch (err) {
-        Logger.error('Error fetching expense data:', err);
-      }
+      //     setChartData(formattedData);
+      //   }
+      // } catch (err) {
+      //   Logger.error('Error fetching expense data:', err);
+      // }
     };
 
     fetchData();
@@ -91,7 +92,7 @@ const ExpenseCategoryChart = () => {
           {chartData.map((dataset, i) => (
             <VictoryBar
               key={i}
-              data={dataset.data}
+              data={[]}
               style={{
                 data: {fill: colors[i % colors.length]},
               }}
@@ -110,7 +111,7 @@ const ExpenseCategoryChart = () => {
               ]}
             />
             <Text style={commonStyles.descriptionText}>
-              {dataset.accountName}
+              {/* {dataset.accountName} */}
             </Text>
           </View>
         ))}

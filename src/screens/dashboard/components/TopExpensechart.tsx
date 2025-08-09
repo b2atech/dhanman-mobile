@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Logger from '../utils/logger';
+
 import {View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {
   VictoryBar,
@@ -10,6 +10,7 @@ import {
 import {useGetExpenseCategories} from '../../../api/myHome/financeReports';
 import useConfig from '../../../hooks/useConfig';
 import commonStyles from '../../../commonStyles/commonStyles';
+import Logger from '../../../utils/logger';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -30,43 +31,43 @@ const TopExpensesChart = () => {
     '#607D8B',
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const expenseCategories = await useGetExpenseCategories(
-          company?.organizationId,
-          finYear.id,
-        );
-        Logger.debug(company?.organizationId);
-        if (expenseCategories && expenseCategories.length > 0) {
-          const formattedData = expenseCategories.map((item, index) => ({
-            x: item.accountName,
-            y: item.totalExpense,
-            color: colorScale[index % colorScale.length],
-          }));
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const expenseCategories = await useGetExpenseCategories(
+  //         company?.organizationId,
+  //         finYear.id,
+  //       );
+  //       Logger.debug(company?.organizationId);
+  //       if (expenseCategories && expenseCategories.length > 0) {
+  //         const formattedData = expenseCategories.map((item, index) => ({
+  //           x: item.accountName,
+  //           y: item.totalExpense,
+  //           color: colorScale[index % colorScale.length],
+  //         }));
 
-          setChartData(formattedData);
+  //         setChartData(formattedData);
 
-          const expenseSum = expenseCategories.reduce(
-            (sum, item) => sum + item.totalExpense,
-            0,
-          );
-          setTotalExpense(expenseSum);
-        }
-      } catch (error) {
-        Logger.error('Error fetching expense categories:', error);
-      }
-    };
+  //         const expenseSum = expenseCategories.reduce(
+  //           (sum, item) => sum + item.totalExpense,
+  //           0,
+  //         );
+  //         setTotalExpense(expenseSum);
+  //       }
+  //     } catch (error) {
+  //       Logger.error('Error fetching expense categories:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, [company?.id]);
+  //   fetchData();
+  // }, [company?.id]);
 
-  const formatCurrency = value => {
-    return `₹${value.toLocaleString('en-IN', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
-  };
+  // const formatCurrency = value => {
+  //   return `₹${value.toLocaleString('en-IN', {
+  //     minimumFractionDigits: 2,
+  //     maximumFractionDigits: 2,
+  //   })}`;
+  // };
 
   if (chartData.length === 0) {
     return (
@@ -81,11 +82,11 @@ const TopExpensesChart = () => {
       <View style={styles.statsContainer}>
         <Text style={commonStyles.headerText}>Top Expenses</Text>
         <Text style={commonStyles.descriptionText}>
-          {formatCurrency(totalExpense)}
+          {/* {formatCurrency(totalExpense)} */}
         </Text>
       </View>
 
-      <VictoryChart
+      {/* <VictoryChart
         theme={VictoryTheme.grayscale}
         width={screenWidth * 0.95}
         domainPadding={20}
@@ -109,9 +110,9 @@ const TopExpensesChart = () => {
             },
           }}
         />
-      </VictoryChart>
+      </VictoryChart> */}
 
-      <View style={styles.legendContainer}>
+      {/* <View style={styles.legendContainer}>
         {chartData.map((item, index) => (
           <View key={item.x} style={styles.legendItem}>
             <View
@@ -120,7 +121,7 @@ const TopExpensesChart = () => {
             <Text style={commonStyles.descriptionText}>{item.x}</Text>
           </View>
         ))}
-      </View>
+      </View> */}
     </ScrollView>
   );
 };

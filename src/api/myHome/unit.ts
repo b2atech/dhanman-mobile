@@ -43,7 +43,7 @@ export const getUnits = async (unitID: string | number): Promise<Unit> => {
   }
 };
 
-export const getUnitsByUserId = async (apartmentId: string | number, dhanmanId: string | number): Promise<number[]> => {
+export const getUnitsByUserId = async (apartmentId: string | number, dhanmanId: string | number): Promise<string[]> => {
   try {
     const url = endpoints.getUnitsByUserId
       .replace('{0}', String(dhanmanId))

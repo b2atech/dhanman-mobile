@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { IOrganization } from './common';
 
 export type IUser = {
     id?: string;
@@ -25,14 +26,7 @@ export type IUser = {
     isApartment: boolean;
   }
 
-  export interface IOrganization {
-    id: string;
-    name: string;
-    gstIn: string;
-    pan: string;
-    tan: string;
-    shortName: string;
-  }
+ 
   export interface AuthProps {
     isLoggedIn: boolean;
     isInitialized?: boolean;

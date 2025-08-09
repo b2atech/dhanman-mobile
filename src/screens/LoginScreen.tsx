@@ -20,7 +20,7 @@ interface LoginScreenProps {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const authContext = useContext(AuthContext);
-  const { login, loginWithCredentials, isLoggedIn, setRole } = authContext || {};
+  const { login, loginWithCredentials, isLoggedIn } = authContext || {};
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [username, setUsername] = useState('');

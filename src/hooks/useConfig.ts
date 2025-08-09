@@ -18,8 +18,8 @@ interface ConfigReturn {
 
 // ==============================|| THEME CONFIG ||============================== //
 const useConfig = (): ConfigReturn => {
-  const { user } = useContext(AuthContext);
-  Logger.debug('useConfig user retrieved', { userId: user?.id, email: user?.email });
+  const authContext  = useContext(AuthContext);
+  Logger.debug('useConfig user retrieved', { userId: authContext?.user?.id, email: authContext?.user?.email });
 
   return {
     fontFamily: '\'Public Sans\', sans-serif',
@@ -27,7 +27,7 @@ const useConfig = (): ConfigReturn => {
     miniDrawer: false,
     container: true,
     presetColor: 'default',
-    organization: user?.dhanman_organization,
+    organization: authContext?.user?.organization,
     company: {
       description: 'Apartment MyHome ',
       gstIn: '22AAAAA0000A1Z5',
@@ -40,8 +40,8 @@ const useConfig = (): ConfigReturn => {
       addressLine: '',
     },
     //company: user?.dhanman_company,
-    roles: user?.dhanman_roles || [],
-    unitIds: user?.unitIds,
+    roles: authContext?.user?.roles || [],
+    unitIds: authContext?.user?.unitIds,
     finYear: { id: 2025, name: '2025' },
   };
 };

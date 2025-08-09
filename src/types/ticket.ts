@@ -56,3 +56,4 @@ export interface CreateTicketRequest {
   ticketCategoryId: number;
   ticketPriorityId: number;
   ticketStatusId: number;
+}

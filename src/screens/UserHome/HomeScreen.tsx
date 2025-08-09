@@ -8,18 +8,21 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import Logger from '../utils/logger';
+
 import commonStyles from '../../commonStyles/commonStyles';
 import FinanceHome from '../dashboard/FinanceHome';
 import { AuthContext } from '../../context/AuthContext';
 import useConfig from '../../hooks/useConfig';
 import { useHasPermission } from '../../hooks/useHasPermission';
 import { DhanmanPermissions } from '../../constant/DhanmanPermission';
-import FloatingActionButton from '../../components/AddButton';
+
 import HeaderComponent from '../HeaderScreen';
 import { getdefalutors, getdefalutorTotal } from '../../api/sales/defaultor';
 import BillSection from './Components/BillSection';
 import { getAllBills } from '../../api/purchase/bill';
+import Logger from '../../utils/logger';
+import { Bill } from '../../types/bill';
+import FloatingActionButton from '../../components/shared/AddButton';
 
 interface HomeScreenProps {
   navigation: any;
@@ -27,12 +30,12 @@ interface HomeScreenProps {
 }
 
 const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
-  const { user } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const config = useConfig();
-  const units = user?.unitIds || [];
+  const units = authContext?.user?.unitIds || [];
   const { hasPermission, loading } = useHasPermission(
     config?.organization?.id,
-    user?.dhanmanId,
+    authContext?.user?.dhanmanId,
     DhanmanPermissions.ADMIN
   );
   const [defalutorTotal, setDefalutorTotal] = useState<any[]>([]);
@@ -84,7 +87,7 @@ const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
           setDefalutors(response);
         }
       } catch (err) {
-        Logger.error(err);
+        Logger.error('Error fetching defaulters', err);
       }
     };
 
@@ -95,7 +98,7 @@ const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
     };
   }, [config.company.id]);
 
-  const [bills, setBills] = useState([]);
+  const [bills, setBills] = useState<Bill[]>([]);
   const startDate = '2025-01-01';
   const endDate = '2025-12-31';
 
@@ -130,16 +133,16 @@ const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
   return (
     <View style={styles.container}>
       <ScrollView style={commonStyles.container}>
-        {user && (
+        {authContext?.user && (
           <HeaderComponent
-            user={user}
+            user={authContext.user}
             companyName={config?.company?.name}
             units={
               units.length > 0
-                ? units.map((unit) => ({ id: unit, name: `Unit ${unit}` }))
+                ? units.map((unit) => ({ id: String(unit), name: `Unit ${unit}` }))
                 : []
             }
-            selectedUnit={selectedUnit}
+            selectedUnit={'A-511'}
             setSelectedUnit={setSelectedUnit}
           />
         )}
@@ -176,10 +179,10 @@ const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
           </View>
           <View style={styles.cardRight}>
             <Text style={styles.cardCount}>
-              {defalutorTotal.totalDefaultors}
+              {defalutorTotal[0].totalDefaultors}
             </Text>
             <Text style={styles.cardTotalAmount}>
-              ₹ {defalutorTotal.totalAmount}
+              ₹ {defalutorTotal[0].totalAmount}
             </Text>
           </View>
         </TouchableOpacity>
@@ -194,7 +197,7 @@ const HomeScreen = ({ navigation, fcmToken }: HomeScreenProps) => {
         {!loading && hasPermission && <FinanceHome />}
       </ScrollView>
 
-      <FloatingActionButton onPress={() => Logger.debug('FAB Pressed!')} />
+      <FloatingActionButton  />
     </View>
   );
 };

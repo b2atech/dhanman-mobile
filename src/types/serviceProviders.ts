@@ -24,3 +24,4 @@ export interface ServiceProvider {
 export interface ServiceProvidersResponse {
   cursor: string;
   items: ServiceProvider[];
+}

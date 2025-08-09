@@ -21,7 +21,7 @@ import commonStyles from '../../../commonStyles/commonStyles';
 import {getDeliveryCompanies} from '../../../api/myHome/delivery';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/common';
-import { DeliveryCompany, GroupedCompanies } from '../../../types/delivery';
+import { DeliveryCompany } from '../../../types/delivery';
 
 const defaultIcon = require('../../../assets/images/delivery.jpg');
 const defaultUserIcon = require('../../../assets/images/user_icon.png');
@@ -29,7 +29,7 @@ const defaultUserIcon = require('../../../assets/images/user_icon.png');
 export default function GateDeliveryScreen() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState('');
-  const [groupedItems, setGroupedItems] = useState<GroupedCompanies>({});
+  const [groupedItems, setGroupedItems] = useState<Record<string, DeliveryCompany[]>>({});
 
   const [modalVisible, setModalVisible] = useState(false);
   const [deliveryManName, setDeliveryManName] = useState('');
@@ -69,14 +69,14 @@ export default function GateDeliveryScreen() {
           deliveryCompanyIcon: defaultIcon,
         }));
 
-        const grouped: GroupedCompanies = dataWithIcons.reduce((acc, item) => {
+        const grouped: Record<string, DeliveryCompany[]> = dataWithIcons.reduce((acc, item) => {
           const category = item.deliveryCompanyCategoryName;
           if (!acc[category]) {
             acc[category] = [];
           }
           acc[category].push(item);
           return acc;
-        }, {} as GroupedCompanies);
+        }, {} as Record<string, DeliveryCompany[]>);
 
         setGroupedItems(grouped);
       } catch (error) {
@@ -101,7 +101,7 @@ const filteredGroupedItems = useMemo(() => {
       acc[category] = filteredItems;
     }
     return acc;
-  }, {} as GroupedCompanies);
+  }, {} as Record<string, DeliveryCompany[]>);
 }, [groupedItems, searchQuery]);
 
   if (loading) {

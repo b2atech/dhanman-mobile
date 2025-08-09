@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import Logger from '../utils/logger';
+
 import {View, Text, TextInput, StyleSheet, Button, Alert} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import commonStyles from '../../style/CommonStyles';
-import {addVisitorLog} from '../../api/visitorLog';
 import UnitSelection from '../CommonFiles/UnitSelection';
+import Logger from '../../utils/logger';
+import { addVisitorLog } from '../../api/myHome/visitorLog';
+import commonStyles from '../../commonStyles/commonStyles';
 
 export default function VisitorLogScreen() {
   const navigation = useNavigation();
@@ -14,12 +15,12 @@ export default function VisitorLogScreen() {
   const [visitingForm, setVisitingForm] = useState('');
   const [entryTime, setEntryTime] = useState(new Date());
   const route = useRoute();
-  const {id} = route.params;
+  //const {id} = route.params;
 
-  const handleSelectionComplete = (building, floor, unit, unitId) => {
-    Logger.debug(building, floor, unit, unitId);
-    setSelectedUnit(unitId);
-  };
+  // const handleSelectionComplete = (building, floor, unit, unitId) => {
+  //   Logger.debug(building, floor, unit, unitId);
+  //   setSelectedUnit(unitId);
+  // };
 
   const visitorTypes = [
     {label: 'Delivery', value: '1'},
@@ -29,7 +30,7 @@ export default function VisitorLogScreen() {
 
   const handleSubmit = async () => {
     const newVisitorLog = {
-      visitorId: id,
+      visitorId: 1,
       visitingUnitIds: selectedUnit,
       visitorTypeId: selectedVisitorType,
       visitingFrom: visitingForm,
@@ -38,9 +39,9 @@ export default function VisitorLogScreen() {
       exitTime: '2024-07-13',
     };
     try {
-      await addVisitorLog(newVisitorLog);
+      //await addVisitorLog(newVisitorLog);
       Alert.alert('Visitors added successfully');
-      navigation.navigate('GateHomeScreen');
+      //navigation.navigate('GateHomeScreen');
     } catch (error) {
       Logger.error('Error adding visitor:', error);
       Alert.alert(
@@ -51,46 +52,47 @@ export default function VisitorLogScreen() {
   };
 
   return (
-    <View style={commonStyles.container}>
-      {selectedUnit.length === 0 ? (
-        <UnitSelection onSelectionComplete={handleSelectionComplete} />
-      ) : (
-        <>
-          <Text style={[styles.label, commonStyles.headerText]}>
-            Visitor Type
-          </Text>
-          <Dropdown
-            style={styles.dropdown}
-            data={visitorTypes}
-            labelField="label"
-            valueField="value"
-            placeholder="Select visitor type"
-            value={selectedVisitorType}
-            onChange={item => setSelectedVisitorType(item.value)}
-          />
+    <>  </>
+    // <View style={commonStyles.container}>
+    //   {selectedUnit.length === 0 ? (
+    //     <UnitSelection onSelectionComplete={handleSelectionComplete} />
+    //   ) : (
+    //     <>
+    //       <Text style={[styles.label, commonStyles.headerText]}>
+    //         Visitor Type
+    //       </Text>
+    //       <Dropdown
+    //         style={styles.dropdown}
+    //         data={visitorTypes}
+    //         labelField="label"
+    //         valueField="value"
+    //         placeholder="Select visitor type"
+    //         value={selectedVisitorType}
+    //         onChange={item => setSelectedVisitorType(item.value)}
+    //       />
 
-          <Text style={[styles.label, commonStyles.headerText]}>
-            Visiting From
-          </Text>
-          <TextInput
-            style={styles.textBox}
-            value={visitingForm}
-            onChangeText={setVisitingForm}
-          />
+    //       <Text style={[styles.label, commonStyles.headerText]}>
+    //         Visiting From
+    //       </Text>
+    //       <TextInput
+    //         style={styles.textBox}
+    //         value={visitingForm}
+    //         onChangeText={setVisitingForm}
+    //       />
 
-          <Text style={[styles.label, commonStyles.headerText]}>
-            Entry Time
-          </Text>
-          <TextInput
-            style={styles.textBox}
-            value={entryTime}
-            onChangeText={setEntryTime}
-          />
+    //       <Text style={[styles.label, commonStyles.headerText]}>
+    //         Entry Time
+    //       </Text>
+    //       {/* <TextInput
+    //         style={styles.textBox}
+    //         value={entryTime}
+    //         onChangeText={setEntryTime}
+    //       /> */}
 
-          <Button title="Enter" onPress={handleSubmit} />
-        </>
-      )}
-    </View>
+    //       <Button title="Enter" onPress={handleSubmit} />
+    //     </>
+    //   )}
+    // </View>
   );
 }
 

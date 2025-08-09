@@ -48,3 +48,4 @@ export interface UserPermission {
   name: string;
   resource: string;
   action: string;
+}

@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
 import {getVisitors} from '../../../api/myHome/visitors';
 import {getVisitorsLog} from '../../../api/myHome/visitorLog';
 import commonStyles from '../../../commonStyles/commonStyles';

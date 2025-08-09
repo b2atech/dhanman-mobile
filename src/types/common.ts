@@ -56,3 +56,4 @@ export interface ICompany {
   CreateVisitors: undefined; // Add this line
 
   // ...other routes
+  };

@@ -10,7 +10,8 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUserCircle, faBuilding} from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
-import { IUser, IUnit } from '../types/common';
+import {  IUnit } from '../types/common';
+import { IUser } from '../types/auth';
 
 interface HeaderComponentProps {
   user: IUser;

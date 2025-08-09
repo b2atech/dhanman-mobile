@@ -138,6 +138,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
             roles: decodedToken?.dhanman_roles || [],
             organization: {
               id: decodedToken.dhanman_organization.id,
+              organizationId: decodedToken.dhanman_organization.id,
               name: decodedToken.dhanman_organization.name,
               gstIn: decodedToken.dhanman_organization.gstIn,
               pan: decodedToken.dhanman_organization.pan,
@@ -155,7 +156,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
               gstIn: decodedToken.dhanman_company.gstIn,
               isApartment: decodedToken.dhanman_company.isApartment,
             },
-            unitIds: unitIds.unitIds,
+            unitIds: unitIds || [],
           },
         },
       });

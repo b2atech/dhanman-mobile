@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {
   View,
   Text,
@@ -18,12 +18,15 @@ import {
   faTruck,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import Logger from '../utils/logger';
+import Logger from '../../utils/logger';
 import commonStyles from '../../commonStyles/commonStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {SaveGuestNotification} from '../../api/myHome/fcmService';
+type GateHomeScreenProps = {
+  fcmToken: string; // or string | undefined if it can be missing
+};
 
-export default function GateHomeScreen({fcmToken}) {
+export default function GateHomeScreen({ fcmToken }: GateHomeScreenProps) {
   const navigation = useNavigation();
 
   const [guestName, setGuestName] = useState(''); // State to store the guest name input
@@ -80,7 +83,7 @@ export default function GateHomeScreen({fcmToken}) {
             source={{uri: 'https://picsum.photos/id/237/200/300'}}
             style={styles.avatar}
           />
-          <View style={styles.headerTextContainer}>
+          <View >
             <Text style={styles.headerTitle}>ASPEN WOODS Apartments</Text>
           </View>
           <View style={styles.iconsContainer}>
@@ -90,7 +93,7 @@ export default function GateHomeScreen({fcmToken}) {
           </View>
         </View>
       </LinearGradient>
-      <View style={styles.cardContainer}>
+      {/* <View style={styles.cardContainer}>
         {cards.map(card => (
           <TouchableOpacity
             key={card.id}
@@ -102,17 +105,17 @@ export default function GateHomeScreen({fcmToken}) {
             </LinearGradient>
           </TouchableOpacity>
         ))}
-      </View>
+      </View> */}
     </ScrollView>
   );
 }
-GateHomeScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-  route: PropTypes.object.isRequired,
-  fcmToken: PropTypes.string.isRequired,
-};
+// GateHomeScreen.propTypes = {
+//   navigation: PropTypes.shape({
+//     navigate: PropTypes.func.isRequired,
+//   }).isRequired,
+//   route: PropTypes.object.isRequired,
+//   fcmToken: PropTypes.string.isRequired,
+// };
 
 const styles = StyleSheet.create({
   label: {

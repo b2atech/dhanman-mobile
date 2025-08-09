@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import Logger from '../utils/logger';
+
 import {
   View,
   Text,
@@ -26,13 +26,20 @@ import {
   faHome,
   faShieldAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import Logger from '../../utils/logger';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const ProfileScreen = ({ navigation }) => {
-  const { logout, user } = useContext(AuthContext);
+type ProfileScreenProps = {
+  navigation: StackNavigationProp<any>; // Replace `any` with your navigator's param list
+};
+
+const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
+
+  const authContext = useContext(AuthContext);
   const [selectedRole, setSelectedRole] = useState('unit');
   const [toggleAnimation] = useState(new Animated.Value(0));
 
-  Logger.debug('user1111', user);
+  Logger.debug('user1111', authContext?.user);
 
   useEffect(() => {
     const loadSelectedTab = async () => {
@@ -50,7 +57,7 @@ const ProfileScreen = ({ navigation }) => {
     loadSelectedTab();
   }, []);
 
-  const handleRoleChange = async (role) => {
+  const handleRoleChange = async (role: string) => {
     setSelectedRole(role);
     await AsyncStorage.setItem('selectedTab', role);
 
@@ -80,7 +87,7 @@ const ProfileScreen = ({ navigation }) => {
         {
           text: 'Logout',
           onPress: async () => {
-            await logout();
+            await authContext?.logout();
             navigation.navigate('Login');
           },
         },
@@ -152,7 +159,7 @@ const ProfileScreen = ({ navigation }) => {
     },
   ];
 
-  const renderMenuItem = (item) => (
+  const renderMenuItem = (item:any) => (
     <TouchableOpacity
       key={item.id}
       style={styles.menuItem}
@@ -246,15 +253,15 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.profileSection}>
           <Image
             source={
-              user?.avatar
-                ? { uri: user.avatar }
+              authContext?.user?.avatar
+                ? { uri: authContext.user.avatar }
                 : require('../../assets/images/decent_user.png')
             }
             style={styles.profileImage}
           />
-          <Text style={styles.userName}>{user?.name || 'Test User'}</Text>
+          <Text style={styles.userName}>{authContext?.user?.name || 'Test User'}</Text>
           <Text style={styles.userEmail}>
-            {user?.email || 'TestUser@gmail.com'}
+            {authContext?.user?.email || 'TestUser@gmail.com'}
           </Text>
         </View>
 

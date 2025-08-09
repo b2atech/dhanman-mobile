@@ -21,13 +21,14 @@ import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Logger from '../../../utils/logger';
+import { VisitorLog } from '../../../types/visitorLog';
 
-const VisitorLog = () => {
+const VisitorLogScreen = () => {
   const config = useConfig();
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('Upcoming');
-  const [visitorLogs, setVisitorLogs] = useState([]);
-  const [selectedItems, setSelectedItems] = useState({});
+  const [visitorLogs, setVisitorLogs] = useState<VisitorLog[]>([]);
+  const [selectedItems, setSelectedItems] = useState<VisitorLog[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -42,7 +43,7 @@ const VisitorLog = () => {
         const filteredLogs = response.filter(log => {
           if (activeTab === 'Upcoming') {
             return (
-              new Date(log.expectedArrival) > new Date() && !log.latestEntryTime
+              log.expectedArrival && new Date(log.expectedArrival) > new Date() && !log.latestEntryTime
             );
           }
           if (activeTab === 'Checked In') {
@@ -66,34 +67,34 @@ const VisitorLog = () => {
 
   useEffect(() => {
     if (selectAll) {
-      const allSelectedItems = visitorLogs.reduce((acc, item) => {
+      const allSelectedItems = visitorLogs.reduce((acc:any, item:any) => {
         acc[item.id] = true;
         return acc;
       }, {});
       setSelectedItems(allSelectedItems);
     } else {
-      setSelectedItems({});
+      setSelectedItems([]);
     }
   }, [selectAll, visitorLogs]);
 
-  const handleCheckboxChange = id => {
-    setSelectedItems(prev => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const handleCheckboxChange = (id: any) => {
+    // setSelectedItems(prev => ({
+    //   ...prev,
+    //   [id]: !prev[id],
+    // }));
   };
 
-  const handleCheckOut = async visitorLog => {
-    const visitorId = {
-      id: visitorLog.id,
+  const handleCheckOut = async (visitorLog: VisitorLog) => {
+    const visitorStatusUpdate = {
+      visitorLogId: visitorLog.id,
     };
     try {
-      await visitorCheckOut(visitorId);
+      await visitorCheckOut(visitorStatusUpdate);
       Alert.alert('Success', 'Visitor checked out');
-      setVisitorLogs(prev => prev.filter(log => log.id !== visitorId));
+      setVisitorLogs(prev => prev.filter(log => log.id !== visitorLog.id));
     } catch (error) {
       Alert.alert('Error', 'Failed to check out visitor');
-      Logger.error(error);
+      Logger.error(typeof error === 'string' ? error : error instanceof Error ? error.message : JSON.stringify(error));
     }
   };
 
@@ -183,7 +184,7 @@ const VisitorLog = () => {
                     style={styles.userIcon}
                   />
                   <Text style={styles.nameText}>
-                    {item.firstName} {item.lastName}
+                    {/* {item.firstName} {item.lastName} */}
                   </Text>
                 </View>
                 {activeTab === 'Checked In' && (
@@ -259,7 +260,8 @@ const VisitorLog = () => {
 
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => navigation.navigate('Create Visitors')}>
+        // onPress={() => navigation.navigate('Create Visitors')}
+        >
         <Text style={styles.floatingButtonText}>+</Text>
       </TouchableOpacity>
     </View>
@@ -399,4 +401,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VisitorLog;
+export default VisitorLogScreen;

@@ -24,6 +24,7 @@ import {AuthContext} from '../../../context/AuthContext';
 import Logger from '../../../utils/logger';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/common';
+import { VisitorIdentityType, VisitorType } from '../../../types/visitor';
 
 type CreateVisitorsProps = {
   navigation: StackNavigationProp<RootStackParamList, 'CreateVisitors'>;
@@ -51,8 +52,8 @@ export default function CreateVisitors({navigation}: CreateVisitorsProps) {
   const [selectedFloor, setSelectedFloor] = useState('');
   const [selectedUnit, setSelectedUnit] = useState([]);
 
-  const [visitorTypeList, setVisitorTypeList] = useState([]);
-  const [identityTypes, setIdentityTypes] = useState([]);
+  const [visitorTypeList, setVisitorTypeList] = useState<VisitorType[]>([]);
+  const [identityTypes, setIdentityTypes] = useState<VisitorIdentityType[]>([]);
 
   useEffect(() => {
     const fetchVisitorTypes = async () => {
@@ -112,7 +113,7 @@ export default function CreateVisitors({navigation}: CreateVisitorsProps) {
 
     try {
       const response = await addVisitorPending(visitorPayload);
-      await sendNotificationToResident(firstName, response.intId);
+      await sendNotificationToResident(firstName, response.id);
 
       Alert.alert('Visitors added successfully');
       navigation.goBack();

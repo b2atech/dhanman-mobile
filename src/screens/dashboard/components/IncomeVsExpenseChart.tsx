@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {
   VictoryChart,
@@ -25,41 +25,41 @@ const IncomeVsExpenseChart = () => {
   const incomeColor = '#FFB900'; // Brighter Orange color for income
   const expenseColor = '#007AFF'; // Saturated Blue color for expense
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await useGetAccountOverview(
-          company.organizationId,
-          2,
-          finYear.id,
-        );
-        setChartData(data);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await useGetAccountOverview(
+  //         company.organizationId,
+  //         2,
+  //         finYear.id,
+  //       );
+  //       setChartData(data);
 
-        const incomeSum = data.reduce((sum, item) => sum + item.totalIncome, 0);
-        const expenseSum = data.reduce(
-          (sum, item) => sum + item.totalExpense,
-          0,
-        );
+  //       const incomeSum = data.reduce((sum, item) => sum + item.totalIncome, 0);
+  //       const expenseSum = data.reduce(
+  //         (sum, item) => sum + item.totalExpense,
+  //         0,
+  //       );
 
-        setTotalIncome(incomeSum);
-        setTotalExpense(expenseSum);
-      } catch (error) {
-        Logger.error('Error fetching account data:', error);
-      }
-    };
+  //       setTotalIncome(incomeSum);
+  //       setTotalExpense(expenseSum);
+  //     } catch (error) {
+  //       Logger.error('Error fetching account data:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, [company]);
+  //   fetchData();
+  // }, [company]);
 
-  const labels = chartData.map(item => item.period);
-  const incomeData = chartData.map(item => ({
-    x: item.period,
-    y: income ? item.totalIncome : 0,
-  }));
-  const expenseData = chartData.map(item => ({
-    x: item.period,
-    y: expense ? item.totalExpense : 0,
-  }));
+  // const labels = chartData.map(item => item.period);
+  // const incomeData = chartData.map(item => ({
+  //   x: item.period,
+  //   y: income ? item.totalIncome : 0,
+  // }));
+  // const expenseData = chartData.map(item => ({
+  //   x: item.period,
+  //   y: expense ? item.totalExpense : 0,
+  // }));
 
   return (
     <View style={styles.container}>
@@ -106,8 +106,8 @@ const IncomeVsExpenseChart = () => {
         <VictoryAxis />
         <VictoryAxis dependentAxis tickFormat={t => `${t / 1000}K`} />
         <VictoryGroup offset={20} colorScale={[incomeColor, expenseColor]}>
-          <VictoryBar data={incomeData} cornerRadius={{top: 6, bottom: 6}} />
-          <VictoryBar data={expenseData} cornerRadius={{top: 6, bottom: 6}} />
+          {/* <VictoryBar data={incomeData} cornerRadius={{top: 6, bottom: 6}} />
+          <VictoryBar data={expenseData} cornerRadius={{top: 6, bottom: 6}} /> */}
         </VictoryGroup>
       </VictoryChart>
     </View>
