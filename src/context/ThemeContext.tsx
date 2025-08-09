@@ -3,13 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { greenTheme, lavenderTheme, sigmaTheme } from '../theme';
 import Logger from '../utils/logger';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { greenTheme, lavenderTheme, sigmaTheme } from '../theme';
 import { ComponentStyles, GradientStyles } from '../theme/components';
 import { typography } from '../theme/typography';
 import { spacing, layout } from '../theme/spacing';
-import Logger from '../utils/logger';
 
 // Types
 interface Theme {

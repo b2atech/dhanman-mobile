@@ -1,35 +1,35 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
 import IdComponent from '../../CommonFiles/IdComponent';
-import Logger from '../utils/logger';
 import {getAllServiceProviders} from '../../../api/myHome/serviceProvider';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
+import { ServiceProvider } from '../../../types/serviceProviders';
 export default function GateServiceProviderScreen() {
   const [code, setCode] = useState('');
-  const [items, setItems] = useState([]);
-  const [allItems, setAllItems] = useState([]);
+  const [items, setItems] = useState<ServiceProvider[]>([]);
+  const [allItems, setAllItems] = useState<ServiceProvider[]>([]);
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAllServiceProviders = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await getAllServiceProviders();
-        setAllItems(response);
-      } catch (error) {
-        Logger.error('PIN not found', error);
-        setError('Error fetching data');
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  const fetchAllServiceProviders = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await getAllServiceProviders();
+      setAllItems(response); // response is now ServiceProvider[]
+    } catch (error) {
+      Logger.error('Service Providers Error', error);
+      setError('Error fetching data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchAllServiceProviders();
-  }, []);
+  fetchAllServiceProviders();
+}, []);
 
-  const handleCodeChange = input => {
+  const handleCodeChange = (input:any) => {
     setCode(input);
     if (input.length > 0) {
       const filteredItems = allItems.filter(
@@ -41,7 +41,7 @@ export default function GateServiceProviderScreen() {
     }
   };
 
-  const handlePushNotification = item => {
+  const handlePushNotification = (item : any) => {
     alert(`Push Notification sent to ${item.firstName} ${item.lastName}`);
   };
 
@@ -58,7 +58,7 @@ export default function GateServiceProviderScreen() {
       error={error}
       maxLength={6}
       emptyListMessage={'No items to display'}
-      id={items.pin}
+      id={items[0]?.pin}
     />
   );
 }

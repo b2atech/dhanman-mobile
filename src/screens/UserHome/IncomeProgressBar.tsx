@@ -21,7 +21,7 @@ const IncomeProgressBar: React.FC<IncomeProgressBarProps> = ({
   currency = '₹',
 }) => {
   const { theme } = useTheme();
-  const { colors, spacing } = theme;
+  const { colors } = theme;
 
   const progressColor = mainColor || colors.primary;
   const percent = Math.min(achieved / total, 1);

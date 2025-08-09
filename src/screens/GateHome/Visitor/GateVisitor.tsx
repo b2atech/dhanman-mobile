@@ -1,23 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
 import IdComponent from '../../CommonFiles/IdComponent';
-import Logger from '../utils/logger';
 import {getVisitors} from '../../../api/myHome/visitors';
-import Logger from '../utils/logger';
+import { Visitor } from '../../../types/visitor';
+
+
 
 export default function GateVisitorsScreen() {
   const [contactNumber, setContactNumber] = useState('');
-  const [items, setItems] = useState([]);
-  const [allItems, setAllItems] = useState([]);
+  const [items, setItems] = useState<Visitor[]>([]);
+  const [allItems, setAllItems] = useState<Visitor[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAllVisitors = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await getVisitors();
+        const response = await getVisitors('');
         setAllItems(response);
       } catch (error) {
         Logger.error('Error fetching data', error);
@@ -30,7 +31,7 @@ export default function GateVisitorsScreen() {
     fetchAllVisitors();
   }, []);
 
-  const handleContactNumberChange = input => {
+  const handleContactNumberChange = (input: string) => {
     setContactNumber(input);
     if (input.length === 10) {
       const filteredItems = allItems.filter(
@@ -46,6 +47,7 @@ export default function GateVisitorsScreen() {
 
   return (
     <IdComponent
+      id={1}
       label="Add Contact number"
       addNew="Visitors"
       navigate={'CreateVisitors'}

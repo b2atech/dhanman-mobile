@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
 import {
   View,
   Text,
@@ -10,23 +9,18 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Logger from '../utils/logger';
+
 import CheckBox from '@react-native-community/checkbox';
-import Logger from '../utils/logger';
 import {
   getAllVisitorsLog,
   visitorCheckOut,
 } from '../../../api/myHome/visitorLog';
 import useConfig from '../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import moment from 'moment';
-import Logger from '../utils/logger';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
-import Logger from '../utils/logger';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import Logger from '../utils/logger';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
 
 const VisitorLog = () => {
   const config = useConfig();

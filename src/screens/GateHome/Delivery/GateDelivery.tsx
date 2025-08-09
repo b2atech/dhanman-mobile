@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
 import React, {useEffect, useState, useMemo} from 'react';
-import Logger from '../utils/logger';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -17,27 +17,30 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
+
 import {getDeliveryCompanies} from '../../../api/myHome/delivery';
-import Logger from '../utils/logger';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/common';
+import { DeliveryCompany, GroupedCompanies } from '../../../types/delivery';
 
 const defaultIcon = require('../../../assets/images/delivery.jpg');
 const defaultUserIcon = require('../../../assets/images/user_icon.png');
 
 export default function GateDeliveryScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState('');
-  const [groupedItems, setGroupedItems] = useState({});
+  const [groupedItems, setGroupedItems] = useState<GroupedCompanies>({});
+
   const [modalVisible, setModalVisible] = useState(false);
   const [deliveryManName, setDeliveryManName] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const handleSearchChange = text => {
+  const handleSearchChange = (text: string) => {
     setSearchQuery(text);
   };
 
-  const handleSelectCompany = company => {
+  const handleSelectCompany = (company: any) => {
     setSelectedCompany(company);
     setModalVisible(true);
   };
@@ -56,23 +59,25 @@ export default function GateDeliveryScreen() {
     });
   };
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchAllCompanies = async () => {
+      setLoading(true);
       try {
-        const response = await getDeliveryCompanies();
-        const dataWithIcons = response.map(item => ({
+        const response: DeliveryCompany[] = await getDeliveryCompanies();
+        const dataWithIcons: DeliveryCompany[] = response.map(item => ({
           ...item,
           deliveryCompanyIcon: defaultIcon,
         }));
 
-        const grouped = dataWithIcons.reduce((acc, item) => {
+        const grouped: GroupedCompanies = dataWithIcons.reduce((acc, item) => {
           const category = item.deliveryCompanyCategoryName;
           if (!acc[category]) {
             acc[category] = [];
           }
           acc[category].push(item);
           return acc;
-        }, {});
+        }, {} as GroupedCompanies);
+
         setGroupedItems(grouped);
       } catch (error) {
         Alert.alert('Error', 'Failed to fetch delivery companies.');
@@ -85,19 +90,19 @@ export default function GateDeliveryScreen() {
     fetchAllCompanies();
   }, []);
 
-  const filteredGroupedItems = useMemo(() => {
-    return Object.keys(groupedItems).reduce((acc, category) => {
-      const filteredItems = groupedItems[category].filter(item =>
-        item.deliveryCompanyName
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()),
-      );
-      if (filteredItems.length > 0) {
-        acc[category] = filteredItems;
-      }
-      return acc;
-    }, {});
-  }, [groupedItems, searchQuery]);
+const filteredGroupedItems = useMemo(() => {
+  return Object.keys(groupedItems).reduce((acc, category) => {
+    const filteredItems = groupedItems[category].filter(item =>
+      item.deliveryCompanyName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    );
+    if (filteredItems.length > 0) {
+      acc[category] = filteredItems;
+    }
+    return acc;
+  }, {} as GroupedCompanies);
+}, [groupedItems, searchQuery]);
 
   if (loading) {
     return (
@@ -124,12 +129,12 @@ export default function GateDeliveryScreen() {
             <View style={styles.iconRow}>
               {filteredGroupedItems[category].map(item => (
                 <TouchableOpacity
-                  key={item.id}
+                  key={item.deliveryCompanyId}
                   style={styles.iconContainer}
                   onPress={() => handleSelectCompany(item)}
                   accessibilityLabel={`Select ${item.deliveryCompanyName}`}>
                   <Image
-                    source={item.deliveryCompanyIcon}
+                    source={item.deliveryCompanyIcon || defaultIcon}
                     style={styles.icon}
                   />
                   <Text style={commonStyles.headerText}>
@@ -159,11 +164,12 @@ export default function GateDeliveryScreen() {
               onChangeText={setDeliveryManName}
               accessibilityLabel="Delivery Person Name Input"
             />
+            <View style={styles.submitButton}>
             <Button
               title="Submit"
               onPress={handleSubmit}
-              style={styles.submitButton}
             />
+          </View>
           </View>
         </View>
       </Modal>

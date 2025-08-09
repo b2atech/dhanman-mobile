@@ -1,3 +1,4 @@
+import { ServiceProvider, ServiceProvidersResponse } from '../../types/serviceProviders';
 import {fetcher, fetcherPost} from '../../utils/axiosCommunity';
 import Logger from '../../utils/logger';
 
@@ -10,12 +11,12 @@ export const endpoints = {
   getServiceProviderNames: 'v1/service-provider-names',
 };
 
-export const getAllServiceProviders = async () => {
+export const getAllServiceProviders = async (): Promise<ServiceProvider[]> => {
   try {
     Logger.apiCall('GET', endpoints.getAllServiceProviders);
     Logger.debug('Fetching all service providers');
 
-    const response = await fetcher(endpoints.getAllServiceProviders);
+    const response: ServiceProvidersResponse = await fetcher(endpoints.getAllServiceProviders);
     Logger.debug('Service providers fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {

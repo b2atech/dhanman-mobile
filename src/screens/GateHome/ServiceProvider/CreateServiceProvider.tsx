@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Logger from '../utils/logger';
+
 import {
   View,
   Text,
@@ -11,20 +11,24 @@ import {
   Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import Logger from '../utils/logger';
+
 import {
   addServiceProvider,
   getServiceProviderSubType,
   getServiceProviderType,
 } from '../../../api/myHome/serviceProvider';
 import AddressForm from '../../CommonFiles/AddressForm';
-import Logger from '../utils/logger';
 import SubmitButton from '../../../components/shared/SubmitButton';
-import Logger from '../utils/logger';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/common';
 
-export default function CreateServiceProvider({navigation}) {
+type CreateServiceProviderProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'CreateServiceProvider'>;
+};
+
+export default function CreateServiceProvider({navigation}: CreateServiceProviderProps) {
   const [serviceProviderType, setServiceProviderType] = useState([]);
   const [serviceProviderSubType, setServiceProviderSubType] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,19 +75,19 @@ export default function CreateServiceProvider({navigation}) {
     {label: 'Passport', value: 2},
   ];
 
-  const handleInputChange = (name, value, nested = false, nestedField = '') => {
-    if (nested) {
-      setFormData(prevState => ({
-        ...prevState,
-        [nestedField]: {
-          ...prevState[nestedField],
-          [name]: value,
-        },
-      }));
-    } else {
-      setFormData(prevState => ({...prevState, [name]: value}));
-    }
-  };
+  // const handleInputChange = (name, value, nested = false, nestedField = '') => {
+  //   if (nested) {
+  //     setFormData(prevState => ({
+  //       ...prevState,
+  //       [nestedField]: {
+  //         ...prevState[nestedField],
+  //         [name]: value,
+  //       },
+  //     }));
+  //   } else {
+  //     setFormData(prevState => ({...prevState, [name]: value}));
+  //   }
+  // };
 
   const validateForm = () => {
     const requiredFields = [
@@ -95,12 +99,12 @@ export default function CreateServiceProvider({navigation}) {
       'serviceProviderSubTypeId',
     ];
 
-    for (let field of requiredFields) {
-      if (!formData[field]) {
-        Alert.alert('Validation Error', `Please fill in the ${field} field.`);
-        return false;
-      }
-    }
+    // for (let field of requiredFields) {
+    //   if (!formData[field]) {
+    //     Alert.alert('Validation Error', `Please fill in the ${field} field.`);
+    //     return false;
+    //   }
+    // }
 
     return true;
   };
@@ -157,11 +161,11 @@ export default function CreateServiceProvider({navigation}) {
       <TextInput
         style={[commonStyles.input, styles.input]}
         value={formData.firstName}
-        onChangeText={value => handleInputChange('firstName', value)}
+        
       />
 
       <Text style={[styles.label, commonStyles.headerText]}>Last Name</Text>
-      <TextInput
+      {/* <TextInput
         style={[commonStyles.input, styles.input]}
         value={formData.lastName}
         onChangeText={value => handleInputChange('lastName', value)}
@@ -244,7 +248,7 @@ export default function CreateServiceProvider({navigation}) {
         style={[commonStyles.input, styles.input]}
         value={formData.vehicleNumber}
         onChangeText={value => handleInputChange('vehicleNumber', value)}
-      />
+      /> */}
 
       <Text style={[styles.label, commonStyles.headerText]}>
         Identity Type ID
@@ -265,7 +269,7 @@ export default function CreateServiceProvider({navigation}) {
       <Text style={[styles.label, commonStyles.headerText]}>
         Identity Number
       </Text>
-      <TextInput
+      {/* <TextInput
         style={[commonStyles.input, styles.input]}
         value={formData.identityNumber}
         onChangeText={value => handleInputChange('identityNumber', value)}
@@ -314,7 +318,7 @@ export default function CreateServiceProvider({navigation}) {
           value={formData.isFrequentVisitor}
           onValueChange={value => handleInputChange('isFrequentVisitor', value)}
         />
-      </View>
+      </View> */}
 
       {isLoading ? (
         <ActivityIndicator size="large" color="#007BFF" />

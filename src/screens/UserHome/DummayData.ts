@@ -1,6 +1,6 @@
-import { Visitor } from './types'; // Adjust the import path as needed
+import { VisitorDummy } from './types'; // Adjust the import path as needed
 
-export const visitors: Visitor[] = [
+export const visitors: VisitorDummy[] = [
   { id: '1', name: 'Amit', photo: 'https://randomuser.me/api/portraits/men/11.jpg', status: 'in', time: '10:30' },
   { id: '2', name: 'Priya', photo: '', status: 'out', time: '09:40' },
   { id: '3', name: 'David', photo: 'https://randomuser.me/api/portraits/men/33.jpg', status: 'in', time: '11:15' },

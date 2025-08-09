@@ -46,3 +46,14 @@ export interface ICompany {
     hasPermission: boolean;
     loading: boolean;
   }
+
+  export type RootStackParamList = {
+  DeliveryApproval: {
+    deliveryManName: string;
+    selectedCompany: string | null;
+  };
+  CreateServiceProvider: undefined; // or specify params if needed
+  CreateVisitors: undefined; // Add this line
+
+  // ...other routes
+};

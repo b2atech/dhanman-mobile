@@ -1,4 +1,4 @@
-export type Visitor = {
+export type VisitorDummy = {
   id: string;
   name: string;
   photo: string;
@@ -7,5 +7,5 @@ export type Visitor = {
 };
 
 export type TimelineVisitorsProps = {
-  visitors: Visitor[];
+  visitors: VisitorDummy[];
 };

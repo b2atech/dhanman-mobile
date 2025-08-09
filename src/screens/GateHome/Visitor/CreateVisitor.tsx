@@ -1,6 +1,5 @@
 // src/AddVisitors.js
 import React, {useContext, useEffect, useState} from 'react';
-import Logger from '../utils/logger';
 import {
   Text,
   TextInput,
@@ -10,30 +9,30 @@ import {
   Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import Logger from '../utils/logger';
 import {
   addVisitorPending,
   getVisitorIdentityType,
   getVisitorType,
 } from '../../../api/myHome/visitors';
 import commonStyles from '../../../commonStyles/commonStyles';
-import Logger from '../utils/logger';
 import UnitSelection from '../../CommonFiles/UnitSelection';
-import Logger from '../utils/logger';
 import {getOTP} from '../../../api/myHome/otp';
-import Logger from '../utils/logger';
 import SubmitButton from '../../../components/shared/SubmitButton';
-import Logger from '../utils/logger';
 import useConfig from '../../../hooks/useConfig';
-import Logger from '../utils/logger';
 import {SaveGuestNotification} from '../../../api/myHome/fcmService';
-import Logger from '../utils/logger';
 import {AuthContext} from '../../../context/AuthContext';
-import Logger from '../utils/logger';
+import Logger from '../../../utils/logger';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/common';
 
-export default function CreateVisitors({navigation}) {
+type CreateVisitorsProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'CreateVisitors'>;
+};
+
+export default function CreateVisitors({navigation}: CreateVisitorsProps) {
   const config = useConfig();
-  const user = useContext(AuthContext);
+  const context = useContext(AuthContext);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
@@ -108,7 +107,7 @@ export default function CreateVisitors({navigation}) {
       vehicleNumber,
       identityTypeId: 1,
       identityNumber,
-      createdBy: user?.dhanmanId,
+      createdBy: context?.user?.dhanmanId,
     };
 
     try {
@@ -126,7 +125,7 @@ export default function CreateVisitors({navigation}) {
     }
   };
 
-  const sendNotificationToResident = async (firstName, guestId) => {
+  const sendNotificationToResident = async (firstName:any, guestId:any) => {
     const req = {
       residentId: 1241,
       guestName: firstName,
@@ -141,7 +140,7 @@ export default function CreateVisitors({navigation}) {
     }
   };
 
-  const handleSelectionComplete = (building, floor, unit) => {
+  const handleSelectionComplete = (building:any, floor:any, unit:any) => {
     setSelectedBuilding(building);
     setSelectedFloor(floor);
     setSelectedUnit(unit);

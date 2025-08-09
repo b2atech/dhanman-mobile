@@ -1,3 +1,4 @@
+import { Visitor, VisitorsResponse } from '../../types/visitor';
 import {fetcher, fetcherPost} from '../../utils/axiosCommunity';
 import Logger from '../../utils/logger';
 
@@ -12,13 +13,13 @@ export const endpoints = {
   visitorPending: 'v1/visitor-pending',
 };
 
-export const getVisitors = async (identityTypeId: string | number) => {
+export const getVisitors = async (identityTypeId: string | number): Promise<Visitor[]> => {
   const url = `${endpoints.key}${endpoints.list}${identityTypeId}`;
   try {
     Logger.apiCall('GET', url);
     Logger.debug('Fetching visitors', { identityTypeId });
 
-    const response = await fetcher(url);
+    const response: VisitorsResponse = await fetcher(url);
     Logger.debug('Visitors fetched successfully', { count: response.items?.length });
     return response.items;
   } catch (error) {
@@ -100,48 +101,48 @@ export const getVisitorIdentityType = async () => {
   }
 };
 
-export const addVisitorPending = async visitorPending => {
-  try {
-    const response = await fetcherPost(
-      endpoints.visitorPending,
-      visitorPending,
-    );
-    return response;
-  } catch (error) {
-    console.error('Error adding visitor', error);
-    throw error;
-  }
-};
+// export const addVisitorPending = async visitorPending => {
+//   try {
+//     const response = await fetcherPost(
+//       endpoints.visitorPending,
+//       visitorPending,
+//     );
+//     return response;
+//   } catch (error) {
+//     console.error('Error adding visitor', error);
+//     throw error;
+//   }
+// };
 
-export const getVisitorByUnitId = async (apartmentId, unitId) => {
-  const url = endpoints.visitorsByUnit
-    .replace('{0}', apartmentId)
-    .replace('{1}', unitId);
-  try {
-    const response = await fetcher(url);
-    return response.items;
-  } catch (error) {
-    console.error('Error fetching visitors', error);
-    throw error;
-  }
-};
+// export const getVisitorByUnitId = async (apartmentId, unitId) => {
+//   const url = endpoints.visitorsByUnit
+//     .replace('{0}', apartmentId)
+//     .replace('{1}', unitId);
+//   try {
+//     const response = await fetcher(url);
+//     return response.items;
+//   } catch (error) {
+//     console.error('Error fetching visitors', error);
+//     throw error;
+//   }
+// };
 
-export const getVisitorType = async () => {
-  try {
-    const response = await fetcher(endpoints.visitorTypes);
-    return response.items;
-  } catch (error) {
-    console.error('Error fetching visitor types', error);
-    throw error;
-  }
-};
+// export const getVisitorType = async () => {
+//   try {
+//     const response = await fetcher(endpoints.visitorTypes);
+//     return response.items;
+//   } catch (error) {
+//     console.error('Error fetching visitor types', error);
+//     throw error;
+//   }
+// };
 
-export const getVisitorIdentityType = async () => {
-  try {
-    const response = await fetcher(endpoints.visitorIdentityTypes);
-    return response.items;
-  } catch (error) {
-    console.error('Error fetching visitor identity types', error);
-    throw error;
-  }
-};
+// export const getVisitorIdentityType = async () => {
+//   try {
+//     const response = await fetcher(endpoints.visitorIdentityTypes);
+//     return response.items;
+//   } catch (error) {
+//     console.error('Error fetching visitor identity types', error);
+//     throw error;
+//   }
+// };
